@@ -1,0 +1,11 @@
+prefix=/data2/ai3625/workspace/ai3625-18/miniconda3
+exec_prefix=/data2/ai3625/workspace/ai3625-18/miniconda3
+libdir=/data2/ai3625/workspace/ai3625-18/miniconda3/lib
+includedir=/data2/ai3625/workspace/ai3625-18/miniconda3/include
+
+Name: uuid
+Description: Universally unique id library
+Version: 2.32.1
+Requires:
+Cflags: -I${includedir}/uuid
+Libs: -L${libdir} -luuid

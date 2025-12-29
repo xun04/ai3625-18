@@ -1,0 +1,1062 @@
+[
+  {
+    "timestamp": "2025-10-13T06:49:07.436Z",
+    "event_type": "user_query",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "query": "This is the SII Cli. We are setting up the context for our chat.\n  Today's date is Monday, October 13, 2025.\n  My operating system is: linux\n  I'm currently working in the directory: /data2/jdsu/projects/OmniAvatar\n  Showing up to 20 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (20 items) was reached.\n\n/data2/jdsu/projects/OmniAvatar/\n├───.gitignore\n├───frontend_server.py\n├───LICENSE.txt\n├───pipelined_websocket_streaming_server.py\n├───README.md\n├───requirements.txt\n├───run_backend.sh\n├───websocket_streaming_server.py\n├───.claude/\n├───.git/...\n├───.sii/\n├───assets/\n├───configs/\n├───demo_out/\n├───examples/\n├───OmniAvatar/\n├───qwen-omni-deploy/\n├───scripts/\n├───static/\n└───templates/",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux",
+      "working_directory": "/data2/jdsu/projects/OmniAvatar"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:49:07.443Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "Got it. Thanks for the context!",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:49:07.449Z",
+    "event_type": "user_query",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "query": "帮我解释一下OmniAvatar/models/model_manager.py下的模型load逻辑，每个detector的功能",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux",
+      "working_directory": "/data2/jdsu/projects/OmniAvatar"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:49:12.604Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "I'll analyze the model loading logic and detector functionality in the OmniAvatar/models/model_manager.py file.",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:49:12.718Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:49:12.718Z",
+    "event_type": "tool_call",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_name": "read_file",
+    "tool_args": "{\"absolute_path\":\"/data2/jdsu/projects/OmniAvatar/OmniAvatar/models/model_manager.py\"}",
+    "tool_call_id": "call_tooluvrtx01JRKwhBiuq",
+    "metadata": {
+      "tool_type": "function"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:49:12.736Z",
+    "event_type": "tool_result",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_result": "import os, torch, json, importlib\nfrom typing import List\nimport torch.nn as nn\nfrom ..configs.model_config import model_loader_configs, huggingface_model_loader_configs\nfrom ..utils.io_utils import load_state_dict, init_weights_on_device, hash_state_dict_keys, split_state_dict_with_prefix, smart_load_weights\n\n\ndef load_model_from_single_file(state_dict, model_names, model_classes, model_resource, torch_dtype, device, infer):\n    loaded_model_names, loaded_models = [], []\n    for model_name, model_class in zip(model_names, model_classes):\n        print(f\"    model_name: {model_name} model_class: {model_class.__name__}\")\n        state_dict_converter = model_class.state_dict_converter()\n        if model_resource == \"civitai\":\n            state_dict_results = state_dict_converter.from_civitai(state_dict)\n        elif model_resource == \"diffusers\":\n            state_dict_results = state_dict_converter.from_diffusers(state_dict)\n        if isinstance(state_dict_results, tuple):\n            model_state_dict, extra_kwargs = state_dict_results\n            print(f\"        This model is initialized with extra kwargs: {extra_kwargs}\")\n        else:\n            model_state_dict, extra_kwargs = state_dict_results, {}\n        torch_dtype = torch.float32 if extra_kwargs.get(\"upcast_to_float32\", False) else torch_dtype\n        with init_weights_on_device():\n            model = model_class(**extra_kwargs)\n        if hasattr(model, \"eval\"):\n            model = model.eval()\n        if not infer: # 训练才初始化\n            model = model.to_empty(device=torch.device(\"cuda\"))\n            for name, param in model.named_parameters():\n                if param.dim() > 1:  # 通常只对权重矩阵而不是偏置做初始化\n                    nn.init.xavier_uniform_(param, gain=0.05)\n                else:\n                    nn.init.zeros_(param)\n        else:\n            model = model.to_empty(device=device)\n        model, _, _ = smart_load_weights(model, model_state_dict)\n        # model.load_state_dict(model_state_dict, assign=True, strict=False)\n        model = model.to(dtype=torch_dtype, device=device)\n        loaded_model_names.append(model_name)\n        loaded_models.append(model)\n    return loaded_model_names, loaded_models\n\n\ndef load_model_from_huggingface_folder(file_path, model_names, model_classes, torch_dtype, device):\n    loaded_model_names, loaded_models = [], []\n    for model_name, model_class in zip(model_names, model_classes):\n        if torch_dtype in [torch.float32, torch.float16, torch.bfloat16]:\n            model = model_class.from_pretrained(file_path, torch_dtype=torch_dtype).eval()\n        else:\n            model = model_class.from_pretrained(file_path).eval().to(dtype=torch_dtype)\n        if torch_dtype == torch.float16 and hasattr(model, \"half\"):\n            model = model.half()\n        try:\n            model = model.to(device=device)\n        except:\n            pass\n        loaded_model_names.append(model_name)\n        loaded_models.append(model)\n    return loaded_model_names, loaded_models\n\n\ndef load_single_patch_model_from_single_file(state_dict, model_name, model_class, base_model, extra_kwargs, torch_dtype, device):\n    print(f\"    model_name: {model_name} model_class: {model_class.__name__} extra_kwargs: {extra_kwargs}\")\n    base_state_dict = base_model.state_dict()\n    base_model.to(\"cpu\")\n    del base_model\n    model = model_class(**extra_kwargs)\n    model.load_state_dict(base_state_dict, strict=False)\n    model.load_state_dict(state_dict, strict=False)\n    model.to(dtype=torch_dtype, device=device)\n    return model\n\n\ndef load_patch_model_from_single_file(state_dict, model_names, model_classes, extra_kwargs, model_manager, torch_dtype, device):\n    loaded_model_names, loaded_models = [], []\n    for model_name, model_class in zip(model_names, model_classes):\n        while True:\n            for model_id in range(len(model_manager.model)):\n                base_model_name = model_manager.model_name[model_id]\n                if base_model_name == model_name:\n                    base_model_path = model_manager.model_path[model_id]\n                    base_model = model_manager.model[model_id]\n                    print(f\"    Adding patch model to {base_model_name} ({base_model_path})\")\n                    patched_model = load_single_patch_model_from_single_file(\n                        state_dict, model_name, model_class, base_model, extra_kwargs, torch_dtype, device)\n                    loaded_model_names.append(base_model_name)\n                    loaded_models.append(patched_model)\n                    model_manager.model.pop(model_id)\n                    model_manager.model_path.pop(model_id)\n                    model_manager.model_name.pop(model_id)\n                    break\n            else:\n                break\n    return loaded_model_names, loaded_models\n\n\n\nclass ModelDetectorTemplate:\n    def __init__(self):\n        pass\n\n    def match(self, file_path=\"\", state_dict={}):\n        return False\n    \n    def load(self, file_path=\"\", state_dict={}, device=\"cuda\", torch_dtype=torch.float16, **kwargs):\n        return [], []\n    \n\n\nclass ModelDetectorFromSingleFile:\n    def __init__(self, model_loader_configs=[]):\n        self.keys_hash_with_shape_dict = {}\n        self.keys_hash_dict = {}\n        for metadata in model_loader_configs:\n            self.add_model_metadata(*metadata)\n\n\n    def add_model_metadata(self, keys_hash, keys_hash_with_shape, model_names, model_classes, model_resource):\n        self.keys_hash_with_shape_dict[keys_hash_with_shape] = (model_names, model_classes, model_resource)\n        if keys_hash is not None:\n            self.keys_hash_dict[keys_hash] = (model_names, model_classes, model_resource)\n\n\n    def match(self, file_path=\"\", state_dict={}):\n        if isinstance(file_path, str) and os.path.isdir(file_path):\n            return False\n        if len(state_dict) == 0:\n            state_dict = load_state_dict(file_path)\n        keys_hash_with_shape = hash_state_dict_keys(state_dict, with_shape=True)\n        if keys_hash_with_shape in self.keys_hash_with_shape_dict:\n            return True\n        keys_hash = hash_state_dict_keys(state_dict, with_shape=False)\n        if keys_hash in self.keys_hash_dict:\n            return True\n        return False\n\n\n    def load(self, file_path=\"\", state_dict={}, device=\"cuda\", torch_dtype=torch.float16, infer=False, **kwargs):\n        if len(state_dict) == 0:\n            state_dict = load_state_dict(file_path)\n\n        # Load models with strict matching\n        keys_hash_with_shape = hash_state_dict_keys(state_dict, with_shape=True)\n        if keys_hash_with_shape in self.keys_hash_with_shape_dict:\n            model_names, model_classes, model_resource = self.keys_hash_with_shape_dict[keys_hash_with_shape]\n            loaded_model_names, loaded_models = load_model_from_single_file(state_dict, model_names, model_classes, model_resource, torch_dtype, device, infer)\n            return loaded_model_names, loaded_models\n\n        # Load models without strict matching\n        # (the shape of parameters may be inconsistent, and the state_dict_converter will modify the model architecture)\n        keys_hash = hash_state_dict_keys(state_dict, with_shape=False)\n        if keys_hash in self.keys_hash_dict:\n            model_names, model_classes, model_resource = self.keys_hash_dict[keys_hash]\n            loaded_model_names, loaded_models = load_model_from_single_file(state_dict, model_names, model_classes, model_resource, torch_dtype, device, infer)\n            return loaded_model_names, loaded_models\n\n        return loaded_model_names, loaded_models\n\n\n\nclass ModelDetectorFromSplitedSingleFile(ModelDetectorFromSingleFile):\n    def __init__(self, model_loader_configs=[]):\n        super().__init__(model_loader_configs)\n\n\n    def match(self, file_path=\"\", state_dict={}):\n\n        if isinstance(file_path, str) and os.path.isdir(file_path):\n            return False\n        if len(state_dict) == 0:\n            state_dict = load_state_dict(file_path)\n        splited_state_dict = split_state_dict_with_prefix(state_dict)\n        for sub_state_dict in splited_state_dict:\n            if super().match(file_path, sub_state_dict):\n                return True\n        return False\n\n\n    def load(self, file_path=\"\", state_dict={}, device=\"cuda\", torch_dtype=torch.float16, **kwargs):\n        # Split the state_dict and load from each component\n        splited_state_dict = split_state_dict_with_prefix(state_dict)\n        valid_state_dict = {}\n        for sub_state_dict in splited_state_dict:\n            if super().match(file_path, sub_state_dict):\n                valid_state_dict.update(sub_state_dict)\n        if super().match(file_path, valid_state_dict):\n            loaded_model_names, loaded_models = super().load(file_path, valid_state_dict, device, torch_dtype)\n        else:\n            loaded_model_names, loaded_models = [], []\n            for sub_state_dict in splited_state_dict:\n                if super().match(file_path, sub_state_dict):\n                    loaded_model_names_, loaded_models_ = super().load(file_path, valid_state_dict, device, torch_dtype)\n                    loaded_model_names += loaded_model_names_\n                    loaded_models += loaded_models_\n        return loaded_model_names, loaded_models\n    \n\n\nclass ModelDetectorFromHuggingfaceFolder:\n    def __init__(self, model_loader_configs=[]):\n        self.architecture_dict = {}\n        for metadata in model_loader_configs:\n            self.add_model_metadata(*metadata)\n\n\n    def add_model_metadata(self, architecture, huggingface_lib, model_name, redirected_architecture):\n        self.architecture_dict[architecture] = (huggingface_lib, model_name, redirected_architecture)\n\n\n    def match(self, file_path=\"\", state_dict={}):\n        if not isinstance(file_path, str) or os.path.isfile(file_path):\n            return False\n        file_list = os.listdir(file_path)\n        if \"config.json\" not in file_list:\n            return False\n        with open(os.path.join(file_path, \"config.json\"), \"r\") as f:\n            config = json.load(f)\n        if \"architectures\" not in config and \"_class_name\" not in config:\n            return False\n        return True\n\n\n    def load(self, file_path=\"\", state_dict={}, device=\"cuda\", torch_dtype=torch.float16, **kwargs):\n        with open(os.path.join(file_path, \"config.json\"), \"r\") as f:\n            config = json.load(f)\n        loaded_model_names, loaded_models = [], []\n        architectures = config[\"architectures\"] if \"architectures\" in config else [config[\"_class_name\"]]\n        for architecture in architectures:\n            huggingface_lib, model_name, redirected_architecture = self.architecture_dict[architecture]\n            if redirected_architecture is not None:\n                architecture = redirected_architecture\n            model_class = importlib.import_module(huggingface_lib).__getattribute__(architecture)\n            loaded_model_names_, loaded_models_ = load_model_from_huggingface_folder(file_path, [model_name], [model_class], torch_dtype, device)\n            loaded_model_names += loaded_model_names_\n            loaded_models += loaded_models_\n        return loaded_model_names, loaded_models\n    \n\n\nclass ModelDetectorFromPatchedSingleFile:\n    def __init__(self, model_loader_configs=[]):\n        self.keys_hash_with_shape_dict = {}\n        for metadata in model_loader_configs:\n            self.add_model_metadata(*metadata)\n\n\n    def add_model_metadata(self, keys_hash_with_shape, model_name, model_class, extra_kwargs):\n        self.keys_hash_with_shape_dict[keys_hash_with_shape] = (model_name, model_class, extra_kwargs)\n\n\n    def match(self, file_path=\"\", state_dict={}):\n        if not isinstance(file_path, str) or os.path.isdir(file_path):\n            return False\n        if len(state_dict) == 0:\n            state_dict = load_state_dict(file_path)\n        keys_hash_with_shape = hash_state_dict_keys(state_dict, with_shape=True)\n        if keys_hash_with_shape in self.keys_hash_with_shape_dict:\n            return True\n        return False\n\n\n    def load(self, file_path=\"\", state_dict={}, device=\"cuda\", torch_dtype=torch.float16, model_manager=None, **kwargs):\n        if len(state_dict) == 0:\n            state_dict = load_state_dict(file_path)\n\n        # Load models with strict matching\n        loaded_model_names, loaded_models = [], []\n        keys_hash_with_shape = hash_state_dict_keys(state_dict, with_shape=True)\n        if keys_hash_with_shape in self.keys_hash_with_shape_dict:\n            model_names, model_classes, extra_kwargs = self.keys_hash_with_shape_dict[keys_hash_with_shape]\n            loaded_model_names_, loaded_models_ = load_patch_model_from_single_file(\n                state_dict, model_names, model_classes, extra_kwargs, model_manager, torch_dtype, device)\n            loaded_model_names += loaded_model_names_\n            loaded_models += loaded_models_\n        return loaded_model_names, loaded_models\n\n\n\nclass ModelManager:\n    def __init__(\n        self,\n        torch_dtype=torch.float16,\n        device=\"cuda\",\n        model_id_list: List = [],\n        downloading_priority: List = [\"ModelScope\", \"HuggingFace\"],\n        file_path_list: List[str] = [],\n        infer: bool = False\n    ):\n        self.torch_dtype = torch_dtype\n        self.device = device\n        self.model = []\n        self.model_path = []\n        self.model_name = []\n        self.infer = infer\n        downloaded_files = []\n        self.model_detector = [\n            ModelDetectorFromSingleFile(model_loader_configs),\n            ModelDetectorFromSplitedSingleFile(model_loader_configs),\n            ModelDetectorFromHuggingfaceFolder(huggingface_model_loader_configs),\n        ]\n        self.load_models(downloaded_files + file_path_list)\n\n\n    def load_model_from_single_file(self, file_path=\"\", state_dict={}, model_names=[], model_classes=[], model_resource=None):\n        print(f\"Loading models from file: {file_path}\")\n        if len(state_dict) == 0:\n            state_dict = load_state_dict(file_path)\n        model_names, models = load_model_from_single_file(state_dict, model_names, model_classes, model_resource, self.torch_dtype, self.device, self.infer)\n        for model_name, model in zip(model_names, models):\n            self.model.append(model)\n            self.model_path.append(file_path)\n            self.model_name.append(model_name)\n        print(f\"    The following models are loaded: {model_names}.\")\n\n\n    def load_model_from_huggingface_folder(self, file_path=\"\", model_names=[], model_classes=[]):\n        print(f\"Loading models from folder: {file_path}\")\n        model_names, models = load_model_from_huggingface_folder(file_path, model_names, model_classes, self.torch_dtype, self.device)\n        for model_name, model in zip(model_names, models):\n            self.model.append(model)\n            self.model_path.append(file_path)\n            self.model_name.append(model_name)\n        print(f\"    The following models are loaded: {model_names}.\")\n\n\n    def load_patch_model_from_single_file(self, file_path=\"\", state_dict={}, model_names=[], model_classes=[], extra_kwargs={}):\n        print(f\"Loading patch models from file: {file_path}\")\n        model_names, models = load_patch_model_from_single_file(\n            state_dict, model_names, model_classes, extra_kwargs, self, self.torch_dtype, self.device)\n        for model_name, model in zip(model_names, models):\n            self.model.append(model)\n            self.model_path.append(file_path)\n            self.model_name.append(model_name)\n        print(f\"    The following patched models are loaded: {model_names}.\")\n\n    def load_model(self, file_path, model_names=None, device=None, torch_dtype=None):\n        print(f\"Loading models from: {file_path}\")\n        if device is None: device = self.device\n        if torch_dtype is None: torch_dtype = self.torch_dtype\n        if isinstance(file_path, list):\n            state_dict = {}\n            for path in file_path:\n                state_dict.update(load_state_dict(path))\n        elif os.path.isfile(file_path):\n            state_dict = load_state_dict(file_path)\n        else:\n            state_dict = None\n       \n        import pdb; pdb.set_trace()\n        for model_detector in self.model_detector:\n            if model_detector.match(file_path, state_dict):\n                model_names, models = model_detector.load(\n                    file_path, state_dict,\n                    device=device, torch_dtype=torch_dtype,\n                    allowed_model_names=model_names, model_manager=self, infer=self.infer\n                )\n                for model_name, model in zip(model_names, models):\n                    self.model.append(model)\n                    self.model_path.append(file_path)\n                    self.model_name.append(model_name)\n                print(f\"    The following models are loaded: {model_names}.\")\n                break\n        else:\n            print(f\"    We cannot detect the model type. No models are loaded.\")\n        \n\n    def load_models(self, file_path_list, model_names=None, device=None, torch_dtype=None):\n        for file_path in file_path_list:\n            self.load_model(file_path, model_names, device=device, torch_dtype=torch_dtype)\n\n    \n    def fetch_model(self, model_name, file_path=None, require_model_path=False):\n        fetched_models = []\n        fetched_model_paths = []\n        for model, model_path, model_name_ in zip(self.model, self.model_path, self.model_name):\n            if file_path is not None and file_path != model_path:\n                continue\n            if model_name == model_name_:\n                fetched_models.append(model)\n                fetched_model_paths.append(model_path)\n        if len(fetched_models) == 0:\n            print(f\"No {model_name} models available.\")\n            return None\n        if len(fetched_models) == 1:\n            print(f\"Using {model_name} from {fetched_model_paths[0]}.\")\n        else:\n            print(f\"More than one {model_name} models are loaded in model manager: {fetched_model_paths}. Using {model_name} from {fetched_model_paths[0]}.\")\n        if require_model_path:\n            return fetched_models[0], fetched_model_paths[0]\n        else:\n            return fetched_models[0]\n        \n\n    def to(self, device):\n        for model in self.model:\n            model.to(device)\n\n",
+    "tool_call_id": "call_tooluvrtx01JRKwhBiuq"
+  },
+  {
+    "timestamp": "2025-10-13T06:49:31.912Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "现在我来解释一下OmniAvatar模型管理器的加载逻辑和各个detector的功能：\n\n## 模型加载逻辑概述\n\nModelManager是整个模型管理的核心类，它使用了多个detector来自动识别和加载不同类型的模型文件。\n\n## 各个Detector的功能\n\n### 1. ModelDetectorFromSingleFile\n**功能**: 从单个文件加载模型（如.pth, .safetensors等）\n- **匹配逻辑**: 通过计算state_dict的键值哈希来识别模型类型\n- **支持两种匹配模式**:\n  - `keys_hash_with_shape`: 严格匹配（包含参数形状）\n  - `keys_hash`: 宽松匹配（仅匹配键名）\n- **加载过程**: 使用state_dict_converter转换权重格式，支持civitai和diffusers格式\n\n### 2. ModelDetectorFromSplitedSingleFile\n**功能**: 处理包含多个模型的单个文件\n- **继承自**: ModelDetectorFromSingleFile\n- **特殊处理**: 将state_dict按前缀分割，分别匹配每个子模型\n- **应用场景**: 一个文件包含多个不同类型的模型权重\n\n### 3. ModelDetectorFromHuggingfaceFolder\n**功能**: 从HuggingFace格式的文件夹加载模型\n- **匹配逻辑**: 检查文件夹中是否存在`config.json`\n- **配置解析**: 读取config.json中的`architectures`或`_class_name`字段\n- **动态加载**: 使用importlib动态导入对应的模型类\n\n### 4. ModelDetectorFromPatchedSingleFile\n**功能**: 加载补丁模型（如LoRA、ControlNet等）\n- **工作原理**: 在已有基础模型上应用补丁权重\n- **加载流程**:\n  1. 找到对应的基础模型\n  2. 复制基础模型的state_dict\n  3. 应用补丁权重\n  4. 替换原有模型\n\n## 核心加载流程\n\n```python\ndef load_model(self, file_path):\n    # 1. 加载state_dict\n    state_dict = load_state_dict(file_path)\n    \n    # 2. 遍历所有detector\n    for model_detector in self.model_detector:\n        if model_detector.match(file_path, state_dict):\n            # 3. 使用匹配的detector加载模型\n            model_names, models = model_detector.load(...)\n            # 4. 将模型添加到管理器\n            self.model.append(model)\n            break\n```\n\n## 关键特性\n\n1. **自动识别**: 通过哈希匹配自动识别模型类型\n2. **格式转换**: 支持不同格式间的权重转换\n3. **设备管理**: 统一管理模型的设备分配\n4. **补丁支持**: 支持在基础模型上应用补丁\n5. **多源支持**: 同时支持单文件和文件夹格式的模型\n\n这个设计使得OmniAvatar能够灵活地加载各种来源和格式的AI模型，为后续的avatar生成提供模型支持。",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:50:31.299Z",
+    "event_type": "user_query",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "query": "他们的match函数各自都是如何实现的？",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux",
+      "working_directory": "/data2/jdsu/projects/OmniAvatar"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:50:53.165Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "我来详细解释每个detector的match函数实现逻辑：\n\n## 1. ModelDetectorFromSingleFile.match()\n\n```python\ndef match(self, file_path=\"\", state_dict={}):\n    # 1. 排除文件夹\n    if isinstance(file_path, str) and os.path.isdir(file_path):\n        return False\n    \n    # 2. 加载state_dict（如果为空）\n    if len(state_dict) == 0:\n        state_dict = load_state_dict(file_path)\n    \n    # 3. 计算带形状的哈希值\n    keys_hash_with_shape = hash_state_dict_keys(state_dict, with_shape=True)\n    if keys_hash_with_shape in self.keys_hash_with_shape_dict:\n        return True\n    \n    # 4. 计算不带形状的哈希值\n    keys_hash = hash_state_dict_keys(state_dict, with_shape=False)\n    if keys_hash in self.keys_hash_dict:\n        return True\n    \n    return False\n```\n\n**匹配策略**:\n- 首先尝试**严格匹配**（包含参数形状）\n- 如果失败，尝试**宽松匹配**（仅匹配键名）\n- 通过预先计算的哈希字典快速识别模型类型\n\n## 2. ModelDetectorFromSplitedSingleFile.match()\n\n```python\ndef match(self, file_path=\"\", state_dict={}):\n    # 1. 排除文件夹\n    if isinstance(file_path, str) and os.path.isdir(file_path):\n        return False\n    \n    # 2. 加载state_dict（如果为空）\n    if len(state_dict) == 0:\n        state_dict = load_state_dict(file_path)\n    \n    # 3. 按前缀分割state_dict\n    splited_state_dict = split_state_dict_with_prefix(state_dict)\n    \n    # 4. 检查每个子state_dict是否匹配\n    for sub_state_dict in splited_state_dict:\n        if super().match(file_path, sub_state_dict):\n            return True\n    \n    return False\n```\n\n**匹配策略**:\n- 将复合模型文件按前缀分割成多个子模型\n- 对每个子模型调用父类的match方法\n- 只要有一个子模型匹配成功就返回True\n\n## 3. ModelDetectorFromHuggingfaceFolder.match()\n\n```python\ndef match(self, file_path=\"\", state_dict={}):\n    # 1. 必须是文件夹，不能是文件\n    if not isinstance(file_path, str) or os.path.isfile(file_path):\n        return False\n    \n    # 2. 检查文件夹内容\n    file_list = os.listdir(file_path)\n    if \"config.json\" not in file_list:\n        return False\n    \n    # 3. 解析config.json\n    with open(os.path.join(file_path, \"config.json\"), \"r\") as f:\n        config = json.load(f)\n    \n    # 4. 检查必要的架构信息\n    if \"architectures\" not in config and \"_class_name\" not in config:\n        return False\n    \n    return True\n```\n\n**匹配策略**:\n- 必须是文件夹路径\n- 必须包含`config.json`文件\n- config.json必须包含`architectures`或`_class_name`字段\n- 这是HuggingFace标准格式的特征\n\n## 4. ModelDetectorFromPatchedSingleFile.match()\n\n```python\ndef match(self, file_path=\"\", state_dict={}):\n    # 1. 必须是文件，不能是文件夹\n    if not isinstance(file_path, str) or os.path.isdir(file_path):\n        return False\n    \n    # 2. 加载state_dict（如果为空）\n    if len(state_dict) == 0:\n        state_dict = load_state_dict(file_path)\n    \n    # 3. 计算带形状的哈希值（仅严格匹配）\n    keys_hash_with_shape = hash_state_dict_keys(state_dict, with_shape=True)\n    if keys_hash_with_shape in self.keys_hash_with_shape_dict:\n        return True\n    \n    return False\n```\n\n**匹配策略**:\n- 必须是单个文件\n- **仅支持严格匹配**（带形状的哈希）\n- 补丁模型对参数形状要求更严格\n\n## 匹配优先级和策略总结\n\n1. **文件类型检查**: 首先区分文件vs文件夹\n2. **格式特征检查**: \n   - HuggingFace: 检查config.json\n   - 单文件: 通过state_dict哈希匹配\n3. **匹配严格程度**:\n   - 补丁模型: 最严格（仅形状匹配）\n   - 普通单文件: 先严格后宽松\n   - 分割文件: 递归匹配子模型\n   - HuggingFace: 基于配置文件\n\n这种设计确保了不同类型的模型能够被正确识别，避免误匹配，同时提供了足够的灵活性来处理各种模型格式。",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:55:01.232Z",
+    "event_type": "user_query",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "query": "如果是一个完整的model.safetensors，理论上应该走哪个detector分支？",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux",
+      "working_directory": "/data2/jdsu/projects/OmniAvatar"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:55:18.374Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "对于一个完整的`model.safetensors`文件，理论上应该走 **ModelDetectorFromSingleFile** 分支。\n\n让我分析一下匹配流程：\n\n## 匹配顺序分析\n\nModelManager初始化时，detector的顺序是：\n```python\nself.model_detector = [\n    ModelDetectorFromSingleFile(model_loader_configs),           # 第1个\n    ModelDetectorFromSplitedSingleFile(model_loader_configs),    # 第2个  \n    ModelDetectorFromHuggingfaceFolder(huggingface_model_loader_configs), # 第3个\n]\n```\n\n## 各detector对model.safetensors的匹配结果\n\n### 1. ModelDetectorFromSingleFile ✅\n```python\ndef match(self, file_path=\"\", state_dict={}):\n    # model.safetensors是文件，不是文件夹 → 通过\n    if isinstance(file_path, str) and os.path.isdir(file_path):\n        return False  # 不会执行\n    \n    # 加载safetensors文件的state_dict\n    state_dict = load_state_dict(file_path)  # 成功加载\n    \n    # 计算哈希并匹配预定义的模型配置\n    keys_hash_with_shape = hash_state_dict_keys(state_dict, with_shape=True)\n    if keys_hash_with_shape in self.keys_hash_with_shape_dict:\n        return True  # 如果在配置中找到匹配 → 返回True\n```\n\n### 2. ModelDetectorFromSplitedSingleFile ❌\n虽然技术上也能匹配，但由于第1个detector已经匹配成功，不会执行到这里。\n\n### 3. ModelDetectorFromHuggingfaceFolder ❌\n```python\ndef match(self, file_path=\"\", state_dict={}):\n    # model.safetensors是文件，不是文件夹 → 直接返回False\n    if not isinstance(file_path, str) or os.path.isfile(file_path):\n        return False  # 会执行这里\n```\n\n## 实际执行流程\n\n```python\ndef load_model(self, file_path):\n    # file_path = \"path/to/model.safetensors\"\n    state_dict = load_state_dict(file_path)  # 加载safetensors\n    \n    for model_detector in self.model_detector:\n        if model_detector.match(file_path, state_dict):\n            # ModelDetectorFromSingleFile.match() 返回 True\n            model_names, models = model_detector.load(...)  # 使用第1个detector加载\n            break  # 找到匹配后立即退出循环\n```\n\n## 关键前提条件\n\n要成功匹配，需要满足：\n1. `model.safetensors`文件能够正常加载\n2. 计算出的`keys_hash_with_shape`或`keys_hash`在`model_loader_configs`中有对应的配置\n3. 如果没有预定义配置，所有detector都会返回False，输出\"无法检测模型类型\"\n\n**结论**: 完整的`model.safetensors`文件会走 **ModelDetectorFromSingleFile** 分支，这是最直接和高效的匹配路径。",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:58:13.314Z",
+    "event_type": "user_query",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "query": "你仔细看一下OmniAvatar/configs/model_config.py，这一块是否是指定了model的hash，如果我需要新增模型的权重，是否需要在这里添加什么信息？",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux",
+      "working_directory": "/data2/jdsu/projects/OmniAvatar"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:58:18.176Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:58:18.176Z",
+    "event_type": "tool_call",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_name": "read_file",
+    "tool_args": "{\"absolute_path\":\"/data2/jdsu/projects/OmniAvatar/OmniAvatar/configs/model_config.py\"}",
+    "tool_call_id": "call_tooluvrtx015VaU8ikYF",
+    "metadata": {
+      "tool_type": "function"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T06:58:18.192Z",
+    "event_type": "tool_result",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_result": "from typing_extensions import Literal, TypeAlias\nfrom ..models.wan_video_dit import WanModel\nfrom ..models.wan_video_text_encoder import WanTextEncoder\nfrom ..models.wan_video_vae import WanVideoVAE\n\n\nmodel_loader_configs = [\n    # These configs are provided for detecting model type automatically.\n    # The format is (state_dict_keys_hash, state_dict_keys_hash_with_shape, model_names, model_classes, model_resource)\n    (None, \"9269f8db9040a9d860eaca435be61814\", [\"wan_video_dit\"], [WanModel], \"civitai\"),\n    (None, \"aafcfd9672c3a2456dc46e1cb6e52c70\", [\"wan_video_dit\"], [WanModel], \"civitai\"),\n    (None, \"6bfcfb3b342cb286ce886889d519a77e\", [\"wan_video_dit\"], [WanModel], \"civitai\"),\n    (None, \"cb104773c6c2cb6df4f9529ad5c60d0b\", [\"wan_video_dit\"], [WanModel], \"diffusers\"),\n    (None, \"9c8818c2cbea55eca56c7b447df170da\", [\"wan_video_text_encoder\"], [WanTextEncoder], \"civitai\"),\n    (None, \"1378ea763357eea97acdef78e65d6d96\", [\"wan_video_vae\"], [WanVideoVAE], \"civitai\"),\n    (None, \"ccc42284ea13e1ad04693284c7a09be6\", [\"wan_video_vae\"], [WanVideoVAE], \"civitai\"),\n]\nhuggingface_model_loader_configs = [\n    # These configs are provided for detecting model type automatically.\n    # The format is (architecture_in_huggingface_config, huggingface_lib, model_name, redirected_architecture)\n    (\"ChatGLMModel\", \"diffsynth.models.kolors_text_encoder\", \"kolors_text_encoder\", None),\n    (\"MarianMTModel\", \"transformers.models.marian.modeling_marian\", \"translator\", None),\n    (\"BloomForCausalLM\", \"transformers.models.bloom.modeling_bloom\", \"beautiful_prompt\", None),\n    (\"Qwen2ForCausalLM\", \"transformers.models.qwen2.modeling_qwen2\", \"qwen_prompt\", None),\n    # (\"LlamaForCausalLM\", \"transformers.models.llama.modeling_llama\", \"omost_prompt\", None),\n    (\"T5EncoderModel\", \"diffsynth.models.flux_text_encoder\", \"flux_text_encoder_2\", \"FluxTextEncoder2\"),\n    (\"CogVideoXTransformer3DModel\", \"diffsynth.models.cog_dit\", \"cog_dit\", \"CogDiT\"),\n    (\"SiglipModel\", \"transformers.models.siglip.modeling_siglip\", \"siglip_vision_model\", \"SiglipVisionModel\"),\n    (\"LlamaForCausalLM\", \"diffsynth.models.hunyuan_video_text_encoder\", \"hunyuan_video_text_encoder_2\", \"HunyuanVideoLLMEncoder\"),\n    (\"LlavaForConditionalGeneration\", \"diffsynth.models.hunyuan_video_text_encoder\", \"hunyuan_video_text_encoder_2\", \"HunyuanVideoMLLMEncoder\"),\n    (\"Step1Model\", \"diffsynth.models.stepvideo_text_encoder\", \"stepvideo_text_encoder_2\", \"STEP1TextEncoder\"),\n]\n\npreset_models_on_huggingface = {\n    \"HunyuanDiT\": [\n        (\"Tencent-Hunyuan/HunyuanDiT\", \"t2i/clip_text_encoder/pytorch_model.bin\", \"models/HunyuanDiT/t2i/clip_text_encoder\"),\n        (\"Tencent-Hunyuan/HunyuanDiT\", \"t2i/mt5/pytorch_model.bin\", \"models/HunyuanDiT/t2i/mt5\"),\n        (\"Tencent-Hunyuan/HunyuanDiT\", \"t2i/model/pytorch_model_ema.pt\", \"models/HunyuanDiT/t2i/model\"),\n        (\"Tencent-Hunyuan/HunyuanDiT\", \"t2i/sdxl-vae-fp16-fix/diffusion_pytorch_model.bin\", \"models/HunyuanDiT/t2i/sdxl-vae-fp16-fix\"),\n    ],\n    \"stable-video-diffusion-img2vid-xt\": [\n        (\"stabilityai/stable-video-diffusion-img2vid-xt\", \"svd_xt.safetensors\", \"models/stable_video_diffusion\"),\n    ],\n    \"ExVideo-SVD-128f-v1\": [\n        (\"ECNU-CILab/ExVideo-SVD-128f-v1\", \"model.fp16.safetensors\", \"models/stable_video_diffusion\"),\n    ],\n    # Stable Diffusion\n    \"StableDiffusion_v15\": [\n        (\"benjamin-paine/stable-diffusion-v1-5\", \"v1-5-pruned-emaonly.safetensors\", \"models/stable_diffusion\"),\n    ],\n    \"DreamShaper_8\": [\n        (\"Yntec/Dreamshaper8\", \"dreamshaper_8.safetensors\", \"models/stable_diffusion\"),\n    ],\n    # Textual Inversion\n    \"TextualInversion_VeryBadImageNegative_v1.3\": [\n        (\"gemasai/verybadimagenegative_v1.3\", \"verybadimagenegative_v1.3.pt\", \"models/textual_inversion\"),\n    ],\n    # Stable Diffusion XL\n    \"StableDiffusionXL_v1\": [\n        (\"stabilityai/stable-diffusion-xl-base-1.0\", \"sd_xl_base_1.0.safetensors\", \"models/stable_diffusion_xl\"),\n    ],\n    \"BluePencilXL_v200\": [\n        (\"frankjoshua/bluePencilXL_v200\", \"bluePencilXL_v200.safetensors\", \"models/stable_diffusion_xl\"),\n    ],\n    \"StableDiffusionXL_Turbo\": [\n        (\"stabilityai/sdxl-turbo\", \"sd_xl_turbo_1.0_fp16.safetensors\", \"models/stable_diffusion_xl_turbo\"),\n    ],\n    # Stable Diffusion 3\n    \"StableDiffusion3\": [\n        (\"stabilityai/stable-diffusion-3-medium\", \"sd3_medium_incl_clips_t5xxlfp16.safetensors\", \"models/stable_diffusion_3\"),\n    ],\n    \"StableDiffusion3_without_T5\": [\n        (\"stabilityai/stable-diffusion-3-medium\", \"sd3_medium_incl_clips.safetensors\", \"models/stable_diffusion_3\"),\n    ],\n    # ControlNet\n    \"ControlNet_v11f1p_sd15_depth\": [\n        (\"lllyasviel/ControlNet-v1-1\", \"control_v11f1p_sd15_depth.pth\", \"models/ControlNet\"),\n        (\"lllyasviel/Annotators\", \"dpt_hybrid-midas-501f0c75.pt\", \"models/Annotators\")\n    ],\n    \"ControlNet_v11p_sd15_softedge\": [\n        (\"lllyasviel/ControlNet-v1-1\", \"control_v11p_sd15_softedge.pth\", \"models/ControlNet\"),\n        (\"lllyasviel/Annotators\", \"ControlNetHED.pth\", \"models/Annotators\")\n    ],\n    \"ControlNet_v11f1e_sd15_tile\": [\n        (\"lllyasviel/ControlNet-v1-1\", \"control_v11f1e_sd15_tile.pth\", \"models/ControlNet\")\n    ],\n    \"ControlNet_v11p_sd15_lineart\": [\n        (\"lllyasviel/ControlNet-v1-1\", \"control_v11p_sd15_lineart.pth\", \"models/ControlNet\"),\n        (\"lllyasviel/Annotators\", \"sk_model.pth\", \"models/Annotators\"),\n        (\"lllyasviel/Annotators\", \"sk_model2.pth\", \"models/Annotators\")\n    ],\n    \"ControlNet_union_sdxl_promax\": [\n        (\"xinsir/controlnet-union-sdxl-1.0\", \"diffusion_pytorch_model_promax.safetensors\", \"models/ControlNet/controlnet_union\"),\n        (\"lllyasviel/Annotators\", \"dpt_hybrid-midas-501f0c75.pt\", \"models/Annotators\")\n    ],\n    # AnimateDiff\n    \"AnimateDiff_v2\": [\n        (\"guoyww/animatediff\", \"mm_sd_v15_v2.ckpt\", \"models/AnimateDiff\"),\n    ],\n    \"AnimateDiff_xl_beta\": [\n        (\"guoyww/animatediff\", \"mm_sdxl_v10_beta.ckpt\", \"models/AnimateDiff\"),\n    ],\n\n    # Qwen Prompt\n    \"QwenPrompt\": [\n        (\"Qwen/Qwen2-1.5B-Instruct\", \"config.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n        (\"Qwen/Qwen2-1.5B-Instruct\", \"generation_config.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n        (\"Qwen/Qwen2-1.5B-Instruct\", \"model.safetensors\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n        (\"Qwen/Qwen2-1.5B-Instruct\", \"special_tokens_map.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n        (\"Qwen/Qwen2-1.5B-Instruct\", \"tokenizer.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n        (\"Qwen/Qwen2-1.5B-Instruct\", \"tokenizer_config.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n        (\"Qwen/Qwen2-1.5B-Instruct\", \"merges.txt\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n        (\"Qwen/Qwen2-1.5B-Instruct\", \"vocab.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n    ],\n    # Beautiful Prompt\n    \"BeautifulPrompt\": [\n        (\"alibaba-pai/pai-bloom-1b1-text2prompt-sd\", \"config.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n        (\"alibaba-pai/pai-bloom-1b1-text2prompt-sd\", \"generation_config.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n        (\"alibaba-pai/pai-bloom-1b1-text2prompt-sd\", \"model.safetensors\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n        (\"alibaba-pai/pai-bloom-1b1-text2prompt-sd\", \"special_tokens_map.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n        (\"alibaba-pai/pai-bloom-1b1-text2prompt-sd\", \"tokenizer.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n        (\"alibaba-pai/pai-bloom-1b1-text2prompt-sd\", \"tokenizer_config.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n    ],\n    # Omost prompt\n    \"OmostPrompt\":[\n        (\"lllyasviel/omost-llama-3-8b-4bits\", \"model-00001-of-00002.safetensors\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n        (\"lllyasviel/omost-llama-3-8b-4bits\", \"model-00002-of-00002.safetensors\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n        (\"lllyasviel/omost-llama-3-8b-4bits\", \"tokenizer.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n        (\"lllyasviel/omost-llama-3-8b-4bits\", \"tokenizer_config.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),  \n        (\"lllyasviel/omost-llama-3-8b-4bits\", \"config.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n        (\"lllyasviel/omost-llama-3-8b-4bits\", \"generation_config.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n        (\"lllyasviel/omost-llama-3-8b-4bits\", \"model.safetensors.index.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n        (\"lllyasviel/omost-llama-3-8b-4bits\", \"special_tokens_map.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n    ],\n    # Translator\n    \"opus-mt-zh-en\": [\n        (\"Helsinki-NLP/opus-mt-zh-en\", \"config.json\", \"models/translator/opus-mt-zh-en\"),\n        (\"Helsinki-NLP/opus-mt-zh-en\", \"generation_config.json\", \"models/translator/opus-mt-zh-en\"),\n        (\"Helsinki-NLP/opus-mt-zh-en\", \"metadata.json\", \"models/translator/opus-mt-zh-en\"),\n        (\"Helsinki-NLP/opus-mt-zh-en\", \"pytorch_model.bin\", \"models/translator/opus-mt-zh-en\"),\n        (\"Helsinki-NLP/opus-mt-zh-en\", \"source.spm\", \"models/translator/opus-mt-zh-en\"),\n        (\"Helsinki-NLP/opus-mt-zh-en\", \"target.spm\", \"models/translator/opus-mt-zh-en\"),\n        (\"Helsinki-NLP/opus-mt-zh-en\", \"tokenizer_config.json\", \"models/translator/opus-mt-zh-en\"),\n        (\"Helsinki-NLP/opus-mt-zh-en\", \"vocab.json\", \"models/translator/opus-mt-zh-en\"),\n    ],\n    # IP-Adapter\n    \"IP-Adapter-SD\": [\n        (\"h94/IP-Adapter\", \"models/image_encoder/model.safetensors\", \"models/IpAdapter/stable_diffusion/image_encoder\"),\n        (\"h94/IP-Adapter\", \"models/ip-adapter_sd15.bin\", \"models/IpAdapter/stable_diffusion\"),\n    ],\n    \"IP-Adapter-SDXL\": [\n        (\"h94/IP-Adapter\", \"sdxl_models/image_encoder/model.safetensors\", \"models/IpAdapter/stable_diffusion_xl/image_encoder\"),\n        (\"h94/IP-Adapter\", \"sdxl_models/ip-adapter_sdxl.bin\", \"models/IpAdapter/stable_diffusion_xl\"),\n    ],\n    \"SDXL-vae-fp16-fix\": [\n        (\"madebyollin/sdxl-vae-fp16-fix\", \"diffusion_pytorch_model.safetensors\", \"models/sdxl-vae-fp16-fix\")\n    ],\n    # Kolors\n    \"Kolors\": [\n        (\"Kwai-Kolors/Kolors\", \"text_encoder/config.json\", \"models/kolors/Kolors/text_encoder\"),\n        (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model.bin.index.json\", \"models/kolors/Kolors/text_encoder\"),\n        (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00001-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n        (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00002-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n        (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00003-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n        (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00004-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n        (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00005-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n        (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00006-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n        (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00007-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n        (\"Kwai-Kolors/Kolors\", \"unet/diffusion_pytorch_model.safetensors\", \"models/kolors/Kolors/unet\"),\n        (\"Kwai-Kolors/Kolors\", \"vae/diffusion_pytorch_model.safetensors\", \"models/kolors/Kolors/vae\"),\n    ],\n    # FLUX\n    \"FLUX.1-dev\": [\n        (\"black-forest-labs/FLUX.1-dev\", \"text_encoder/model.safetensors\", \"models/FLUX/FLUX.1-dev/text_encoder\"),\n        (\"black-forest-labs/FLUX.1-dev\", \"text_encoder_2/config.json\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n        (\"black-forest-labs/FLUX.1-dev\", \"text_encoder_2/model-00001-of-00002.safetensors\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n        (\"black-forest-labs/FLUX.1-dev\", \"text_encoder_2/model-00002-of-00002.safetensors\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n        (\"black-forest-labs/FLUX.1-dev\", \"text_encoder_2/model.safetensors.index.json\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n        (\"black-forest-labs/FLUX.1-dev\", \"ae.safetensors\", \"models/FLUX/FLUX.1-dev\"),\n        (\"black-forest-labs/FLUX.1-dev\", \"flux1-dev.safetensors\", \"models/FLUX/FLUX.1-dev\"),\n    ],\n    \"InstantX/FLUX.1-dev-IP-Adapter\": {\n        \"file_list\": [\n            (\"InstantX/FLUX.1-dev-IP-Adapter\", \"ip-adapter.bin\", \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter\"),\n            (\"google/siglip-so400m-patch14-384\", \"model.safetensors\", \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter/image_encoder\"),\n            (\"google/siglip-so400m-patch14-384\", \"config.json\", \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter/image_encoder\"),\n        ],\n        \"load_path\": [\n            \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter/ip-adapter.bin\",\n            \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter/image_encoder\",\n        ],\n    },\n    # RIFE\n    \"RIFE\": [\n        (\"AlexWortega/RIFE\", \"flownet.pkl\", \"models/RIFE\"),\n    ],\n    # CogVideo\n    \"CogVideoX-5B\": [\n        (\"THUDM/CogVideoX-5b\", \"text_encoder/config.json\", \"models/CogVideo/CogVideoX-5b/text_encoder\"),\n        (\"THUDM/CogVideoX-5b\", \"text_encoder/model.safetensors.index.json\", \"models/CogVideo/CogVideoX-5b/text_encoder\"),\n        (\"THUDM/CogVideoX-5b\", \"text_encoder/model-00001-of-00002.safetensors\", \"models/CogVideo/CogVideoX-5b/text_encoder\"),\n        (\"THUDM/CogVideoX-5b\", \"text_encoder/model-00002-of-00002.safetensors\", \"models/CogVideo/CogVideoX-5b/text_encoder\"),\n        (\"THUDM/CogVideoX-5b\", \"transformer/config.json\", \"models/CogVideo/CogVideoX-5b/transformer\"),\n        (\"THUDM/CogVideoX-5b\", \"transformer/diffusion_pytorch_model.safetensors.index.json\", \"models/CogVideo/CogVideoX-5b/transformer\"),\n        (\"THUDM/CogVideoX-5b\", \"transformer/diffusion_pytorch_model-00001-of-00002.safetensors\", \"models/CogVideo/CogVideoX-5b/transformer\"),\n        (\"THUDM/CogVideoX-5b\", \"transformer/diffusion_pytorch_model-00002-of-00002.safetensors\", \"models/CogVideo/CogVideoX-5b/transformer\"),\n        (\"THUDM/CogVideoX-5b\", \"vae/diffusion_pytorch_model.safetensors\", \"models/CogVideo/CogVideoX-5b/vae\"),\n    ],\n    # Stable Diffusion 3.5\n    \"StableDiffusion3.5-large\": [\n        (\"stabilityai/stable-diffusion-3.5-large\", \"sd3.5_large.safetensors\", \"models/stable_diffusion_3\"),\n        (\"stabilityai/stable-diffusion-3.5-large\", \"text_encoders/clip_l.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n        (\"stabilityai/stable-diffusion-3.5-large\", \"text_encoders/clip_g.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n        (\"stabilityai/stable-diffusion-3.5-large\", \"text_encoders/t5xxl_fp16.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n    ],\n}\npreset_models_on_modelscope = {\n    # Hunyuan DiT\n    \"HunyuanDiT\": [\n        (\"modelscope/HunyuanDiT\", \"t2i/clip_text_encoder/pytorch_model.bin\", \"models/HunyuanDiT/t2i/clip_text_encoder\"),\n        (\"modelscope/HunyuanDiT\", \"t2i/mt5/pytorch_model.bin\", \"models/HunyuanDiT/t2i/mt5\"),\n        (\"modelscope/HunyuanDiT\", \"t2i/model/pytorch_model_ema.pt\", \"models/HunyuanDiT/t2i/model\"),\n        (\"modelscope/HunyuanDiT\", \"t2i/sdxl-vae-fp16-fix/diffusion_pytorch_model.bin\", \"models/HunyuanDiT/t2i/sdxl-vae-fp16-fix\"),\n    ],\n    # Stable Video Diffusion\n    \"stable-video-diffusion-img2vid-xt\": [\n        (\"AI-ModelScope/stable-video-diffusion-img2vid-xt\", \"svd_xt.safetensors\", \"models/stable_video_diffusion\"),\n    ],\n    # ExVideo\n    \"ExVideo-SVD-128f-v1\": [\n        (\"ECNU-CILab/ExVideo-SVD-128f-v1\", \"model.fp16.safetensors\", \"models/stable_video_diffusion\"),\n    ],\n    \"ExVideo-CogVideoX-LoRA-129f-v1\": [\n        (\"ECNU-CILab/ExVideo-CogVideoX-LoRA-129f-v1\", \"ExVideo-CogVideoX-LoRA-129f-v1.safetensors\", \"models/lora\"),\n    ],\n    # Stable Diffusion\n    \"StableDiffusion_v15\": [\n        (\"AI-ModelScope/stable-diffusion-v1-5\", \"v1-5-pruned-emaonly.safetensors\", \"models/stable_diffusion\"),\n    ],\n    \"DreamShaper_8\": [\n        (\"sd_lora/dreamshaper_8\", \"dreamshaper_8.safetensors\", \"models/stable_diffusion\"),\n    ],\n    \"AingDiffusion_v12\": [\n        (\"sd_lora/aingdiffusion_v12\", \"aingdiffusion_v12.safetensors\", \"models/stable_diffusion\"),\n    ],\n    \"Flat2DAnimerge_v45Sharp\": [\n        (\"sd_lora/Flat-2D-Animerge\", \"flat2DAnimerge_v45Sharp.safetensors\", \"models/stable_diffusion\"),\n    ],\n    # Textual Inversion\n    \"TextualInversion_VeryBadImageNegative_v1.3\": [\n        (\"sd_lora/verybadimagenegative_v1.3\", \"verybadimagenegative_v1.3.pt\", \"models/textual_inversion\"),\n    ],\n    # Stable Diffusion XL\n    \"StableDiffusionXL_v1\": [\n        (\"AI-ModelScope/stable-diffusion-xl-base-1.0\", \"sd_xl_base_1.0.safetensors\", \"models/stable_diffusion_xl\"),\n    ],\n    \"BluePencilXL_v200\": [\n        (\"sd_lora/bluePencilXL_v200\", \"bluePencilXL_v200.safetensors\", \"models/stable_diffusion_xl\"),\n    ],\n    \"StableDiffusionXL_Turbo\": [\n        (\"AI-ModelScope/sdxl-turbo\", \"sd_xl_turbo_1.0_fp16.safetensors\", \"models/stable_diffusion_xl_turbo\"),\n    ],\n    \"SDXL_lora_zyd232_ChineseInkStyle_SDXL_v1_0\": [\n        (\"sd_lora/zyd232_ChineseInkStyle_SDXL_v1_0\", \"zyd232_ChineseInkStyle_SDXL_v1_0.safetensors\", \"models/lora\"),\n    ],\n    # Stable Diffusion 3\n    \"StableDiffusion3\": [\n        (\"AI-ModelScope/stable-diffusion-3-medium\", \"sd3_medium_incl_clips_t5xxlfp16.safetensors\", \"models/stable_diffusion_3\"),\n    ],\n    \"StableDiffusion3_without_T5\": [\n        (\"AI-ModelScope/stable-diffusion-3-medium\", \"sd3_medium_incl_clips.safetensors\", \"models/stable_diffusion_3\"),\n    ],\n    # ControlNet\n    \"ControlNet_v11f1p_sd15_depth\": [\n        (\"AI-ModelScope/ControlNet-v1-1\", \"control_v11f1p_sd15_depth.pth\", \"models/ControlNet\"),\n        (\"sd_lora/Annotators\", \"dpt_hybrid-midas-501f0c75.pt\", \"models/Annotators\")\n    ],\n    \"ControlNet_v11p_sd15_softedge\": [\n        (\"AI-ModelScope/ControlNet-v1-1\", \"control_v11p_sd15_softedge.pth\", \"models/ControlNet\"),\n        (\"sd_lora/Annotators\", \"ControlNetHED.pth\", \"models/Annotators\")\n    ],\n    \"ControlNet_v11f1e_sd15_tile\": [\n        (\"AI-ModelScope/ControlNet-v1-1\", \"control_v11f1e_sd15_tile.pth\", \"models/ControlNet\")\n    ],\n    \"ControlNet_v11p_sd15_lineart\": [\n        (\"AI-ModelScope/ControlNet-v1-1\", \"control_v11p_sd15_lineart.pth\", \"models/ControlNet\"),\n        (\"sd_lora/Annotators\", \"sk_model.pth\", \"models/Annotators\"),\n        (\"sd_lora/Annotators\", \"sk_model2.pth\", \"models/Annotators\")\n    ],\n    \"ControlNet_union_sdxl_promax\": [\n        (\"AI-ModelScope/controlnet-union-sdxl-1.0\", \"diffusion_pytorch_model_promax.safetensors\", \"models/ControlNet/controlnet_union\"),\n        (\"sd_lora/Annotators\", \"dpt_hybrid-midas-501f0c75.pt\", \"models/Annotators\")\n    ],\n    \"Annotators:Depth\": [\n        (\"sd_lora/Annotators\", \"dpt_hybrid-midas-501f0c75.pt\", \"models/Annotators\"),\n    ],\n    \"Annotators:Softedge\": [\n        (\"sd_lora/Annotators\", \"ControlNetHED.pth\", \"models/Annotators\"),\n    ],\n    \"Annotators:Lineart\": [\n        (\"sd_lora/Annotators\", \"sk_model.pth\", \"models/Annotators\"),\n        (\"sd_lora/Annotators\", \"sk_model2.pth\", \"models/Annotators\"),\n    ],\n    \"Annotators:Normal\": [\n        (\"sd_lora/Annotators\", \"scannet.pt\", \"models/Annotators\"),\n    ],\n    \"Annotators:Openpose\": [\n        (\"sd_lora/Annotators\", \"body_pose_model.pth\", \"models/Annotators\"),\n        (\"sd_lora/Annotators\", \"facenet.pth\", \"models/Annotators\"),\n        (\"sd_lora/Annotators\", \"hand_pose_model.pth\", \"models/Annotators\"),\n    ],\n    # AnimateDiff\n    \"AnimateDiff_v2\": [\n        (\"Shanghai_AI_Laboratory/animatediff\", \"mm_sd_v15_v2.ckpt\", \"models/AnimateDiff\"),\n    ],\n    \"AnimateDiff_xl_beta\": [\n        (\"Shanghai_AI_Laboratory/animatediff\", \"mm_sdxl_v10_beta.ckpt\", \"models/AnimateDiff\"),\n    ],\n    # RIFE\n    \"RIFE\": [\n        (\"Damo_XR_Lab/cv_rife_video-frame-interpolation\", \"flownet.pkl\", \"models/RIFE\"),\n    ],\n    # Qwen Prompt\n    \"QwenPrompt\": {\n        \"file_list\": [\n            (\"qwen/Qwen2-1.5B-Instruct\", \"config.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n            (\"qwen/Qwen2-1.5B-Instruct\", \"generation_config.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n            (\"qwen/Qwen2-1.5B-Instruct\", \"model.safetensors\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n            (\"qwen/Qwen2-1.5B-Instruct\", \"special_tokens_map.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n            (\"qwen/Qwen2-1.5B-Instruct\", \"tokenizer.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n            (\"qwen/Qwen2-1.5B-Instruct\", \"tokenizer_config.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n            (\"qwen/Qwen2-1.5B-Instruct\", \"merges.txt\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n            (\"qwen/Qwen2-1.5B-Instruct\", \"vocab.json\", \"models/QwenPrompt/qwen2-1.5b-instruct\"),\n        ],\n        \"load_path\": [\n            \"models/QwenPrompt/qwen2-1.5b-instruct\",\n        ],\n    },\n    # Beautiful Prompt\n    \"BeautifulPrompt\": {\n        \"file_list\": [\n            (\"AI-ModelScope/pai-bloom-1b1-text2prompt-sd\", \"config.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n            (\"AI-ModelScope/pai-bloom-1b1-text2prompt-sd\", \"generation_config.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n            (\"AI-ModelScope/pai-bloom-1b1-text2prompt-sd\", \"model.safetensors\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n            (\"AI-ModelScope/pai-bloom-1b1-text2prompt-sd\", \"special_tokens_map.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n            (\"AI-ModelScope/pai-bloom-1b1-text2prompt-sd\", \"tokenizer.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n            (\"AI-ModelScope/pai-bloom-1b1-text2prompt-sd\", \"tokenizer_config.json\", \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\"),\n        ],\n        \"load_path\": [\n            \"models/BeautifulPrompt/pai-bloom-1b1-text2prompt-sd\",\n        ],\n    },\n    # Omost prompt\n    \"OmostPrompt\": {\n        \"file_list\": [\n            (\"Omost/omost-llama-3-8b-4bits\", \"model-00001-of-00002.safetensors\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n            (\"Omost/omost-llama-3-8b-4bits\", \"model-00002-of-00002.safetensors\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n            (\"Omost/omost-llama-3-8b-4bits\", \"tokenizer.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n            (\"Omost/omost-llama-3-8b-4bits\", \"tokenizer_config.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),  \n            (\"Omost/omost-llama-3-8b-4bits\", \"config.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n            (\"Omost/omost-llama-3-8b-4bits\", \"generation_config.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n            (\"Omost/omost-llama-3-8b-4bits\", \"model.safetensors.index.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n            (\"Omost/omost-llama-3-8b-4bits\", \"special_tokens_map.json\", \"models/OmostPrompt/omost-llama-3-8b-4bits\"),\n        ],\n        \"load_path\": [\n            \"models/OmostPrompt/omost-llama-3-8b-4bits\",\n        ],\n    },\n    # Translator\n    \"opus-mt-zh-en\": {\n        \"file_list\": [\n            (\"moxying/opus-mt-zh-en\", \"config.json\", \"models/translator/opus-mt-zh-en\"),\n            (\"moxying/opus-mt-zh-en\", \"generation_config.json\", \"models/translator/opus-mt-zh-en\"),\n            (\"moxying/opus-mt-zh-en\", \"metadata.json\", \"models/translator/opus-mt-zh-en\"),\n            (\"moxying/opus-mt-zh-en\", \"pytorch_model.bin\", \"models/translator/opus-mt-zh-en\"),\n            (\"moxying/opus-mt-zh-en\", \"source.spm\", \"models/translator/opus-mt-zh-en\"),\n            (\"moxying/opus-mt-zh-en\", \"target.spm\", \"models/translator/opus-mt-zh-en\"),\n            (\"moxying/opus-mt-zh-en\", \"tokenizer_config.json\", \"models/translator/opus-mt-zh-en\"),\n            (\"moxying/opus-mt-zh-en\", \"vocab.json\", \"models/translator/opus-mt-zh-en\"),\n        ],\n        \"load_path\": [\n            \"models/translator/opus-mt-zh-en\",\n        ],\n    },\n    # IP-Adapter\n    \"IP-Adapter-SD\": [\n        (\"AI-ModelScope/IP-Adapter\", \"models/image_encoder/model.safetensors\", \"models/IpAdapter/stable_diffusion/image_encoder\"),\n        (\"AI-ModelScope/IP-Adapter\", \"models/ip-adapter_sd15.bin\", \"models/IpAdapter/stable_diffusion\"),\n    ],\n    \"IP-Adapter-SDXL\": [\n        (\"AI-ModelScope/IP-Adapter\", \"sdxl_models/image_encoder/model.safetensors\", \"models/IpAdapter/stable_diffusion_xl/image_encoder\"),\n        (\"AI-ModelScope/IP-Adapter\", \"sdxl_models/ip-adapter_sdxl.bin\", \"models/IpAdapter/stable_diffusion_xl\"),\n    ],\n    # Kolors\n    \"Kolors\": {\n        \"file_list\": [\n            (\"Kwai-Kolors/Kolors\", \"text_encoder/config.json\", \"models/kolors/Kolors/text_encoder\"),\n            (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model.bin.index.json\", \"models/kolors/Kolors/text_encoder\"),\n            (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00001-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n            (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00002-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n            (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00003-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n            (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00004-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n            (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00005-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n            (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00006-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n            (\"Kwai-Kolors/Kolors\", \"text_encoder/pytorch_model-00007-of-00007.bin\", \"models/kolors/Kolors/text_encoder\"),\n            (\"Kwai-Kolors/Kolors\", \"unet/diffusion_pytorch_model.safetensors\", \"models/kolors/Kolors/unet\"),\n            (\"Kwai-Kolors/Kolors\", \"vae/diffusion_pytorch_model.safetensors\", \"models/kolors/Kolors/vae\"),\n        ],\n        \"load_path\": [\n            \"models/kolors/Kolors/text_encoder\",\n            \"models/kolors/Kolors/unet/diffusion_pytorch_model.safetensors\",\n            \"models/kolors/Kolors/vae/diffusion_pytorch_model.safetensors\",\n        ],\n    },\n    \"SDXL-vae-fp16-fix\": [\n        (\"AI-ModelScope/sdxl-vae-fp16-fix\", \"diffusion_pytorch_model.safetensors\", \"models/sdxl-vae-fp16-fix\")\n    ],\n    # FLUX\n    \"FLUX.1-dev\": {\n        \"file_list\": [\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder/model.safetensors\", \"models/FLUX/FLUX.1-dev/text_encoder\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder_2/config.json\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder_2/model-00001-of-00002.safetensors\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder_2/model-00002-of-00002.safetensors\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder_2/model.safetensors.index.json\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"ae.safetensors\", \"models/FLUX/FLUX.1-dev\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"flux1-dev.safetensors\", \"models/FLUX/FLUX.1-dev\"),\n        ],\n        \"load_path\": [\n            \"models/FLUX/FLUX.1-dev/text_encoder/model.safetensors\",\n            \"models/FLUX/FLUX.1-dev/text_encoder_2\",\n            \"models/FLUX/FLUX.1-dev/ae.safetensors\",\n            \"models/FLUX/FLUX.1-dev/flux1-dev.safetensors\"\n        ],\n    },\n    \"FLUX.1-schnell\": {\n        \"file_list\": [\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder/model.safetensors\", \"models/FLUX/FLUX.1-dev/text_encoder\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder_2/config.json\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder_2/model-00001-of-00002.safetensors\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder_2/model-00002-of-00002.safetensors\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"text_encoder_2/model.safetensors.index.json\", \"models/FLUX/FLUX.1-dev/text_encoder_2\"),\n            (\"AI-ModelScope/FLUX.1-dev\", \"ae.safetensors\", \"models/FLUX/FLUX.1-dev\"),\n            (\"AI-ModelScope/FLUX.1-schnell\", \"flux1-schnell.safetensors\", \"models/FLUX/FLUX.1-schnell\"),\n        ],\n        \"load_path\": [\n            \"models/FLUX/FLUX.1-dev/text_encoder/model.safetensors\",\n            \"models/FLUX/FLUX.1-dev/text_encoder_2\",\n            \"models/FLUX/FLUX.1-dev/ae.safetensors\",\n            \"models/FLUX/FLUX.1-schnell/flux1-schnell.safetensors\"\n        ],\n    },\n    \"InstantX/FLUX.1-dev-Controlnet-Union-alpha\": [\n        (\"InstantX/FLUX.1-dev-Controlnet-Union-alpha\", \"diffusion_pytorch_model.safetensors\", \"models/ControlNet/InstantX/FLUX.1-dev-Controlnet-Union-alpha\"),\n    ],\n    \"jasperai/Flux.1-dev-Controlnet-Depth\": [\n        (\"jasperai/Flux.1-dev-Controlnet-Depth\", \"diffusion_pytorch_model.safetensors\", \"models/ControlNet/jasperai/Flux.1-dev-Controlnet-Depth\"),\n    ],\n    \"jasperai/Flux.1-dev-Controlnet-Surface-Normals\": [\n        (\"jasperai/Flux.1-dev-Controlnet-Surface-Normals\", \"diffusion_pytorch_model.safetensors\", \"models/ControlNet/jasperai/Flux.1-dev-Controlnet-Surface-Normals\"),\n    ],\n    \"jasperai/Flux.1-dev-Controlnet-Upscaler\": [\n        (\"jasperai/Flux.1-dev-Controlnet-Upscaler\", \"diffusion_pytorch_model.safetensors\", \"models/ControlNet/jasperai/Flux.1-dev-Controlnet-Upscaler\"),\n    ],\n    \"alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Alpha\": [\n        (\"alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Alpha\", \"diffusion_pytorch_model.safetensors\", \"models/ControlNet/alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Alpha\"),\n    ],\n    \"alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta\": [\n        (\"alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta\", \"diffusion_pytorch_model.safetensors\", \"models/ControlNet/alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta\"),\n    ],\n    \"Shakker-Labs/FLUX.1-dev-ControlNet-Depth\": [\n        (\"Shakker-Labs/FLUX.1-dev-ControlNet-Depth\", \"diffusion_pytorch_model.safetensors\", \"models/ControlNet/Shakker-Labs/FLUX.1-dev-ControlNet-Depth\"),\n    ],\n    \"Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro\": [\n        (\"Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro\", \"diffusion_pytorch_model.safetensors\", \"models/ControlNet/Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro\"),\n    ],\n    \"InstantX/FLUX.1-dev-IP-Adapter\": {\n        \"file_list\": [\n            (\"InstantX/FLUX.1-dev-IP-Adapter\", \"ip-adapter.bin\", \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter\"),\n            (\"AI-ModelScope/siglip-so400m-patch14-384\", \"model.safetensors\", \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter/image_encoder\"),\n            (\"AI-ModelScope/siglip-so400m-patch14-384\", \"config.json\", \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter/image_encoder\"),\n        ],\n        \"load_path\": [\n            \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter/ip-adapter.bin\",\n            \"models/IpAdapter/InstantX/FLUX.1-dev-IP-Adapter/image_encoder\",\n        ],\n    },\n    # ESRGAN\n    \"ESRGAN_x4\": [\n        (\"AI-ModelScope/Real-ESRGAN\", \"RealESRGAN_x4.pth\", \"models/ESRGAN\"),\n    ],\n    # RIFE\n    \"RIFE\": [\n        (\"AI-ModelScope/RIFE\", \"flownet.pkl\", \"models/RIFE\"),\n    ],\n    # Omnigen\n    \"OmniGen-v1\": {\n        \"file_list\": [\n            (\"BAAI/OmniGen-v1\", \"vae/diffusion_pytorch_model.safetensors\", \"models/OmniGen/OmniGen-v1/vae\"),\n            (\"BAAI/OmniGen-v1\", \"model.safetensors\", \"models/OmniGen/OmniGen-v1\"),\n            (\"BAAI/OmniGen-v1\", \"config.json\", \"models/OmniGen/OmniGen-v1\"),\n            (\"BAAI/OmniGen-v1\", \"special_tokens_map.json\", \"models/OmniGen/OmniGen-v1\"),\n            (\"BAAI/OmniGen-v1\", \"tokenizer_config.json\", \"models/OmniGen/OmniGen-v1\"),\n            (\"BAAI/OmniGen-v1\", \"tokenizer.json\", \"models/OmniGen/OmniGen-v1\"),\n        ],\n        \"load_path\": [\n            \"models/OmniGen/OmniGen-v1/vae/diffusion_pytorch_model.safetensors\",\n            \"models/OmniGen/OmniGen-v1/model.safetensors\",\n        ]\n    },\n    # CogVideo\n    \"CogVideoX-5B\": {\n        \"file_list\": [\n            (\"ZhipuAI/CogVideoX-5b\", \"text_encoder/config.json\", \"models/CogVideo/CogVideoX-5b/text_encoder\"),\n            (\"ZhipuAI/CogVideoX-5b\", \"text_encoder/model.safetensors.index.json\", \"models/CogVideo/CogVideoX-5b/text_encoder\"),\n            (\"ZhipuAI/CogVideoX-5b\", \"text_encoder/model-00001-of-00002.safetensors\", \"models/CogVideo/CogVideoX-5b/text_encoder\"),\n            (\"ZhipuAI/CogVideoX-5b\", \"text_encoder/model-00002-of-00002.safetensors\", \"models/CogVideo/CogVideoX-5b/text_encoder\"),\n            (\"ZhipuAI/CogVideoX-5b\", \"transformer/config.json\", \"models/CogVideo/CogVideoX-5b/transformer\"),\n            (\"ZhipuAI/CogVideoX-5b\", \"transformer/diffusion_pytorch_model.safetensors.index.json\", \"models/CogVideo/CogVideoX-5b/transformer\"),\n            (\"ZhipuAI/CogVideoX-5b\", \"transformer/diffusion_pytorch_model-00001-of-00002.safetensors\", \"models/CogVideo/CogVideoX-5b/transformer\"),\n            (\"ZhipuAI/CogVideoX-5b\", \"transformer/diffusion_pytorch_model-00002-of-00002.safetensors\", \"models/CogVideo/CogVideoX-5b/transformer\"),\n            (\"ZhipuAI/CogVideoX-5b\", \"vae/diffusion_pytorch_model.safetensors\", \"models/CogVideo/CogVideoX-5b/vae\"),\n        ],\n        \"load_path\": [\n            \"models/CogVideo/CogVideoX-5b/text_encoder\",\n            \"models/CogVideo/CogVideoX-5b/transformer\",\n            \"models/CogVideo/CogVideoX-5b/vae/diffusion_pytorch_model.safetensors\",\n        ],\n    },\n    # Stable Diffusion 3.5\n    \"StableDiffusion3.5-large\": [\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"sd3.5_large.safetensors\", \"models/stable_diffusion_3\"),\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"text_encoders/clip_l.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"text_encoders/clip_g.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"text_encoders/t5xxl_fp16.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n    ],\n    \"StableDiffusion3.5-medium\": [\n        (\"AI-ModelScope/stable-diffusion-3.5-medium\", \"sd3.5_medium.safetensors\", \"models/stable_diffusion_3\"),\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"text_encoders/clip_l.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"text_encoders/clip_g.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"text_encoders/t5xxl_fp16.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n    ],\n    \"StableDiffusion3.5-large-turbo\": [\n        (\"AI-ModelScope/stable-diffusion-3.5-large-turbo\", \"sd3.5_large_turbo.safetensors\", \"models/stable_diffusion_3\"),\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"text_encoders/clip_l.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"text_encoders/clip_g.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n        (\"AI-ModelScope/stable-diffusion-3.5-large\", \"text_encoders/t5xxl_fp16.safetensors\", \"models/stable_diffusion_3/text_encoders\"),\n    ],\n    \"HunyuanVideo\":{\n        \"file_list\": [\n            (\"AI-ModelScope/clip-vit-large-patch14\", \"model.safetensors\", \"models/HunyuanVideo/text_encoder\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model-00001-of-00004.safetensors\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model-00002-of-00004.safetensors\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model-00003-of-00004.safetensors\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model-00004-of-00004.safetensors\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"config.json\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model.safetensors.index.json\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"AI-ModelScope/HunyuanVideo\", \"hunyuan-video-t2v-720p/vae/pytorch_model.pt\", \"models/HunyuanVideo/vae\"),\n            (\"AI-ModelScope/HunyuanVideo\", \"hunyuan-video-t2v-720p/transformers/mp_rank_00_model_states.pt\", \"models/HunyuanVideo/transformers\")\n        ],\n        \"load_path\": [\n            \"models/HunyuanVideo/text_encoder/model.safetensors\",\n            \"models/HunyuanVideo/text_encoder_2\",\n            \"models/HunyuanVideo/vae/pytorch_model.pt\",\n            \"models/HunyuanVideo/transformers/mp_rank_00_model_states.pt\"\n        ],\n    },\n    \"HunyuanVideoI2V\":{\n        \"file_list\": [\n            (\"AI-ModelScope/clip-vit-large-patch14\", \"model.safetensors\", \"models/HunyuanVideoI2V/text_encoder\"),\n            (\"AI-ModelScope/llava-llama-3-8b-v1_1-transformers\", \"model-00001-of-00004.safetensors\", \"models/HunyuanVideoI2V/text_encoder_2\"),\n            (\"AI-ModelScope/llava-llama-3-8b-v1_1-transformers\", \"model-00002-of-00004.safetensors\", \"models/HunyuanVideoI2V/text_encoder_2\"),\n            (\"AI-ModelScope/llava-llama-3-8b-v1_1-transformers\", \"model-00003-of-00004.safetensors\", \"models/HunyuanVideoI2V/text_encoder_2\"),\n            (\"AI-ModelScope/llava-llama-3-8b-v1_1-transformers\", \"model-00004-of-00004.safetensors\", \"models/HunyuanVideoI2V/text_encoder_2\"),\n            (\"AI-ModelScope/llava-llama-3-8b-v1_1-transformers\", \"config.json\", \"models/HunyuanVideoI2V/text_encoder_2\"),\n            (\"AI-ModelScope/llava-llama-3-8b-v1_1-transformers\", \"model.safetensors.index.json\", \"models/HunyuanVideoI2V/text_encoder_2\"),\n            (\"AI-ModelScope/HunyuanVideo-I2V\", \"hunyuan-video-i2v-720p/vae/pytorch_model.pt\", \"models/HunyuanVideoI2V/vae\"),\n            (\"AI-ModelScope/HunyuanVideo-I2V\", \"hunyuan-video-i2v-720p/transformers/mp_rank_00_model_states.pt\", \"models/HunyuanVideoI2V/transformers\")\n        ],\n        \"load_path\": [\n            \"models/HunyuanVideoI2V/text_encoder/model.safetensors\",\n            \"models/HunyuanVideoI2V/text_encoder_2\",\n            \"models/HunyuanVideoI2V/vae/pytorch_model.pt\",\n            \"models/HunyuanVideoI2V/transformers/mp_rank_00_model_states.pt\"\n        ],\n    },\n    \"HunyuanVideo-fp8\":{\n        \"file_list\": [\n            (\"AI-ModelScope/clip-vit-large-patch14\", \"model.safetensors\", \"models/HunyuanVideo/text_encoder\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model-00001-of-00004.safetensors\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model-00002-of-00004.safetensors\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model-00003-of-00004.safetensors\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model-00004-of-00004.safetensors\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"config.json\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"DiffSynth-Studio/HunyuanVideo_MLLM_text_encoder\", \"model.safetensors.index.json\", \"models/HunyuanVideo/text_encoder_2\"),\n            (\"AI-ModelScope/HunyuanVideo\", \"hunyuan-video-t2v-720p/vae/pytorch_model.pt\", \"models/HunyuanVideo/vae\"),\n            (\"DiffSynth-Studio/HunyuanVideo-safetensors\", \"model.fp8.safetensors\", \"models/HunyuanVideo/transformers\")\n        ],\n        \"load_path\": [\n            \"models/HunyuanVideo/text_encoder/model.safetensors\",\n            \"models/HunyuanVideo/text_encoder_2\",\n            \"models/HunyuanVideo/vae/pytorch_model.pt\",\n            \"models/HunyuanVideo/transformers/model.fp8.safetensors\"\n        ],\n    },\n}\nPreset_model_id: TypeAlias = Literal[\n    \"HunyuanDiT\",\n    \"stable-video-diffusion-img2vid-xt\",\n    \"ExVideo-SVD-128f-v1\",\n    \"ExVideo-CogVideoX-LoRA-129f-v1\",\n    \"StableDiffusion_v15\",\n    \"DreamShaper_8\",\n    \"AingDiffusion_v12\",\n    \"Flat2DAnimerge_v45Sharp\",\n    \"TextualInversion_VeryBadImageNegative_v1.3\",\n    \"StableDiffusionXL_v1\",\n    \"BluePencilXL_v200\",\n    \"StableDiffusionXL_Turbo\",\n    \"ControlNet_v11f1p_sd15_depth\",\n    \"ControlNet_v11p_sd15_softedge\",\n    \"ControlNet_v11f1e_sd15_tile\",\n    \"ControlNet_v11p_sd15_lineart\",\n    \"AnimateDiff_v2\",\n    \"AnimateDiff_xl_beta\",\n    \"RIFE\",\n    \"BeautifulPrompt\",\n    \"opus-mt-zh-en\",\n    \"IP-Adapter-SD\",\n    \"IP-Adapter-SDXL\",\n    \"StableDiffusion3\",\n    \"StableDiffusion3_without_T5\",\n    \"Kolors\",\n    \"SDXL-vae-fp16-fix\",\n    \"ControlNet_union_sdxl_promax\",\n    \"FLUX.1-dev\",\n    \"FLUX.1-schnell\",\n    \"InstantX/FLUX.1-dev-Controlnet-Union-alpha\",\n    \"jasperai/Flux.1-dev-Controlnet-Depth\",\n    \"jasperai/Flux.1-dev-Controlnet-Surface-Normals\",\n    \"jasperai/Flux.1-dev-Controlnet-Upscaler\",\n    \"alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Alpha\",\n    \"alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta\",\n    \"Shakker-Labs/FLUX.1-dev-ControlNet-Depth\",\n    \"Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro\",\n    \"InstantX/FLUX.1-dev-IP-Adapter\",\n    \"SDXL_lora_zyd232_ChineseInkStyle_SDXL_v1_0\",\n    \"QwenPrompt\",\n    \"OmostPrompt\",\n    \"ESRGAN_x4\",\n    \"RIFE\",\n    \"OmniGen-v1\",\n    \"CogVideoX-5B\",\n    \"Annotators:Depth\",\n    \"Annotators:Softedge\",\n    \"Annotators:Lineart\",\n    \"Annotators:Normal\",\n    \"Annotators:Openpose\",\n    \"StableDiffusion3.5-large\",\n    \"StableDiffusion3.5-medium\",\n    \"HunyuanVideo\",\n    \"HunyuanVideo-fp8\",\n    \"HunyuanVideoI2V\",\n]\n",
+    "tool_call_id": "call_tooluvrtx015VaU8ikYF"
+  },
+  {
+    "timestamp": "2025-10-13T06:58:41.621Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "是的，你的理解完全正确！这个配置文件确实指定了模型的哈希值，如果你需要新增模型权重，需要在这里添加相应的信息。\n\n## 关键配置解析\n\n### 1. model_loader_configs（单文件模型配置）\n```python\nmodel_loader_configs = [\n    # 格式: (keys_hash, keys_hash_with_shape, model_names, model_classes, model_resource)\n    (None, \"9269f8db9040a9d860eaca435be61814\", [\"wan_video_dit\"], [WanModel], \"civitai\"),\n    (None, \"aafcfd9672c3a2456dc46e1cb6e52c70\", [\"wan_video_dit\"], [WanModel], \"civitai\"),\n    # ...\n]\n```\n\n**参数说明**:\n- `keys_hash`: 不带形状的哈希值（可为None）\n- `keys_hash_with_shape`: 带形状的哈希值（必须）\n- `model_names`: 模型名称列表\n- `model_classes`: 对应的模型类\n- `model_resource`: 模型来源（\"civitai\"或\"diffusers\"）\n\n### 2. huggingface_model_loader_configs（HuggingFace模型配置）\n```python\nhuggingface_model_loader_configs = [\n    # 格式: (architecture_in_config, huggingface_lib, model_name, redirected_architecture)\n    (\"ChatGLMModel\", \"diffsynth.models.kolors_text_encoder\", \"kolors_text_encoder\", None),\n    # ...\n]\n```\n\n## 新增模型权重的步骤\n\n### 方法1: 添加单文件模型\n1. **计算模型哈希**:\n   ```python\n   from OmniAvatar.utils.io_utils import load_state_dict, hash_state_dict_keys\n   \n   state_dict = load_state_dict(\"path/to/your/model.safetensors\")\n   keys_hash_with_shape = hash_state_dict_keys(state_dict, with_shape=True)\n   keys_hash = hash_state_dict_keys(state_dict, with_shape=False)\n   print(f\"Hash with shape: {keys_hash_with_shape}\")\n   print(f\"Hash without shape: {keys_hash}\")\n   ```\n\n2. **添加到配置**:\n   ```python\n   model_loader_configs.append(\n       (keys_hash, keys_hash_with_shape, [\"your_model_name\"], [YourModelClass], \"civitai\")\n   )\n   ```\n\n### 方法2: 添加HuggingFace模型\n如果是HuggingFace格式的模型，添加到`huggingface_model_loader_configs`:\n```python\nhuggingface_model_loader_configs.append(\n    (\"YourArchitecture\", \"your.module.path\", \"your_model_name\", None)\n)\n```\n\n### 方法3: 添加预设模型下载配置\n如果需要自动下载，添加到`preset_models_on_huggingface`或`preset_models_on_modelscope`:\n```python\npreset_models_on_huggingface[\"YourModel\"] = [\n    (\"repo/model-name\", \"model.safetensors\", \"models/your_model\"),\n]\n```\n\n## 实际操作建议\n\n1. **先测试加载**: 确保你的模型文件能正常加载\n2. **计算哈希**: 使用上面的代码计算准确的哈希值\n3. **创建模型类**: 确保有对应的模型类实现\n4. **添加配置**: 将信息添加到相应的配置列表\n5. **测试匹配**: 验证ModelManager能正确识别和加载你的模型\n\n这样设计的好处是通过哈希值快速识别模型类型，避免了复杂的文件解析，同时支持多种模型格式和来源。",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:02:42.777Z",
+    "event_type": "user_query",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "query": "No module named 'torch.nn.attention.flex_attention' 如何解决",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux",
+      "working_directory": "/data2/jdsu/projects/OmniAvatar"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:02:49.548Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "这个错误表明你的PyTorch版本不支持`flex_attention`模块。`flex_attention`是PyTorch 2.5+中引入的新功能。\n\n## 解决方案\n\n### 方案1: 升级PyTorch（推荐）",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:03:08.246Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:03:08.246Z",
+    "event_type": "tool_call",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_name": "run_shell_command",
+    "tool_args": "{\"command\":\"python -c \\\"import torch; print(f'Current PyTorch version: {torch.__version__}')\\\"\",\"description\":\"检查当前PyTorch版本\"}",
+    "tool_call_id": "call_tooluvrtx01UniqmJN62",
+    "metadata": {
+      "tool_type": "function"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:03:08.329Z",
+    "event_type": "tool_result",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_result": "Command: python -c \"import torch; print(f'Current PyTorch version: {torch.__version__}')\"\nDirectory: (root)\nStdout: Current PyTorch version: 2.1.2+cu121\n\nStderr: (empty)\nError: (none)\nExit Code: 0\nSignal: (none)\nBackground PIDs: (none)\nProcess Group PGID: 2520084",
+    "tool_call_id": "call_tooluvrtx01UniqmJN62"
+  },
+  {
+    "timestamp": "2025-10-13T07:03:13.221Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "你当前的PyTorch版本是2.1.2，需要升级到2.5+。",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:03:30.162Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:03:30.162Z",
+    "event_type": "tool_call",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_name": "run_shell_command",
+    "tool_args": "{\"command\":\"pip install torch>=2.5.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121\",\"description\":\"升级PyTorch到2.5+版本以支持flex_attention\"}",
+    "tool_call_id": "call_tooluvrtx01GhecpwazS",
+    "metadata": {
+      "tool_type": "function"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:03:30.225Z",
+    "event_type": "tool_result",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_result": "Command: pip install torch>=2.5.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121\nDirectory: (root)\nStdout: (empty)\nStderr: (empty)\nError: (none)\nExit Code: 0\nSignal: (none)\nBackground PIDs: (none)\nProcess Group PGID: 2520294",
+    "tool_call_id": "call_tooluvrtx01GhecpwazS"
+  },
+  {
+    "timestamp": "2025-10-13T07:03:41.176Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:03:41.176Z",
+    "event_type": "tool_call",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_name": "run_shell_command",
+    "tool_args": "{\"command\":\"python -c \\\"import torch; print(f'Updated PyTorch version: {torch.__version__}')\\\"\",\"description\":\"验证PyTorch版本更新\"}",
+    "tool_call_id": "call_tooluvrtx01AkdUAVbny",
+    "metadata": {
+      "tool_type": "function"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:03:41.241Z",
+    "event_type": "tool_result",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "tool_result": "Command: python -c \"import torch; print(f'Updated PyTorch version: {torch.__version__}')\"\nDirectory: (root)\nStdout: Updated PyTorch version: 2.1.2+cu121\n\nStderr: (empty)\nError: (none)\nExit Code: 0\nSignal: (none)\nBackground PIDs: (none)\nProcess Group PGID: 2520503",
+    "tool_call_id": "call_tooluvrtx01AkdUAVbny"
+  },
+  {
+    "timestamp": "2025-10-13T07:03:45.955Z",
+    "event_type": "assistant_response",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "response": "看起来升级没有生效，可能是因为缓存或环境问题。让我们尝试强制升级：",
+    "model": "anthropic/claude-sonnet-4",
+    "metadata": {
+      "cli_version": "0.0.31",
+      "platform": "linux"
+    }
+  },
+  {
+    "timestamp": "2025-10-13T07:03:45.999Z",
+    "event_type": "system_event",
+    "user_id": "jiadisu7@gmail.com",
+    "session_id": "92107cf7-0f88-4716-ab94-c29a0c2c947c",
+    "metadata": {
+      "event_type": "session_context",
+      "system_instruction": "You are SII Cli, an interactive CLI agent developed by GAIR-NLP, specializing in software engineering tasks. Your primary goal is to help users safely and efficiently, adhering strictly to the following instructions and utilizing your available tools.\n\n# Core Mandates\n\n- **Conventions:** Rigorously adhere to existing project conventions when reading or modifying code. Analyze surrounding code, tests, and configuration first.\n- **Libraries/Frameworks:** NEVER assume a library/framework is available or appropriate. Verify its established usage within the project (check imports, configuration files like 'package.json', 'Cargo.toml', 'requirements.txt', 'build.gradle', etc., or observe neighboring files) before employing it.\n- **Style & Structure:** Mimic the style (formatting, naming), structure, framework choices, typing, and architectural patterns of existing code in the project.\n- **Idiomatic Changes:** When editing, understand the local context (imports, functions/classes) to ensure your changes integrate naturally and idiomatically.\n- **Comments:** Add code comments sparingly. Focus on *why* something is done, especially for complex logic, rather than *what* is done. Only add high-value comments if necessary for clarity or if requested by the user. Do not edit comments that are separate from the code you are changing. *NEVER* talk to the user or describe your changes through comments.\n- **Proactiveness:** Fulfill the user's request thoroughly, including reasonable, directly implied follow-up actions.\n- **Confirm Ambiguity/Expansion:** Do not take significant actions beyond the clear scope of the request without confirming with the user. If asked *how* to do something, explain first, don't just do it.\n- **Explaining Changes:** After completing a code modification or file operation *do not* provide summaries unless asked.\n- **Path Construction:** Before using any file system tool (e.g., 'read_file' or 'write_file'), you must construct the full absolute path for the file_path argument. Always combine the absolute path of the project's root directory with the file's path relative to the root. For example, if the project root is /path/to/project/ and the file is foo/bar/baz.txt, the final path you must use is /path/to/project/foo/bar/baz.txt. If the user provides a relative path, you must resolve it against the root directory to create an absolute path.\n- **Do Not revert changes:** Do not revert changes to the codebase unless asked to do so by the user. Only revert changes made by you if they have resulted in an error or if the user has explicitly asked you to revert the changes.\n\n# Primary Workflows\n\n## Software Engineering Tasks\nWhen requested to perform tasks like fixing bugs, adding features, refactoring, or explaining code, follow this sequence:\n1. **Understand:** Think about the user's request and the relevant codebase context. Use 'search_file_content' and 'glob' search tools extensively (in parallel if independent) to understand file structures, existing code patterns, and conventions. Use 'read_file' and 'read_many_files' to understand context and validate any assumptions you may have.\n2. **Plan:** Build a coherent and grounded (based on the understanding in step 1) plan for how you intend to resolve the user's task. Share an extremely concise yet clear plan with the user if it would help the user understand your thought process. As part of the plan, you should try to use a self-verification loop by writing unit tests if relevant to the task. Use output logs or debug statements as part of this self verification loop to arrive at a solution.\n3. **Implement:** Use the available tools (e.g., 'replace', 'write_file' 'run_shell_command' ...) to act on the plan, strictly adhering to the project's established conventions (detailed under 'Core Mandates').\n4. **Verify (Tests):** If applicable and feasible, verify the changes using the project's testing procedures. Identify the correct test commands and frameworks by examining 'README' files, build/package configuration (e.g., 'package.json'), or existing test execution patterns. NEVER assume standard test commands.\n5. **Verify (Standards):** VERY IMPORTANT: After making code changes, execute the project-specific build, linting and type-checking commands (e.g., 'tsc', 'npm run lint', 'ruff check .') that you have identified for this project (or obtained from the user). This ensures code quality and adherence to standards. If unsure about these commands, you can ask the user if they'd like you to run them and if so how to.\n\n## New Applications\n\n**Goal:** Autonomously implement and deliver a visually appealing, substantially complete, and functional prototype. Utilize all tools at your disposal to implement the application. Some tools you may especially find useful are 'write_file', 'replace' and 'run_shell_command'.\n\n1. **Understand Requirements:** Analyze the user's request to identify core features, desired user experience (UX), visual aesthetic, application type/platform (web, mobile, desktop, CLI, library, 2D or 3D game), and explicit constraints. If critical information for initial planning is missing or ambiguous, ask concise, targeted clarification questions.\n2. **Propose Plan:** Formulate an internal development plan. Present a clear, concise, high-level summary to the user. This summary must effectively convey the application's type and core purpose, key technologies to be used, main features and how users will interact with them, and the general approach to the visual design and user experience (UX) with the intention of delivering something beautiful, modern, and polished, especially for UI-based applications. For applications requiring visual assets (like games or rich UIs), briefly describe the strategy for sourcing or generating placeholders (e.g., simple geometric shapes, procedurally generated patterns, or open-source assets if feasible and licenses permit) to ensure a visually complete initial prototype. Ensure this information is presented in a structured and easily digestible manner.\n  - When key technologies aren't specified, prefer the following:\n  - **Websites (Frontend):** React (JavaScript/TypeScript) with Bootstrap CSS, incorporating Material Design principles for UI/UX.\n  - **Back-End APIs:** Node.js with Express.js (JavaScript/TypeScript) or Python with FastAPI.\n  - **Full-stack:** Next.js (React/Node.js) using Bootstrap CSS and Material Design principles for the frontend, or Python (Django/Flask) for the backend with a React/Vue.js frontend styled with Bootstrap CSS and Material Design principles.\n  - **CLIs:** Python or Go.\n  - **Mobile App:** Compose Multiplatform (Kotlin Multiplatform) or Flutter (Dart) using Material Design libraries and principles, when sharing code between Android and iOS. Jetpack Compose (Kotlin JVM) with Material Design principles or SwiftUI (Swift) for native apps targeted at either Android or iOS, respectively.\n  - **3d Games:** HTML/CSS/JavaScript with Three.js.\n  - **2d Games:** HTML/CSS/JavaScript.\n3. **User Approval:** Obtain user approval for the proposed plan.\n4. **Implementation:** Autonomously implement each feature and design element per the approved plan utilizing all available tools. When starting ensure you scaffold the application using 'run_shell_command' for commands like 'npm init', 'npx create-react-app'. Aim for full scope completion. Proactively create or source necessary placeholder assets (e.g., images, icons, game sprites, 3D models using basic primitives if complex assets are not generatable) to ensure the application is visually coherent and functional, minimizing reliance on the user to provide these. If the model can generate simple assets (e.g., a uniformly colored square sprite, a simple 3D cube), it should do so. Otherwise, it should clearly indicate what kind of placeholder has been used and, if absolutely necessary, what the user might replace it with. Use placeholders only when essential for progress, intending to replace them with more refined versions or instruct the user on replacement during polishing if generation is not feasible.\n5. **Verify:** Review work against the original request, the approved plan. Fix bugs, deviations, and all placeholders where feasible, or ensure placeholders are visually adequate for a prototype. Ensure styling, interactions, produce a high-quality, functional and beautiful prototype aligned with design goals. Finally, but MOST importantly, build the application and ensure there are no compile errors.\n6. **Solicit Feedback:** If still applicable, provide instructions on how to start the application and request user feedback on the prototype.\n\n## Sub-Agent Orchestration (Prompt-based)\n\nYou can call the Agent Tool (sub-agents) when a focused specialist would accomplish the task faster or more reliably. Prefer prompt-based orchestration over programmatic routing.\n\n### Agent Types and When to Use\n- Architect (agentType: \"architect\")\n  - Use when the repository is large/unknown or when you need a structural map before acting\n  - Deliverable: docs/architecture.md with repo map (directories, key modules, data flows, dependency hotspots)\n  - Typical tools: 'read_file', 'search_file_content', 'glob', 'write_file'\n  - Do not modify code; write a single architecture artifact and stop\n\n- SpecFlow (agentType: \"specflow\")\n  - Use for end-to-end feature/bug work with Plan → Review → Execute workflow\n  - Deliverable: concrete plan, minimal safe diffs, and verification notes; avoid shell by default\n  - Typical tools: 'read_file', 'search_file_content', 'glob', 'write_file'\n\n- Refactor (agentType: \"refactor\")\n  - Use for pattern-wide changes across many files with strict consistency and small batches\n  - Deliverable: a set of precise edits with rationale and rollback notes\n  - Typical tools: 'read_file', 'search_file_content', 'glob', 'write_file'\n\n- Researcher (agentType: \"researcher\")\n  - Use when external knowledge is required (APIs, libraries, benchmarks)\n  - Deliverable: docs/research/<topic>.md with sources and syntheses\n  - Typical tools: web_search, web_fetch, 'read_file', 'write_file'\n\n- Debug Analyzer (agentType: \"debug-analyzer\")\n  - Use for systematic problem investigation, error analysis, and troubleshooting\n  - Deliverable: comprehensive debugging report with root cause analysis and solution verification\n  - Typical tools: 'read_file', 'search_file_content', 'glob', 'write_file'\n  - Focus on evidence-based analysis and maintaining system stability during investigation\n\n### Orchestration Patterns\n- Large/Unknown Repo:\n  1) Call Architect to create docs/architecture.md (or update it). 2) Then hand off to SpecFlow with the concrete plan referencing that artifact.\n- Pattern-wide Change:\n  Use Refactor with a crisp spec and examples; prefer batched changes with verification between batches.\n- External Knowledge Needed:\n  Call Researcher first; archive findings, then proceed with SpecFlow/Refactor.\n\n### Natural Stop (No Hard Limits)\n- Stop when the plan is fully executed or after two consecutive no-op steps (no new diffs/findings).\n- If the task grows large, save the current stage artifact (plan/architecture/refactor batch) and stop with next steps.\n\n### How to Invoke\nAlways pass an explicit agentType and a crisp task. Example (pseudocode):\n- agent_tool.execute({ agentType: \"architect\", task: \"Map repo and write docs/architecture.md\" })\n- agent_tool.execute({ agentType: \"specflow\", task: \"Implement Plan → Review → Execute for feature X\" })\n- agent_tool.execute({ agentType: \"refactor\", task: \"Apply consistent rename across modules with tests updated\" })\n- agent_tool.execute({ agentType: \"researcher\", task: \"Compare libraries A vs B; save findings\" })\n- agent_tool.execute({ agentType: \"debug-analyzer\", task: \"Investigate error X, identify root cause and verify solution\" })\n\n# Operational Guidelines\n\n## Tone and Style (CLI Interaction)\n- **Concise & Direct:** Adopt a professional, direct, and concise tone suitable for a CLI environment.\n- **Minimal Output:** Aim for fewer than 3 lines of text output (excluding tool use/code generation) per response whenever practical. Focus strictly on the user's query.\n- **Clarity over Brevity (When Needed):** While conciseness is key, prioritize clarity for essential explanations or when seeking necessary clarification if a request is ambiguous.\n- **No Chitchat:** Avoid conversational filler, preambles (\"Okay, I will now...\"), or postambles (\"I have finished the changes...\"). Get straight to the action or answer.\n- **Formatting:** Use GitHub-flavored Markdown. Responses will be rendered in monospace.\n- **Tools vs. Text:** Use tools for actions, text output *only* for communication. Do not add explanatory comments within tool calls or code blocks unless specifically part of the required code/command itself.\n- **Handling Inability:** If unable/unwilling to fulfill a request, state so briefly (1-2 sentences) without excessive justification. Offer alternatives if appropriate.\n\n## Interaction Details\n- **Help Command:** The user can use '/help' to display help information.\n- **Feedback:** To report a bug or provide feedback, please use the /bug command.\n\n# Security and Safety Rules\n\n- **Explain Critical Commands:** Before executing commands with 'run_shell_command' that modify the file system, codebase, or system state, you *must* provide a brief explanation of the command's purpose and potential impact. Prioritize user understanding and safety. You should not ask permission to use the tool; the user will be presented with a confirmation dialogue upon use (you do not need to tell them this).\n- **Security First:** Always apply security best practices. Never introduce code that exposes, logs, or commits secrets, API keys, or other sensitive information.\n\n## Tool Usage\n- **File Paths:** Always use absolute paths when referring to files with tools like 'read_file' or 'write_file'. Relative paths are not supported. You must provide an absolute path.\n- **Parallelism:** Execute multiple independent tool calls in parallel when feasible (i.e. searching the codebase).\n- **Command Execution:** Use the 'run_shell_command' tool for running shell commands, remembering the safety rule to explain modifying commands first.\n- **Background Processes:** Use background processes (via `&`) for commands that are unlikely to stop on their own, e.g. `node server.js &`. If unsure, ask the user.\n- **Interactive Commands:** Try to avoid shell commands that are likely to require user interaction (e.g. `git rebase -i`). Use non-interactive versions of commands (e.g. `npm init -y` instead of `npm init`) when available, and otherwise remind the user that interactive shell commands are not supported and may cause hangs until canceled by the user.\n- **Remembering Facts:** Use the 'save_memory' tool to remember specific, *user-related* facts or preferences when the user explicitly asks, or when they state a clear, concise piece of information that would help personalize or streamline *your future interactions with them* (e.g., preferred coding style, common project paths they use, personal tool aliases). This tool is for user-specific information that should persist across sessions. Do *not* use it for general project context or information that belongs in project-specific `GEMINI.md` files. If unsure whether to save something, you can ask the user, \"Should I remember that for you?\"\n- **SII Cognitions (When Available):** When authenticated with SII, you have access to a powerful cognitions tool that allows you to search and retrieve knowledge from the SII cognitions database. \"Cognitions\" are structured knowledge entries containing questions, answers, abstracts, and metadata about various topics, particularly in AI, engineering, and technology domains. Use this tool when users ask about technical concepts, research topics, or when you need to provide authoritative information that might be available in the cognitions database. The tool supports searching by keywords, filtering by topics, time periods, and authors, as well as retrieving detailed information about specific cognitions by ID.\n- **SII Deep Research (When Available):** When authenticated with SII, you have access to a comprehensive deep research tool that conducts multi-step research including web search, cognition analysis, and document generation. CRITICAL BEHAVIORAL GUIDELINES: (1) Deep research typically takes 5-10 minutes to complete - ALWAYS inform users about this expected duration upfront. (2) Suggest users can handle other tasks while waiting. (3) DO NOT automatically check progress - wait for the user to explicitly request a status update. (4) When user requests status, check only ONCE per request, then inform the user and stop. (5) The tool provides real-time progress updates during execution when checked. (6) Wait for natural completion rather than forcing early termination unless specifically requested by the user. (7) When starting research, set proper expectations: \"This research will take approximately 5-10 minutes. I'll wait for you to ask for updates if needed. Feel free to work on other tasks in the meantime.\" MANDATORY WORKFLOW EXAMPLE: Step 1: Start research with time expectation message. Step 2: Wait for user to explicitly request status update. Step 3: When requested, check status ONCE and report back to user. Step 4: Only retrieve results when research shows completion or user requests results. DO NOT proactively check status. Only check when explicitly asked by the user, and only once per user request.\n\n- IMPORTANT ADDITION (behavior when user explicitly asks progress): When the user explicitly requests research progress/status and you perform the single phase analysis check required by the SII rules, if that single check shows the research is complete (for example, 'phase_progress' equals 100, or 'current_phase' is \"completion\" or \"session_end\"), then instead of only replying in natural language asking whether to save the results, automatically initiate the deep research tool's save-results flow by invoking the SII deep research tool with 'action: \"save_results\"' for that session. This invocation should surface the tool's built-in confirmation UI so the user can accept or cancel saving the full report. Always respect the confirmation outcome and never write the file without explicit user confirmation. This automatic save-results tool call is permitted only after the user requested the status check and only when the single check shows completion; continue to follow the other SII rules (check once per request, inform about expected duration, avoid polling, and let users work on other tasks while waiting).\n\n- **Respect User Confirmations:** Most tool calls (also denoted as 'function calls') will first require confirmation from the user, where they will either approve or cancel the function call. If a user cancels a function call, respect their choice and do _not_ try to make the function call again. It is okay to request the tool call again _only_ if the user requests that same tool call on a subsequent prompt. When a user cancels a function call, assume best intentions from the user and consider inquiring if they prefer any alternative paths forward.\n\n# Outside of Sandbox\nYou are running outside of a sandbox container, directly on the user's system. For critical commands that are particularly likely to modify the user's system outside of the project directory or system temp directory, as you explain the command to the user (per the Explain Critical Commands rule above), also remind the user to consider enabling sandboxing.\n\n# Git Repository\n- The current working (project) directory is being managed by a git repository.\n- When asked to commit changes or prepare a commit, always start by gathering information using shell commands:\n  - `git status` to ensure that all relevant files are tracked and staged, using `git add ...` as needed.\n  - `git diff HEAD` to review all changes (including unstaged changes) to tracked files in work tree since last commit.\n    - `git diff --staged` to review only staged changes when a partial commit makes sense or was requested by the user.\n  - `git log -n 3` to review recent commit messages and match their style (verbosity, formatting, signature line, etc.)\n- Combine shell commands whenever possible to save time/steps, e.g. `git status && git diff HEAD && git log -n 3`.\n- Always propose a draft commit message. Never just ask the user to give you the full commit message.\n- Prefer commit messages that are clear, concise, and focused more on \"why\" and less on \"what\".\n- Keep the user informed and ask for clarification or confirmation where needed.\n- After each commit, confirm that it was successful by running `git status`.\n- If a commit fails, never attempt to work around the issues without being asked to do so.\n- Never push changes to a remote repository without being asked explicitly by the user.\n\n# Examples (Illustrating Tone and Workflow)\n<example>\nuser: 1 + 2\nmodel: 3\n</example>\n\n<example>\nuser: is 13 a prime number?\nmodel: true\n</example>\n\n<example>\nuser: start the server implemented in server.js\nmodel: \n<tool_call>\n<function=run_shell_command>\n<parameter=command>\nnode server.js &\n</parameter>\n</function>\n</tool_call>\n</example>\n\n<example>\nuser: Refactor the auth logic in src/auth.py to use the requests library instead of urllib.\nmodel: Okay, I can refactor 'src/auth.py'.\nFirst, I'll analyze the code and check for a test safety net before planning any changes.\n<tool_call>\n<function=glob>\n<parameter=path>\ntests/test_auth.py\n</parameter>\n</function>\n</tool_call>\n<tool_call>\n<function=read_file>\n<parameter=path>\n/path/to/tests/test_auth.py\n</parameter>\n<parameter=offset>\n0\n</parameter>\n<parameter=limit>\n10\n</parameter>\n</function>\n</tool_call>\n(After analysis)\nGreat, 'tests/test_auth.py' exists and covers the core authentication logic. With this safety net in place, I can safely plan the refactoring.\nI'll also confirm 'requests' is a dependency.\n<tool_call>\n<function=read_file>\n<parameter=path>\n/path/to/requirements.txt\n</parameter>\n</function>\n</tool_call>\n(After analysis)\nLooks good, 'requests' is available.\n\nHere's the plan:\n1.  Replace the 'urllib' calls with 'requests'.\n2.  Add proper 'try...except' error handling for the new network calls.\n3.  Remove the old 'urllib' import.\n4.  Run the project's linter and tests to verify the changes.\n\n<tool_call>\n<function=replace>\n<parameter=path>\nsrc/auth.py\n</parameter>\n<parameter=old_content>\n(old code content)\n</parameter>\n<parameter=new_content>\n(new code content)\n</parameter>\n</function>\n</tool_call>\nRefactoring complete. Running verification...\n<tool_call>\n<function=run_shell_command\n<parameter=command>\nruff check src/auth.py && pytest\n</parameter>\n</function>\n</tool_call>\n(After verification passes)\nAll checks passed. This is a stable checkpoint.\nWould you like me to write a commit message and commit these changes?\n</example>\n\n<example>\nuser: Delete the temp directory.\nmodel: I can run `rm -rf /path/to/project/temp`. This will permanently delete the directory and all its contents.\n</example>\n\n<example>\nuser: Write tests for someFile.ts\nmodel:\nOkay, I can write those tests. First, I'll read someFile.ts to understand its functionality.\n<tool_call>\n<function=read_file>\n<parameter=path>\n/path/to/someFile.ts\n</parameter>\n</function>\n</tool_call>\nNow I'll look for existing or related test files to understand current testing conventions and dependencies.\n<tool_call>\n<function>read_many_files for paths ['**/*.test.ts', 'src/**/*.spec.ts'] assuming someFile.ts is in the src directory]\n</tool_call>\n(After reviewing existing tests and the file content)\n<tool_call>\n<function=write_file>\n<parameter=path>\n/path/to/someFile.test.ts\n</parameter>\n</function>\n</tool_call>\nI've written the tests. Now I'll run the project's test command to verify them.\n<tool_call>\n<function=run_shell_command>\n<parameter=command>\nnpm run test\n</parameter>\n</function>\n</tool_call>\n(After verification passes)\nAll checks passed. This is a stable checkpoint.\n</example>\n\n<example>\nuser: Where are all the 'app.config' files in this project? I need to check their settings.\nmodel:\n<tool_call>\n<function=glob>\n<parameter=pattern>\n./**/app.config\n</parameter>\n</function>\n</tool_call>\n(Assuming GlobTool returns a list of paths like ['/path/to/moduleA/app.config', '/path/to/moduleB/app.config'])\nI found the following 'app.config' files:\n- /path/to/moduleA/app.config\n- /path/to/moduleB/app.config\nTo help you check their settings, I can read their contents. Which one would you like to start with, or should I read all of them?\n</example>\n\n# Final Reminder\n\nYour core function is efficient and safe assistance. Balance extreme conciseness with the crucial need for clarity, especially regarding safety and potential system modifications. Always prioritize user control and project conventions. Never make assumptions about the contents of files; instead use 'read_file' or 'read_many_files' to ensure you aren't making broad assumptions. Finally, you are an agent - please keep going until the user's query is completely resolved.",
+      "available_tools": [
+        {
+          "name": "agent_tool",
+          "description": "Creates and manages specialized sub-agents for complex task delegation with controlled tool access and context isolation.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "agentType": {
+                "type": "STRING",
+                "description": "Type of sub-agent to create. Available types: ",
+                "enum": []
+              },
+              "agentDescriptions": {
+                "type": "OBJECT",
+                "description": "Descriptions of available agent types",
+                "properties": {}
+              },
+              "task": {
+                "type": "STRING",
+                "description": "Specific task for the sub-agent to complete. Be clear and detailed about what you want the sub-agent to accomplish."
+              },
+              "context": {
+                "type": "STRING",
+                "description": "Level of context sharing with sub-agent. \"partial\" shares relevant context, \"full\" shares complete conversation, \"minimal\" shares only the task.",
+                "enum": [
+                  "full",
+                  "partial",
+                  "minimal"
+                ],
+                "default": "partial"
+              },
+              "maxTurns": {
+                "type": "INTEGER",
+                "description": "Maximum conversation turns for the sub-agent. Higher values allow more complex tasks but use more resources.",
+                "minimum": 1,
+                "maximum": 50,
+                "default": 15
+              },
+              "timeoutMs": {
+                "type": "INTEGER",
+                "description": "Timeout in milliseconds for sub-agent execution. Longer timeouts allow more complex tasks.",
+                "minimum": 30000,
+                "maximum": 1800000,
+                "default": 300000
+              },
+              "priority": {
+                "type": "STRING",
+                "description": "Priority level for resource allocation. Higher priority agents get more resources.",
+                "enum": [
+                  "high",
+                  "normal",
+                  "low"
+                ],
+                "default": "normal"
+              }
+            },
+            "required": [
+              "agentType",
+              "task"
+            ]
+          }
+        },
+        {
+          "name": "replace",
+          "description": "Replaces text within a file. By default, replaces a single occurrence, but can replace multiple occurrences when `expected_replacements` is specified. This tool requires providing significant context around the change to ensure precise targeting. Always use the read_file tool to examine the file's current content before attempting a text replacement.\n\n      The user has the ability to modify the `new_string` content. If modified, this will be stated in the response.\n\nExpectation for required parameters:\n1. `file_path` MUST be an absolute path; otherwise an error will be thrown.\n2. `old_string` MUST be the exact literal text to replace (including all whitespace, indentation, newlines, and surrounding code etc.).\n3. `new_string` MUST be the exact literal text to replace `old_string` with (also including all whitespace, indentation, newlines, and surrounding code etc.). Ensure the resulting code is correct and idiomatic.\n4. NEVER escape `old_string` or `new_string`, that would break the exact literal text requirement.\n**Important:** If ANY of the above are not satisfied, the tool will fail. CRITICAL for `old_string`: Must uniquely identify the single instance to change. Include at least 3 lines of context BEFORE and AFTER the target text, matching whitespace and indentation precisely. If this string matches multiple locations, or does not match exactly, the tool will fail.\n**Multiple replacements:** Set `expected_replacements` to the number of occurrences you want to replace. The tool will replace ALL occurrences that match `old_string` exactly. Ensure the number of replacements matches your expectation.",
+          "parameters": {
+            "properties": {
+              "file_path": {
+                "description": "The absolute path to the file to modify. Must start with '/'.",
+                "type": "STRING"
+              },
+              "old_string": {
+                "description": "The exact literal text to replace, preferably unescaped. For single replacements (default), include at least 3 lines of context BEFORE and AFTER the target text, matching whitespace and indentation precisely. For multiple replacements, specify expected_replacements parameter. If this string is not the exact literal text (i.e. you escaped it) or does not match exactly, the tool will fail.",
+                "type": "STRING"
+              },
+              "new_string": {
+                "description": "The exact literal text to replace `old_string` with, preferably unescaped. Provide the EXACT text. Ensure the resulting code is correct and idiomatic.",
+                "type": "STRING"
+              },
+              "expected_replacements": {
+                "type": "NUMBER",
+                "description": "Number of replacements expected. Defaults to 1 if not specified. Use when you want to replace multiple occurrences.",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "file_path",
+              "old_string",
+              "new_string"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "name": "glob",
+          "description": "Efficiently finds files matching specific glob patterns (e.g., `src/**/*.ts`, `**/*.md`), returning absolute paths sorted by modification time (newest first). Ideal for quickly locating files based on their name or path structure, especially in large codebases.",
+          "parameters": {
+            "properties": {
+              "pattern": {
+                "description": "The glob pattern to match against (e.g., '**/*.py', 'docs/*.md').",
+                "type": "STRING"
+              },
+              "path": {
+                "description": "Optional: The absolute path to the directory to search within. If omitted, searches the root directory.",
+                "type": "STRING"
+              },
+              "case_sensitive": {
+                "description": "Optional: Whether the search should be case-sensitive. Defaults to false.",
+                "type": "BOOLEAN"
+              },
+              "respect_git_ignore": {
+                "description": "Optional: Whether to respect .gitignore patterns when finding files. Only available in git repositories. Defaults to true.",
+                "type": "BOOLEAN"
+              }
+            },
+            "required": [
+              "pattern"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "name": "read_file",
+          "description": "Reads and returns the content of a specified file from the local filesystem. Handles text, images (PNG, JPG, GIF, WEBP, SVG, BMP), and PDF files. For text files, it can read specific line ranges.",
+          "parameters": {
+            "properties": {
+              "absolute_path": {
+                "description": "The absolute path to the file to read (e.g., '/home/user/project/file.txt'). Relative paths are not supported. You must provide an absolute path.",
+                "type": "STRING"
+              },
+              "offset": {
+                "description": "Optional: For text files, the 0-based line number to start reading from. Requires 'limit' to be set. Use for paginating through large files.",
+                "type": "NUMBER"
+              },
+              "limit": {
+                "description": "Optional: For text files, maximum number of lines to read. Use with 'offset' to paginate through large files. If omitted, reads the entire file (if feasible, up to a default limit).",
+                "type": "NUMBER"
+              }
+            },
+            "required": [
+              "absolute_path"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "name": "list_directory",
+          "description": "Lists the names of files and subdirectories directly within a specified directory path. Can optionally ignore entries matching provided glob patterns.",
+          "parameters": {
+            "properties": {
+              "path": {
+                "description": "The absolute path to the directory to list (must be absolute, not relative)",
+                "type": "STRING"
+              },
+              "ignore": {
+                "description": "List of glob patterns to ignore",
+                "items": {
+                  "type": "STRING"
+                },
+                "type": "ARRAY"
+              },
+              "file_filtering_options": {
+                "description": "Optional: Whether to respect ignore patterns from .gitignore or .geminiignore",
+                "type": "OBJECT",
+                "properties": {
+                  "respect_git_ignore": {
+                    "description": "Optional: Whether to respect .gitignore patterns when listing files. Only available in git repositories. Defaults to true.",
+                    "type": "BOOLEAN"
+                  },
+                  "respect_gemini_ignore": {
+                    "description": "Optional: Whether to respect .geminiignore patterns when listing files. Defaults to true.",
+                    "type": "BOOLEAN"
+                  }
+                }
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "name": "read_many_files",
+          "description": "Reads content from multiple files specified by paths or glob patterns within a configured target directory. For text files, it concatenates their content into a single string. It is primarily designed for text-based files. However, it can also process image (e.g., .png, .jpg) and PDF (.pdf) files if their file names or extensions are explicitly included in the 'paths' argument. For these explicitly requested non-text files, their data is read and included in a format suitable for model consumption (e.g., base64 encoded).\n\nThis tool is useful when you need to understand or analyze a collection of files, such as:\n- Getting an overview of a codebase or parts of it (e.g., all TypeScript files in the 'src' directory).\n- Finding where specific functionality is implemented if the user asks broad questions about code.\n- Reviewing documentation files (e.g., all Markdown files in the 'docs' directory).\n- Gathering context from multiple configuration files.\n- When the user asks to \"read all files in X directory\" or \"show me the content of all Y files\".\n\nUse this tool when the user's query implies needing the content of several files simultaneously for context, analysis, or summarization. For text files, it uses default UTF-8 encoding and a '--- {filePath} ---' separator between file contents. Ensure paths are relative to the target directory. Glob patterns like 'src/**/*.js' are supported. Avoid using for single files if a more specific single-file reading tool is available, unless the user specifically requests to process a list containing just one file via this tool. Other binary files (not explicitly requested as image/PDF) are generally skipped. Default excludes apply to common non-text files (except for explicitly requested images/PDFs) and large dependency directories unless 'useDefaultExcludes' is false.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "paths": {
+                "type": "ARRAY",
+                "items": {
+                  "type": "STRING",
+                  "minLength": "1"
+                },
+                "minItems": "1",
+                "description": "Required. An array of glob patterns or paths relative to the tool's target directory. Examples: ['src/**/*.ts'], ['README.md', 'docs/']"
+              },
+              "include": {
+                "type": "ARRAY",
+                "items": {
+                  "type": "STRING",
+                  "minLength": "1"
+                },
+                "description": "Optional. Additional glob patterns to include. These are merged with `paths`. Example: [\"*.test.ts\"] to specifically add test files if they were broadly excluded.",
+                "default": []
+              },
+              "exclude": {
+                "type": "ARRAY",
+                "items": {
+                  "type": "STRING",
+                  "minLength": "1"
+                },
+                "description": "Optional. Glob patterns for files/directories to exclude. Added to default excludes if useDefaultExcludes is true. Example: [\"**/*.log\", \"temp/\"]",
+                "default": []
+              },
+              "recursive": {
+                "type": "BOOLEAN",
+                "description": "Optional. Whether to search recursively (primarily controlled by `**` in glob patterns). Defaults to true.",
+                "default": true
+              },
+              "useDefaultExcludes": {
+                "type": "BOOLEAN",
+                "description": "Optional. Whether to apply a list of default exclusion patterns (e.g., node_modules, .git, binary files). Defaults to true.",
+                "default": true
+              },
+              "file_filtering_options": {
+                "description": "Whether to respect ignore patterns from .gitignore or .geminiignore",
+                "type": "OBJECT",
+                "properties": {
+                  "respect_git_ignore": {
+                    "description": "Optional: Whether to respect .gitignore patterns when listing files. Only available in git repositories. Defaults to true.",
+                    "type": "BOOLEAN"
+                  },
+                  "respect_gemini_ignore": {
+                    "description": "Optional: Whether to respect .geminiignore patterns when listing files. Defaults to true.",
+                    "type": "BOOLEAN"
+                  }
+                }
+              }
+            },
+            "required": [
+              "paths"
+            ]
+          }
+        },
+        {
+          "name": "save_memory",
+          "description": "\nSaves a specific piece of information or fact to your long-term memory.\n\nUse this tool:\n\n- When the user explicitly asks you to remember something (e.g., \"Remember that I like pineapple on pizza\", \"Please save this: my cat's name is Whiskers\").\n- When the user states a clear, concise fact about themselves, their preferences, or their environment that seems important for you to retain for future interactions to provide a more personalized and effective assistance.\n\nDo NOT use this tool:\n\n- To remember conversational context that is only relevant for the current session.\n- To save long, complex, or rambling pieces of text. The fact should be relatively short and to the point.\n- If you are unsure whether the information is a fact worth remembering long-term. If in doubt, you can ask the user, \"Should I remember that for you?\"\n\n## Parameters\n\n- `fact` (string, required): The specific fact or piece of information to remember. This should be a clear, self-contained statement. For example, if the user says \"My favorite color is blue\", the fact would be \"My favorite color is blue\".\n",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "fact": {
+                "type": "STRING",
+                "description": "The specific fact or piece of information to remember. Should be a clear, self-contained statement."
+              }
+            },
+            "required": [
+              "fact"
+            ]
+          }
+        },
+        {
+          "name": "search_file_content",
+          "description": "Searches for a regular expression pattern within the content of files in a specified directory (or current working directory). Can filter files by a glob pattern. Returns the lines containing matches, along with their file paths and line numbers.",
+          "parameters": {
+            "properties": {
+              "pattern": {
+                "description": "The regular expression (regex) pattern to search for within file contents (e.g., 'function\\s+myFunction', 'import\\s+\\{.*\\}\\s+from\\s+.*').",
+                "type": "STRING"
+              },
+              "path": {
+                "description": "Optional: The absolute path to the directory to search within. If omitted, searches the current working directory.",
+                "type": "STRING"
+              },
+              "include": {
+                "description": "Optional: Array of glob patterns to filter which files are searched (e.g., ['*.js', '*.ts'], ['*.{ts,tsx}', 'src/**']). Each pattern is searched separately and results are merged. If omitted, searches all files (respecting potential global ignores).",
+                "type": "ARRAY",
+                "items": {
+                  "type": "STRING",
+                  "minLength": "1"
+                }
+              },
+              "limit": {
+                "description": "Optional: Maximum number of results to return per file pattern (default: 20). Helps prevent overwhelming results for broad searches.",
+                "type": "NUMBER"
+              },
+              "totalLimit": {
+                "description": "Optional: Maximum total number of results across all patterns (default: 100). Provides overall result limit regardless of pattern count.",
+                "type": "NUMBER"
+              },
+              "offset": {
+                "description": "Optional: Number of results to skip for pagination (default: 0). Use with limit to implement pagination: offset=0,limit=20 for page 1, offset=20,limit=20 for page 2.",
+                "type": "NUMBER"
+              }
+            },
+            "required": [
+              "pattern"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "name": "run_shell_command",
+          "description": "This tool executes a given shell command as `bash -c <command>`. Command can start background processes using `&`. Command is executed as a subprocess that leads its own process group. Command process group can be terminated as `kill -- -PGID` or signaled as `kill -s SIGNAL -- -PGID`.\n\n      The following information is returned:\n\n      Command: Executed command.\n      Directory: Directory (relative to project root) where command was executed, or `(root)`.\n      Stdout: Output on stdout stream. Can be `(empty)` or partial on error and for any unwaited background processes.\n      Stderr: Output on stderr stream. Can be `(empty)` or partial on error and for any unwaited background processes.\n      Error: Error or `(none)` if no error was reported for the subprocess.\n      Exit Code: Exit code or `(none)` if terminated by signal.\n      Signal: Signal number or `(none)` if no signal was received.\n      Background PIDs: List of background processes started or `(none)`.\n      Process Group PGID: Process group started or `(none)`",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "command": {
+                "type": "STRING",
+                "description": "Exact bash command to execute as `bash -c <command>`"
+              },
+              "description": {
+                "type": "STRING",
+                "description": "Brief description of the command for the user. Be specific and concise. Ideally a single sentence. Can be up to 3 sentences for clarity. No line breaks."
+              },
+              "directory": {
+                "type": "STRING",
+                "description": "(OPTIONAL) Directory to run the command in, if not the project root directory. Must be relative to the project root directory and must already exist."
+              }
+            },
+            "required": [
+              "command"
+            ]
+          }
+        },
+        {
+          "name": "sii_cognition_extract_upload",
+          "description": "Extract cognition information from web URLs (including YouTube videos) and upload to SII backend. Automatically analyzes content, generates structured cognition data with bilingual support, saves to the cognition database, and optionally saves raw content to local files. Supports YouTube transcript extraction and various content types. Only available when authenticated with SII.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "url": {
+                "type": "STRING",
+                "description": "The URL to extract cognition from. Must be a valid HTTP/HTTPS URL."
+              },
+              "source": {
+                "type": "STRING",
+                "description": "Optional description of the content source (e.g., \"技术博客\", \"学术论文\")."
+              },
+              "custom_prompt": {
+                "type": "STRING",
+                "description": "Optional custom prompt to guide the extraction process (e.g., \"重点关注技术细节\")."
+              },
+              "language_preference": {
+                "type": "STRING",
+                "description": "Language preference for output: \"zh\" (Chinese), \"en\" (English), or \"auto\" (automatic detection).",
+                "enum": [
+                  "zh",
+                  "en",
+                  "auto"
+                ]
+              },
+              "save_raw_content": {
+                "type": "BOOLEAN",
+                "description": "Whether to save the raw extracted content to a local file. Defaults to false."
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        },
+        {
+          "name": "sii_cognitions",
+          "description": "Access and search cognitions from SII backend. Can list cognitions with various filters or get detailed information about specific cognitions. Only available when authenticated with SII.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "action": {
+                "type": "STRING",
+                "description": "The action to perform: \"list\" for getting cognitions list, \"detail\" for getting specific cognition details.",
+                "enum": [
+                  "list",
+                  "detail"
+                ]
+              },
+              "search": {
+                "type": "STRING",
+                "description": "Search keyword for filtering cognitions (only for \"list\" action)."
+              },
+              "skip": {
+                "type": "NUMBER",
+                "description": "Number of records to skip for pagination (only for \"list\" action, default: 0)."
+              },
+              "limit": {
+                "type": "NUMBER",
+                "description": "Number of results to return (only for \"list\" action, default: 20, max: 100)."
+              },
+              "time_filter": {
+                "type": "STRING",
+                "description": "Time filter: \"day\", \"week\", \"month\", \"all\" (only for \"list\" action, default: \"day\").",
+                "enum": [
+                  "day",
+                  "week",
+                  "month",
+                  "all"
+                ]
+              },
+              "sort": {
+                "type": "STRING",
+                "description": "Sort method: \"latest\", \"hot\", \"most_liked\" (only for \"list\" action, default: \"latest\").",
+                "enum": [
+                  "latest",
+                  "hot",
+                  "most_liked"
+                ]
+              },
+              "topics": {
+                "type": "ARRAY",
+                "description": "Topics to filter by (only for \"list\" action).",
+                "items": {
+                  "type": "STRING"
+                }
+              },
+              "source_filter": {
+                "type": "STRING",
+                "description": "Source filter (only for \"list\" action, default: \"all\")."
+              },
+              "author_filter": {
+                "type": "STRING",
+                "description": "Author filter (only for \"list\" action)."
+              },
+              "cognition_id": {
+                "type": "STRING",
+                "description": "Cognition ID for getting details (only for \"detail\" action)."
+              }
+            },
+            "required": [
+              "action"
+            ]
+          }
+        },
+        {
+          "name": "sii_deep_research",
+          "description": "Conducts comprehensive research using the Engineer Deep Research API. Features include: auto-start research sessions with milestone tracking, real-time phase analysis, session history with organized milestones, phase-specific information extraction, and service health monitoring. Supports both Chinese and English research outputs. Only available when authenticated with SII.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "research_question": {
+                "type": "STRING",
+                "description": "The research question to investigate thoroughly. Required for \"start\" action."
+              },
+              "language": {
+                "type": "STRING",
+                "description": "Language for the research output (zh for Chinese, en for English). Default: zh.",
+                "enum": [
+                  "zh",
+                  "en"
+                ]
+              },
+              "research_params": {
+                "type": "OBJECT",
+                "description": "Research configuration parameters for auto_start.",
+                "properties": {
+                  "web_search_enabled": {
+                    "type": "BOOLEAN",
+                    "description": "Enable web search during research. Default: true."
+                  },
+                  "cognition_search_enabled": {
+                    "type": "BOOLEAN",
+                    "description": "Enable cognition database search. Default: true."
+                  },
+                  "max_iterations": {
+                    "type": "NUMBER",
+                    "description": "Maximum number of research iterations. Default: 2."
+                  }
+                }
+              },
+              "action": {
+                "type": "STRING",
+                "description": "Action to perform: start (create and auto-start new research), health (check service health), history (get session history), phase_analysis (analyze current phase), extract_phase_info (extract phase-specific information), monitor (monitor research progress with milestone tracking), milestone_summary (get quick milestone summary with content previews), save_results (save complete research results to local file when research is completed).",
+                "enum": [
+                  "start",
+                  "health",
+                  "history",
+                  "phase_analysis",
+                  "extract_phase_info",
+                  "monitor",
+                  "milestone_summary",
+                  "save_results"
+                ]
+              },
+              "session_id": {
+                "type": "STRING",
+                "description": "Session ID for operations that require an existing session. Required for: history, phase_analysis, extract_phase_info actions."
+              },
+              "target_phase": {
+                "type": "STRING",
+                "description": "Target phase for extract_phase_info action. Required when action is \"extract_phase_info\".",
+                "enum": [
+                  "planning",
+                  "web_search",
+                  "browsing",
+                  "writing",
+                  "completion",
+                  "session_end"
+                ]
+              },
+              "limit": {
+                "type": "NUMBER",
+                "description": "Limit for history retrieval (default: 100, max: 1000)."
+              },
+              "metadata": {
+                "type": "OBJECT",
+                "description": "Custom metadata for the research session. Used when creating new sessions.",
+                "properties": {
+                  "description": {
+                    "type": "STRING",
+                    "description": "Description of the research session."
+                  },
+                  "created_by": {
+                    "type": "STRING",
+                    "description": "Creator of the research session."
+                  }
+                }
+              }
+            },
+            "required": []
+          }
+        },
+        {
+          "name": "sii_email_notification",
+          "description": "Send important email notifications to the authenticated user via SII. Only use when the user explicitly requests or indicates remote monitoring AND an important event occurs (critical failure, long-running job completed, or action required). Avoid frequent notifications. Include full context so the user needs no follow-up to understand the situation.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "user_requested": {
+                "type": "BOOLEAN",
+                "description": "Whether the user explicitly requested an email notification for this task/session."
+              },
+              "user_remote_monitoring": {
+                "type": "BOOLEAN",
+                "description": "Whether the user indicated they are away and need remote monitoring notifications."
+              },
+              "event": {
+                "type": "STRING",
+                "enum": [
+                  "critical_failure",
+                  "long_running_completed",
+                  "need_user_action"
+                ],
+                "description": "The event that triggers the notification. Email will be sent only when preconditions are satisfied."
+              },
+              "subject": {
+                "type": "STRING",
+                "description": "Optional email subject. If omitted, a suitable subject will be generated from the event."
+              },
+              "raw_content": {
+                "type": "STRING",
+                "description": "Optional raw content to embed directly into the email. If provided, structured fields are ignored."
+              },
+              "background": {
+                "type": "STRING",
+                "description": "Background and cause."
+              },
+              "current_status": {
+                "type": "STRING",
+                "description": "Current state."
+              },
+              "result_summary": {
+                "type": "STRING",
+                "description": "Result summary (success/failure and key metrics)."
+              },
+              "errors": {
+                "type": "ARRAY",
+                "items": {
+                  "type": "STRING"
+                },
+                "description": "Specific error details if any."
+              },
+              "next_steps": {
+                "type": "ARRAY",
+                "items": {
+                  "type": "STRING"
+                },
+                "description": "Suggested next actions for the user (if applicable)."
+              },
+              "sender_name": {
+                "type": "STRING",
+                "description": "Optional sender display name. Default: \"SII CLI Agent\"."
+              }
+            },
+            "required": [
+              "event"
+            ]
+          }
+        },
+        {
+          "name": "sii_hybrid_search",
+          "description": "Performs intelligent hybrid search combining web search and cognitions from SII backend. Use separate queries for different sources: natural language for web search, keywords for cognition search. Features advanced relevance scoring, comprehensive filtering options, and intelligent result merging with source diversity.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "web_query": {
+                "type": "STRING",
+                "description": "Natural language query for web search (e.g., \"latest artificial intelligence developments\"). Use descriptive, conversational language. If not provided, web search will be skipped."
+              },
+              "cognition_query": {
+                "type": "STRING",
+                "description": "Space-separated keywords for cognition search (e.g., \"artificial intelligence development trends\"). Use specific keywords separated by spaces. If not provided, cognition search will be skipped."
+              },
+              "max_web_results": {
+                "type": "NUMBER",
+                "description": "Maximum number of web search results to fetch (default: 5, max: 10)."
+              },
+              "max_cognition_results": {
+                "type": "NUMBER",
+                "description": "Maximum number of cognition results to fetch (default: 10, max: 20)."
+              },
+              "cognition_time_filter": {
+                "type": "STRING",
+                "description": "Time filter for cognitions: \"day\", \"week\", \"month\", \"all\" (default: \"all\").",
+                "enum": [
+                  "day",
+                  "week",
+                  "month",
+                  "all"
+                ]
+              },
+              "cognition_sort": {
+                "type": "STRING",
+                "description": "Sort method for cognitions: \"latest\", \"hot\", \"most_liked\" (default: \"hot\").",
+                "enum": [
+                  "latest",
+                  "hot",
+                  "most_liked"
+                ]
+              },
+              "cognition_topics": {
+                "type": "ARRAY",
+                "description": "Topics to filter cognitions by (e.g., [\"AI\", \"Technology\"]).",
+                "items": {
+                  "type": "STRING"
+                }
+              },
+              "cognition_source_filter": {
+                "type": "STRING",
+                "description": "Source filter for cognitions (e.g., \"arxiv\", \"reddit\", \"twitter\")."
+              },
+              "cognition_author_filter": {
+                "type": "STRING",
+                "description": "Author filter for cognitions."
+              },
+              "result_limit": {
+                "type": "NUMBER",
+                "description": "Maximum number of final merged results to return (default: 15, max: 30)."
+              }
+            },
+            "required": []
+          }
+        },
+        {
+          "name": "sii_web_search",
+          "description": "Performs a web search using SII backend search service and returns the results. This tool is useful for finding information on the internet based on a query.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "query": {
+                "type": "STRING",
+                "description": "The search query to find information on the web."
+              }
+            },
+            "required": [
+              "query"
+            ]
+          }
+        },
+        {
+          "name": "sii_web_fetch",
+          "description": "Processes content from URL(s), including local and private network addresses (e.g., localhost), embedded in a prompt using SII backend service. Include up to 20 URLs and instructions (e.g., summarize, extract specific data) directly in the 'prompt' parameter.",
+          "parameters": {
+            "properties": {
+              "prompt": {
+                "description": "A comprehensive prompt that includes the URL(s) (up to 20) to fetch and specific instructions on how to process their content (e.g., \"Summarize https://example.com/article and extract key points from https://another.com/data\"). Must contain as least one URL starting with http:// or https://.",
+                "type": "STRING"
+              }
+            },
+            "required": [
+              "prompt"
+            ],
+            "type": "OBJECT"
+          }
+        },
+        {
+          "name": "write_file",
+          "description": "Writes content to a specified file in the local filesystem.\n\n      The user has the ability to modify `content`. If modified, this will be stated in the response.",
+          "parameters": {
+            "properties": {
+              "file_path": {
+                "description": "The absolute path to the file to write to (e.g., '/home/user/project/file.txt'). Relative paths are not supported.",
+                "type": "STRING"
+              },
+              "content": {
+                "description": "The content to write to the file.",
+                "type": "STRING"
+              }
+            },
+            "required": [
+              "file_path",
+              "content"
+            ],
+            "type": "OBJECT"
+          }
+        }
+      ],
+      "session_metadata": {
+        "working_directory": "/data2/jdsu/projects/OmniAvatar",
+        "cli_version": "unknown",
+        "platform": "linux"
+      }
+    }
+  }
+]

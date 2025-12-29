@@ -1,0 +1,13 @@
+prefix=/data2/ai3625/workspace/ai3625-18/miniconda3
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+modules=1
+
+Name: libXML
+Version: 2.13.9
+Description: libXML library version2.
+Requires.private:  icu-i18n
+Libs: -L${libdir} -lxml2 
+Libs.private:  -L/data2/ai3625/workspace/ai3625-18/miniconda3/lib -lz -L/data2/ai3625/workspace/ai3625-18/miniconda3/lib -llzma  -L/data2/ai3625/workspace/ai3625-18/miniconda3/lib  -lm   
+Cflags: -I${includedir}/libxml2 -I/data2/ai3625/workspace/ai3625-18/miniconda3/include 

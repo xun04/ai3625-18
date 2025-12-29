@@ -1,0 +1,11 @@
+prefix=/data2/ai3625/workspace/ai3625-18/miniconda3
+exec_prefix=/data2/ai3625/workspace/ai3625-18/miniconda3
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: fmt
+Description: A modern formatting library
+Version: 11.2.0
+Libs: -L${libdir} -lfmt
+Cflags: -I${includedir}
+

@@ -1,0 +1,28 @@
+{
+  "arch": "x86_64",
+  "build": "py313h4aee224_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [
+    "ruamel.yaml.jinja2 >=0.2"
+  ],
+  "depends": [
+    "__glibc >=2.28,<3.0.a0",
+    "libgcc-ng >=11.2.0",
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313",
+    "ruamel.yaml.clib >=0.2.7"
+  ],
+  "fn": "ruamel.yaml-0.18.16-py313h4aee224_0.conda",
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "dc961556c7bbe4e2aa959e36ab816dcd",
+  "name": "ruamel.yaml",
+  "platform": "linux",
+  "sha256": "83d992869476949a782ae72360b1e3b6a224f9238eae988cfad48a968c8b2d8d",
+  "size": 271868,
+  "subdir": "linux-64",
+  "timestamp": 1762535994000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/ruamel.yaml-0.18.16-py313h4aee224_0.conda",
+  "version": "0.18.16"
+}

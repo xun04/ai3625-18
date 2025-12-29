@@ -1,0 +1,109 @@
+# This file created by conda-build 25.1.2
+# meta.yaml template originally from:
+# /home/task_176496126124857/brotlicffi-feedstock/recipe, last modified Fri Dec  5 19:01:22 2025
+# ------------------------------------------------
+
+package:
+  name: brotlicffi
+  version: 1.2.0.0
+source:
+  sha256: 34345d8d1f9d534fcac2249e57a4c3c8801a33c9942ff9f8574f67a175e17adb
+  url: https://pypi.org/packages/source/b/brotlicffi/brotlicffi-1.2.0.0.tar.gz
+build:
+  number: '0'
+  script: /home/task_176496126124857/conda-bld/brotlicffi_1764961326114/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placeh/bin/python
+    -m pip install . --no-deps --no-build-isolation -vv
+  string: py313h7354ed3_0
+requirements:
+  build:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - binutils_impl_linux-64 2.44 h4b9a079_2
+    - binutils_linux-64 2.44 hc03a8fd_2
+    - gcc_impl_linux-64 14.3.0 h4943218_4
+    - gcc_linux-64 14.3.0 hda73cce_12
+    - gxx_impl_linux-64 14.3.0 he634eba_4
+    - gxx_linux-64 14.3.0 hca8765c_12
+    - kernel-headers_linux-64 4.18.0 h3108a97_1
+    - ld_impl_linux-64 2.44 h153f514_2
+    - libgcc 15.2.0 h69a1729_7
+    - libgcc-devel_linux-64 14.3.0 he7458c1_104
+    - libgomp 15.2.0 h4751f2c_7
+    - libsanitizer 14.3.0 hd4faa28_4
+    - libstdcxx 15.2.0 h39759b7_7
+    - libstdcxx-devel_linux-64 14.3.0 he7458c1_104
+    - sysroot_linux-64 2.28 h3108a97_1
+    - tzdata 2025b h04d1e81_0
+  host:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - bzip2 1.0.8 h5eee18b_6
+    - ca-certificates 2025.12.2 h06a4308_0
+    - cffi 2.0.0 py313h4eded50_1
+    - expat 2.7.3 h7354ed3_1
+    - ld_impl_linux-64 2.44 h153f514_2
+    - libexpat 2.7.3 h7354ed3_1
+    - libffi 3.4.4 h6a678d5_1
+    - libgcc 15.2.0 h69a1729_7
+    - libgcc-ng 15.2.0 h166f726_7
+    - libgomp 15.2.0 h4751f2c_7
+    - libmpdec 4.0.0 h5eee18b_0
+    - libstdcxx 15.2.0 h39759b7_7
+    - libstdcxx-ng 15.2.0 hc03a8fd_7
+    - libuuid 1.41.5 h5eee18b_0
+    - libxcb 1.17.0 h9b100fa_0
+    - libzlib 1.3.1 hb25bd0a_0
+    - ncurses 6.5 h7934f7d_0
+    - openssl 3.0.18 hd6dcaed_0
+    - pip 25.3 pyhc872135_0
+    - pthread-stubs 0.3 h0ce48e5_1
+    - pycparser 2.23 py313h06a4308_0
+    - python 3.13.10 hcf712cf_100_cp313
+    - python_abi 3.13 3_cp313
+    - readline 8.3 hc2a1206_0
+    - setuptools 80.9.0 py313h06a4308_0
+    - sqlite 3.51.0 h2a70700_0
+    - tk 8.6.15 h54e0aa7_0
+    - tzdata 2025b h04d1e81_0
+    - wheel 0.45.1 py313h06a4308_0
+    - xorg-libx11 1.8.12 h9b100fa_1
+    - xorg-libxau 1.0.12 h9b100fa_0
+    - xorg-libxdmcp 1.1.5 h9b100fa_0
+    - xorg-xorgproto 2024.1 h5eee18b_1
+    - xz 5.6.4 h5eee18b_1
+    - zlib 1.3.1 hb25bd0a_0
+  run:
+    - __glibc >=2.28,<3.0.a0
+    - cffi >=1.17.0
+    - libgcc >=14
+    - libstdcxx >=14
+    - python >=3.13,<3.14.0a0
+    - python_abi 3.13.* *_cp313
+test:
+  commands:
+    - pip check
+    - python -c "from importlib.metadata import version; assert(version('brotlicffi')=='1.2.0.0')"
+  imports:
+    - brotlicffi
+  requires:
+    - pip
+  source_files:
+    - test
+about:
+  description: Python CFFI bindings to the Brotli library
+  dev_url: https://github.com/python-hyper/brotlicffi
+  doc_url: https://github.com/python-hyper/brotlicffi/blob/main/README.rst
+  home: https://github.com/python-hyper/brotlicffi
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Python CFFI bindings to the Brotli library
+extra:
+  copy_test_source_files: true
+  final: true
+  recipe-maintainers:
+    - katietz
+    - sarthakpati
+    - sethmlarson
+  skip-lints:
+    - host_section_needs_exact_pinnings

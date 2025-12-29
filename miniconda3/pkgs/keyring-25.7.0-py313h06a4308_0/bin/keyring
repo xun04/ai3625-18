@@ -1,0 +1,11 @@
+#!/home/task_176363713576885/conda-bld/keyring_1763637184857/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold/bin/python
+
+# -*- coding: utf-8 -*-
+import re
+import sys
+
+from keyring.cli import main
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(main())

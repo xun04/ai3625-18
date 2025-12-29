@@ -1,0 +1,217 @@
+# This file created by conda-build 25.1.2
+# ------------------------------------------------
+
+package:
+  name: python
+  version: 3.13.11
+source:
+  - patches:
+      - patches/0000-branding.patch
+      - patches/0001-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
+      - patches/0002-Win32-Do-not-download-externals.patch
+      - patches/0003-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
+      - patches/0004-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
+      - patches/0005-Unvendor-openssl.patch
+      - patches/0006-Unvendor-sqlite3.patch
+      - patches/0007-Add-CondaEcosystemModifyDllSearchPath.patch
+      - patches/0008-Doing-d1trimfile.patch
+      - patches/0009-Allow-cross-compiling-for-Darwin.patch
+      - patches/0010-Fix-TZPATH-on-windows.patch
+      - patches/0011-Make-dyld-search-work-with-SYSTEM_VERSION_COMPAT-1.patch
+      - patches/0012-Unvendor-bzip2.patch
+      - patches/0013-Unvendor-libffi.patch
+      - patches/0014-Unvendor-tcltk.patch
+      - patches/0015-unvendor-xz.patch
+      - patches/0016-unvendor-zlib.patch
+      - patches/0017-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
+      - patches/0018-Unvendor-expat.patch
+      - patches/0019-Remove-unused-readelf.patch
+      - patches/0021-Override-configure-LIBFFI.patch
+      - patches/0022-Unvendor-libmpdec.patch
+    sha256: 16ede7bb7cdbfa895d11b0642fa0e523f291e6487194d53cf6d3b338c3a17ea2
+    url: https://www.python.org/ftp/python/3.13.11/Python-3.13.11.tar.xz
+build:
+  activate_in_script: true
+  detect_binary_files_with_prefix: true
+  ignore_run_exports_from:
+    - gxx_linux-64 14.3.0.*
+    - xorg-libx11
+    - xorg-xorgproto
+  missing_dso_whitelist:
+    - $RPATH/libc.so.6
+    - $RPATH/libcrypt.so.1
+    - $RPATH/libdl.so.2
+    - $RPATH/libm.so.6
+    - $RPATH/libnsl.so.1
+    - $RPATH/libpthread.so.0
+    - $RPATH/librt.so.1
+    - $RPATH/libutil.so.1
+  no_link: null
+  number: 100
+  run_exports:
+    noarch:
+      - python
+    weak:
+      - python_abi 3.13.* *_cp313
+  script_env:
+    - CONDA_FORGE=no
+    - PY_GIL_DISABLED=no
+    - PY_INTERP_DEBUG=no
+    - PY_INTERP_LINKAGE_NATURE=static
+  string: hcf712cf_100_cp313
+requirements:
+  build:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - binutils_impl_linux-64 2.44 h4b9a079_2
+    - binutils_linux-64 2.44 hc03a8fd_2
+    - gcc_impl_linux-64 14.3.0 h4943218_4
+    - gcc_linux-64 14.3.0 hda73cce_12
+    - gxx_impl_linux-64 14.3.0 he634eba_4
+    - gxx_linux-64 14.3.0 hca8765c_12
+    - kernel-headers_linux-64 4.18.0 h3108a97_1
+    - ld_impl_linux-64 2.44 h153f514_2
+    - libgcc 15.2.0 h69a1729_7
+    - libgcc-devel_linux-64 14.3.0 he7458c1_104
+    - libgcc-ng 15.2.0 h166f726_7
+    - libgomp 15.2.0 h4751f2c_7
+    - libsanitizer 14.3.0 hd4faa28_4
+    - libstdcxx 15.2.0 h39759b7_7
+    - libstdcxx-devel_linux-64 14.3.0 he7458c1_104
+    - libtool 2.4.7 h6a678d5_0
+    - make 4.2.1 h1bed415_1
+    - pkg-config 0.29.2 h1bed415_8
+    - ripgrep 14.1.0 h594256b_0
+    - sed 4.9 hb25bd0a_0
+    - sysroot_linux-64 2.28 h3108a97_1
+    - tzdata 2025b h04d1e81_0
+  host:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - bzip2 1.0.8 h5eee18b_6
+    - ca-certificates 2025.12.2 h06a4308_0
+    - expat 2.7.3 h7354ed3_4
+    - ld_impl_linux-64 2.44 h153f514_2
+    - libexpat 2.7.3 h7354ed3_4
+    - libffi 3.4.4 h6a678d5_1
+    - libgcc 15.2.0 h69a1729_7
+    - libgcc-ng 15.2.0 h166f726_7
+    - libgomp 15.2.0 h4751f2c_7
+    - libmpdec 4.0.0 h5eee18b_0
+    - libmpdec-devel 4.0.0 h06a4308_0
+    - libstdcxx 15.2.0 h39759b7_7
+    - libstdcxx-ng 15.2.0 hc03a8fd_7
+    - libuuid 1.41.5 h5eee18b_0
+    - libxcb 1.17.0 h9b100fa_0
+    - ncurses 6.4 h6a678d5_0
+    - openssl 3.0.18 hd6dcaed_0
+    - pthread-stubs 0.3 h0ce48e5_1
+    - readline 8.2 h5eee18b_0
+    - sqlite 3.50.2 hb25bd0a_1
+    - tk 8.6.15 h54e0aa7_0
+    - xorg-libx11 1.8.12 h9b100fa_1
+    - xorg-libxau 1.0.12 h9b100fa_0
+    - xorg-libxdmcp 1.1.5 h9b100fa_0
+    - xorg-xorgproto 2024.1 h5eee18b_1
+    - xz 5.6.4 h5eee18b_1
+    - zlib 1.2.13 hd233ad5_2
+  run:
+    - __glibc >=2.28,<3.0.a0
+    - bzip2 >=1.0.8,<2.0a0
+    - ld_impl_linux-64 >=2.35.1
+    - libexpat >=2.7.3,<3.0a0
+    - libffi >=3.4,<4.0a0
+    - libgcc >=14
+    - libmpdec >=4.0.0,<5.0a0
+    - libuuid >=1.41.5,<2.0a0
+    - ncurses >=6.4,<7.0a0
+    - openssl >=3.0.18,<4.0a0
+    - python_abi * *_cp313
+    - readline >=8.2,<9.0a0
+    - sqlite >=3.50.2,<4.0a0
+    - tk >=8.6.15,<8.7.0a0
+    - tzdata
+    - xz >=5.6.4,<6.0a0
+    - zlib >=1.2.13,<2.0a0
+test:
+  commands:
+    - python -V
+    - python3 -V
+    - pydoc -h
+    - python3-config --help
+    - python -c "from zoneinfo import ZoneInfo; from datetime import datetime; dt
+      = datetime(2020, 10, 31, 12, tzinfo=ZoneInfo('America/Los_Angeles')); print(dt.tzname())"
+    - python -m venv test-venv
+    - test-venv/bin/python -c "import ctypes"
+    - python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"
+    - _CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu
+      python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"
+    - for f in ${CONDA_PREFIX}/lib/python*/_sysconfig*.py; do echo "Checking $f:";
+      if [[ `rg @[^@]*@ $f` ]]; then echo "FAILED ON $f"; cat $f; exit 1; fi; done
+    - test ! -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.a
+    - test ! -f ${PREFIX}/lib/libpython${PKG_VERSION%.*}.nolto.a
+    - pushd tests
+    - pushd prefix-replacement
+    - bash build-and-test.sh
+    - popd
+    - pushd cmake
+    - cmake -GNinja -DPY_VER=3.13.11 --debug-find --trace --debug-output --debug-trycompile
+      .
+    - popd
+    - popd
+    - python run_test.py
+    - python3.1 --version
+    - python -c "from ctypes import CFUNCTYPE; CFUNCTYPE(None)(id)"
+  files:
+    - run_test.py
+    - tests/cmake/*
+    - tests/cython/*
+    - tests/prefix-replacement/*
+  requires:
+    - cmake-no-system
+    - gcc_linux-64 14.3.0.*
+    - gxx_linux-64 14.3.0.*
+    - make
+    - ninja-base
+    - ripgrep
+    - sysroot_linux-64 2.28.*
+about:
+  description: 'Python is a widely used high-level, general-purpose, interpreted,
+    dynamic
+
+    programming language. Its design philosophy emphasizes code
+
+    readability, and its syntax allows programmers to express concepts in
+
+    fewer lines of code than would be possible in languages such as C++ or
+
+    Java. The language provides constructs intended to enable clear programs
+
+    on both a small and large scale.
+
+    '
+  dev_url: https://devguide.python.org/
+  doc_url: https://www.python.org/doc/versions/
+  home: https://www.python.org/
+  license: PSF-2.0
+  license_family: PSF
+  license_file: LICENSE
+  license_url: https://docs.python.org/3/license.html
+  summary: General purpose programming language
+extra:
+  copy_test_source_files: true
+  feedstock-name: python
+  final: true
+  recipe-maintainers:
+    - isuruf
+    - jakirkham
+    - katietz
+    - mbargull
+    - mingwandroid
+    - msarahan
+    - ocefpaf
+    - pelson
+    - scopatz
+    - xhochy
+  skip-lints:
+    - license_file_overspecified

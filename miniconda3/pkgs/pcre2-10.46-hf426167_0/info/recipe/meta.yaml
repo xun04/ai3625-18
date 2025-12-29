@@ -1,0 +1,118 @@
+# This file created by conda-build 25.1.2
+# meta.yaml template originally from:
+# /home/task_175982568355287/pcre2-feedstock/recipe, last modified Tue Oct  7 08:29:07 2025
+# ------------------------------------------------
+
+package:
+  name: pcre2
+  version: '10.46'
+source:
+  - sha256: ffde0c6ead457c4f8edcd8f9ce490bbabd30adabdfd179ecaddd320946cf3872
+    url: https://github.com/PCRE2Project/pcre2/archive/refs/tags/pcre2-10.46.tar.gz
+  - folder: deps/sljit
+    sha256: 5caf31959f4c2dfa9fdbaf290b0e16538527d929d5c1c5bd1a3e6df01436c1cf
+    url: https://github.com/zherczeg/sljit/archive/e51eabbfb8eabc6526f56e4e88b29fb10d1ee048.tar.gz
+build:
+  number: '0'
+  run_exports:
+    - pcre2 >=10.46,<10.47.0a0
+  string: hf426167_0
+requirements:
+  build:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - binutils_impl_linux-64 2.40 h5293946_0
+    - binutils_linux-64 2.40.0 hc2dff05_2
+    - bzip2 1.0.8 h5eee18b_6
+    - c-ares 1.34.5 hef5626c_0
+    - ca-certificates 2025.9.9 h06a4308_0
+    - cmake 3.31.2 h27e300b_0
+    - expat 2.7.1 h6a678d5_0
+    - gcc_impl_linux-64 11.2.0 h1234567_1
+    - gcc_linux-64 11.2.0 h5c386dc_2
+    - kernel-headers_linux-64 4.18.0 h528b178_0
+    - ld_impl_linux-64 2.40 h12ee557_0
+    - libcurl 8.15.0 hc1efc7f_0
+    - libev 4.33 h7f8727e_1
+    - libgcc-devel_linux-64 11.2.0 h1234567_1
+    - libgcc-ng 11.2.0 h1234567_1
+    - libgomp 11.2.0 h1234567_1
+    - libnghttp2 1.57.0 h2d74bed_0
+    - libssh2 1.11.1 h251f7ec_0
+    - libstdcxx-ng 11.2.0 h1234567_1
+    - libuv 1.48.0 h5eee18b_0
+    - libzlib 1.3.1 hb25bd0a_0
+    - lz4-c 1.9.4 h6a678d5_1
+    - ncurses 6.5 h7934f7d_0
+    - ninja-base 1.12.1 hdb19cb5_0
+    - openssl 3.0.18 hd6dcaed_0
+    - rhash 1.4.3 hdbd6064_0
+    - sysroot_linux-64 2.28 h528b178_0
+    - tzdata 2025b h04d1e81_0
+    - xz 5.6.4 h5eee18b_1
+    - zlib 1.3.1 hb25bd0a_0
+    - zstd 1.5.7 h11fc155_0
+  host:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - bzip2 1.0.8 h5eee18b_6
+    - libgcc-ng 11.2.0 h1234567_1
+    - libgomp 11.2.0 h1234567_1
+    - zlib 1.2.13 hd233ad5_2
+  run:
+    - __glibc >=2.28,<3.0.a0
+    - bzip2 >=1.0.8,<2.0a0
+    - libgcc-ng >=11.2.0
+    - zlib >=1.2.13,<2.0a0
+test:
+  commands:
+    - pcre2test --version
+    - pcre2grep --version
+    - pcre2-config --version
+    - test -f ${PREFIX}/include/pcre2.h
+    - test -f ${PREFIX}/include/pcre2posix.h
+    - test -f ${PREFIX}/lib/libpcre2-posix${SHLIB_EXT}
+    - test -f ${PREFIX}/lib/libpcre2-posix${SHLIB_EXT}.3
+    - test -f ${PREFIX}/lib/libpcre2-posix${SHLIB_EXT}.3.0.6
+    - test -f ${PREFIX}/lib/libpcre2-8${SHLIB_EXT}
+    - test -f ${PREFIX}/lib/libpcre2-8${SHLIB_EXT}.0
+    - test -f ${PREFIX}/lib/libpcre2-8${SHLIB_EXT}.0.14.0
+    - test -f ${PREFIX}/lib/libpcre2-16${SHLIB_EXT}
+    - test -f ${PREFIX}/lib/libpcre2-16${SHLIB_EXT}.0
+    - test -f ${PREFIX}/lib/libpcre2-16${SHLIB_EXT}.0.14.0
+    - test -f ${PREFIX}/lib/libpcre2-32${SHLIB_EXT}
+    - test -f ${PREFIX}/lib/libpcre2-32${SHLIB_EXT}.0
+    - test -f ${PREFIX}/lib/libpcre2-32${SHLIB_EXT}.0.14.0
+    - test -f ${PREFIX}/lib/pkgconfig/libpcre2-8.pc
+    - test -f ${PREFIX}/lib/pkgconfig/libpcre2-16.pc
+    - test -f ${PREFIX}/lib/pkgconfig/libpcre2-32.pc
+    - test -f ${PREFIX}/lib/pkgconfig/libpcre2-posix.pc
+    - test -f ${PREFIX}/lib/cmake/pcre2/pcre2-config.cmake
+    - test -f ${PREFIX}/lib/cmake/pcre2/pcre2-config-version.cmake
+about:
+  description: 'The PCRE library is a set of functions that implement regular expression
+    pattern matching
+
+    using the same syntax and semantics as Perl 5. PCRE has its own native API, as
+    well as a set of
+
+    wrapper functions that correspond to the POSIX regular expression API. The PCRE
+    library is
+
+    free, even for building proprietary software.
+
+    '
+  dev_url: https://github.com/PCRE2Project/pcre2
+  doc_url: https://www.pcre.org/current/doc/html/
+  home: https://www.pcre.org
+  license: BSD-3-Clause WITH PCRE2-exception
+  license_family: BSD
+  license_file: LICENCE.md
+  summary: Regular expression pattern matching using Perl 5 syntax and semantics.
+extra:
+  copy_test_source_files: true
+  final: true
+  recipe-maintainers:
+    - dfornika
+    - mariusvniekerk
+    - xhochy

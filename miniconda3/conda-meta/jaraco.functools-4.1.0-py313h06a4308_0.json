@@ -1,0 +1,49 @@
+{
+  "name": "jaraco.functools",
+  "version": "4.1.0",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "jaraco.functools-4.1.0-py313h06a4308_0.conda",
+  "md5": "472d048415f35e29b8b39a6cfc947ccd",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/jaraco.functools-4.1.0-py313h06a4308_0.conda",
+  "sha256": "6beb53bbcc15ac3045b5ff4d695baf370974345d7626b323c1951a9041d0722e",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [
+    "more-itertools",
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313"
+  ],
+  "constrains": [],
+  "license": "MIT",
+  "license_family": "MIT",
+  "timestamp": 1740408209000,
+  "size": 23834,
+  "requested_spec": "pkgs/main/linux-64::jaraco.functools==4.1.0=py313h06a4308_0",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/jaraco.functools-4.1.0-py313h06a4308_0.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/jaraco.functools-4.1.0-py313h06a4308_0",
+  "files": [
+    "lib/python3.13/site-packages/jaraco.functools-4.1.0.dist-info/INSTALLER",
+    "lib/python3.13/site-packages/jaraco.functools-4.1.0.dist-info/LICENSE",
+    "lib/python3.13/site-packages/jaraco.functools-4.1.0.dist-info/METADATA",
+    "lib/python3.13/site-packages/jaraco.functools-4.1.0.dist-info/RECORD",
+    "lib/python3.13/site-packages/jaraco.functools-4.1.0.dist-info/REQUESTED",
+    "lib/python3.13/site-packages/jaraco.functools-4.1.0.dist-info/WHEEL",
+    "lib/python3.13/site-packages/jaraco.functools-4.1.0.dist-info/direct_url.json",
+    "lib/python3.13/site-packages/jaraco.functools-4.1.0.dist-info/top_level.txt",
+    "lib/python3.13/site-packages/jaraco/functools/__init__.py",
+    "lib/python3.13/site-packages/jaraco/functools/__init__.pyi",
+    "lib/python3.13/site-packages/jaraco/functools/__pycache__/__init__.cpython-313.pyc",
+    "lib/python3.13/site-packages/jaraco/functools/py.typed"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": []
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/jaraco.functools-4.1.0-py313h06a4308_0",
+    "type": 1
+  }
+}

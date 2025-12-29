@@ -1,0 +1,89 @@
+{
+  "name": "libcurl",
+  "version": "8.16.0",
+  "build": "heebcbe5_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "libcurl-8.16.0-heebcbe5_0.conda",
+  "md5": "81b2edf1cf80820ca4ad1481e8f049d8",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/libcurl-8.16.0-heebcbe5_0.conda",
+  "sha256": "61f4592c9e5aa1b5fd96094b3f1b4192fe569bf36ca8b4a9a18bbce4dba18513",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [
+    "__glibc >=2.28,<3.0.a0",
+    "libgcc-ng >=11.2.0",
+    "libidn2 >=2,<3.0a0",
+    "libnghttp2 >=1.57.0",
+    "libnghttp2 >=1.57.0,<2.0a0",
+    "libssh2 >=1.11.1",
+    "libssh2 >=1.11.1,<2.0a0",
+    "openssl >=3.0.18,<4.0a0",
+    "zlib >=1.2.13,<2.0a0",
+    "zstd >=1.5.6,<1.6.0a0"
+  ],
+  "constrains": [],
+  "license": "curl",
+  "license_family": "MIT",
+  "timestamp": 1761555570000,
+  "size": 468995,
+  "requested_spec": "pkgs/main/linux-64::libcurl==8.16.0=heebcbe5_0",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/libcurl-8.16.0-heebcbe5_0.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/libcurl-8.16.0-heebcbe5_0",
+  "files": [
+    "bin/curl-config",
+    "include/curl/curl.h",
+    "include/curl/curlver.h",
+    "include/curl/easy.h",
+    "include/curl/header.h",
+    "include/curl/mprintf.h",
+    "include/curl/multi.h",
+    "include/curl/options.h",
+    "include/curl/stdcheaders.h",
+    "include/curl/system.h",
+    "include/curl/typecheck-gcc.h",
+    "include/curl/urlapi.h",
+    "include/curl/websockets.h",
+    "lib/libcurl.so",
+    "lib/libcurl.so.4",
+    "lib/libcurl.so.4.8.0",
+    "lib/pkgconfig/libcurl.pc"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "bin/curl-config",
+        "prefix_placeholder": "/home/task_176155543361224/conda-bld/curl-split_1761555530776/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placeh",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "sha256": "07bd91aae2c518d101e351ca869601ecc6fc07f87de165e33e27bae3f2f97923",
+        "size_in_bytes": 5518,
+        "sha256_in_prefix": "7bd12fcd2f88a9227ced6f9dd808632326a71da127da419d6a95759e9bb255b7"
+      },
+      {
+        "_path": "lib/libcurl.so.4.8.0",
+        "prefix_placeholder": "/home/task_176155543361224/conda-bld/curl-split_1761555530776/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placeh",
+        "file_mode": "binary",
+        "path_type": "hardlink",
+        "sha256": "f1e89a8397c7ce0783df8088d0a819c902e1913d6e0c7d5024857bc77423b0ec",
+        "size_in_bytes": 1074592,
+        "sha256_in_prefix": "cbbbe91bdfbddbe4a6ac17bc6d5d786b1abb81cbb61f1413deaef1f8c8d38fb3"
+      },
+      {
+        "_path": "lib/pkgconfig/libcurl.pc",
+        "prefix_placeholder": "/home/task_176155543361224/conda-bld/curl-split_1761555530776/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placeh",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "sha256": "03b5b104885c5fe22ff6301fc264eba8a8d617e950c73a08e14379c939877908",
+        "size_in_bytes": 1998,
+        "sha256_in_prefix": "b8486557b4e62180ce48805924e734ae43a96d27a6b85eab1c5353644c57cf0f"
+      }
+    ]
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/libcurl-8.16.0-heebcbe5_0",
+    "type": 1
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "arch": "x86_64",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [
+    "h2 >=4,<5",
+    "backports.zstd >=1.0.0"
+  ],
+  "depends": [
+    "brotlicffi >=1.2.0",
+    "pysocks >=1.5.6,<2.0,!=1.5.7",
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313"
+  ],
+  "fn": "urllib3-2.6.1-py313h06a4308_0.conda",
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "196278215b7853b93ba2639f482ab3df",
+  "name": "urllib3",
+  "platform": "linux",
+  "sha256": "9e06ea12c3e55f24cdab0060547103e508b51e7da8f7699c895de8e1f5f28c20",
+  "size": 355853,
+  "subdir": "linux-64",
+  "timestamp": 1765399219000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/urllib3-2.6.1-py313h06a4308_0.conda",
+  "version": "2.6.1"
+}

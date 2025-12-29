@@ -1,0 +1,7 @@
+prefix=/data2/ai3625/workspace/ai3625-18/miniconda3
+includedir=${prefix}/include
+
+Name: CompositeExt
+Description: Composite extension headers
+Version: 0.4.2
+Cflags: -I${includedir}

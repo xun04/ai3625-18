@@ -1,0 +1,26 @@
+{
+  "arch": "x86_64",
+  "build": "h2a70700_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "__glibc >=2.28,<3.0.a0",
+    "libgcc-ng >=11.2.0",
+    "ncurses >=6.5,<7.0a0",
+    "readline >=8.3,<9.0a0",
+    "zlib >=1.2.13,<2.0a0"
+  ],
+  "fn": "sqlite-3.51.0-h2a70700_0.conda",
+  "license": "blessing",
+  "license_family": "Other",
+  "md5": "99a4278be9c6901ee6989b24fd213240",
+  "name": "sqlite",
+  "platform": "linux",
+  "sha256": "b221a2eeb714f637146389d8e95e2496558413a9eb61e6723ed8d31a5984188a",
+  "size": 1227253,
+  "subdir": "linux-64",
+  "timestamp": 1762525044000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/sqlite-3.51.0-h2a70700_0.conda",
+  "version": "3.51.0"
+}

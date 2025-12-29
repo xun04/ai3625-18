@@ -1,0 +1,26 @@
+{
+  "arch": "x86_64",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313",
+    "rich",
+    "shellingham",
+    "typer-slim 0.20.0 py313h06a4308_0"
+  ],
+  "fn": "typer-slim-standard-0.20.0-py313h06a4308_0.conda",
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "7c635f2e59cfb6bdbe6985d8ed4eab03",
+  "name": "typer-slim-standard",
+  "platform": "linux",
+  "sha256": "9a0e77bd0bb5446e99bdb20d7829dd6d20e67bb77379e021f38e796d9b56f770",
+  "size": 6962,
+  "subdir": "linux-64",
+  "timestamp": 1765547162000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/typer-slim-standard-0.20.0-py313h06a4308_0.conda",
+  "version": "0.20.0"
+}

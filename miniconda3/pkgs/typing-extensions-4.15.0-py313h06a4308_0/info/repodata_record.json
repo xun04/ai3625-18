@@ -1,0 +1,24 @@
+{
+  "arch": "x86_64",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313",
+    "typing_extensions 4.15.0 py313h06a4308_0"
+  ],
+  "fn": "typing-extensions-4.15.0-py313h06a4308_0.conda",
+  "license": "PSF-2.0",
+  "license_family": "PSF",
+  "md5": "1c8a1efd0b3a33cee5c2dceae66bbc69",
+  "name": "typing-extensions",
+  "platform": "linux",
+  "sha256": "8aed1c54e0b3b89551f84dd7815d05e5369632f134661e15fa325f08892e46a7",
+  "size": 11238,
+  "subdir": "linux-64",
+  "timestamp": 1756280930000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/typing-extensions-4.15.0-py313h06a4308_0.conda",
+  "version": "4.15.0"
+}

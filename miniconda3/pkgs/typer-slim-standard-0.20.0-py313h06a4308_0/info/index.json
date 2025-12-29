@@ -1,0 +1,19 @@
+{
+  "arch": "x86_64",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "depends": [
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313",
+    "rich",
+    "shellingham",
+    "typer-slim 0.20.0 py313h06a4308_0"
+  ],
+  "license": "MIT",
+  "license_family": "MIT",
+  "name": "typer-slim-standard",
+  "platform": "linux",
+  "subdir": "linux-64",
+  "timestamp": 1765547162343,
+  "version": "0.20.0"
+}

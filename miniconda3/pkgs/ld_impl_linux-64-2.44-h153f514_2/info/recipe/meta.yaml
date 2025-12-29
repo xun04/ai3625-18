@@ -1,0 +1,75 @@
+# This file created by conda-build 25.1.2
+# ------------------------------------------------
+
+package:
+  name: ld_impl_linux-64
+  version: '2.44'
+source:
+  - patches:
+      - patches/0001-check_ldrunpath_length.patch
+      - patches/0001-fallback-sysroot.diff
+      - patches/0006-sysroot.patch
+      - patches/0007-poison-system-directories.patch
+      - patches/0009-fix-align-kernel.patch
+    sha256: f66390a661faa117d00fab2e79cf2dc9d097b42cc296bf3f8677d1e7b452dc3a
+    url:
+      - https://ftp.gnu.org/gnu/binutils/binutils-2.44.tar.bz2
+      - https://mirrors.ocf.berkeley.edu/gnu/binutils/binutils-2.44.tar.bz2
+build:
+  detect_binary_files_with_prefix: true
+  ignore_run_exports_from:
+    - gcc_bootstrap_linux-64 11.2.0.*
+  merge_build_host: false
+  number: 2
+  string: h153f514_2
+requirements:
+  build:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - gcc_bootstrap_linux-64 11.2.0 h99d4493_2
+    - kernel-headers_linux-64 4.18.0 h528b178_0
+    - libgcc-ng 11.2.0 h1234567_1
+    - libgomp 11.2.0 h1234567_1
+    - libstdcxx-ng 11.2.0 h1234567_1
+    - sysroot_linux-64 2.28 h528b178_0
+    - tzdata 2025b h04d1e81_0
+  host:
+    - __glibc >=2.28,<3.0.a0
+  run:
+    - __glibc >=2.28,<3.0.a0
+  run_constrained:
+    - binutils_impl_linux-64 2.44
+test:
+  commands:
+    - x86_64-conda-linux-gnu-ld --help
+    - echo "conda"
+about:
+  description: 'A set of programming tools for creating and managing binary programs,
+    object files,
+
+    libraries, profile data, and assembly source code. The main ones are ld, as, and
+    gold.
+
+    '
+  dev_url: https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git
+  doc_url: https://www.gnu.org/software/binutils/
+  home: https://www.gnu.org/software/binutils/
+  license: GPL-3.0-only
+  license_family: GPL
+  license_file:
+    - COPYING
+    - COPYING.LIB
+    - COPYING3
+    - COPYING3.LIB
+  summary: The GNU Binutils are a collection of binary tools.
+extra:
+  copy_test_source_files: true
+  final: true
+  recipe-maintainers:
+    - beckermr
+    - frol
+    - isuruf
+    - jjhelmus
+  skip-lints:
+    - invalid_url
+    - stdlib_must_be_in_build

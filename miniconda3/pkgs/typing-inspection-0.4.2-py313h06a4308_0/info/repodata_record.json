@@ -1,0 +1,24 @@
+{
+  "arch": "x86_64",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313",
+    "typing_extensions >=4.12.0"
+  ],
+  "fn": "typing-inspection-0.4.2-py313h06a4308_0.conda",
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "b5ea08882d6d5cca3e38a27a3575e85c",
+  "name": "typing-inspection",
+  "platform": "linux",
+  "sha256": "00aa2a9ef266a76e0823cf313c961dccede14699c163261b3422151bcce4c725",
+  "size": 32310,
+  "subdir": "linux-64",
+  "timestamp": 1760614182000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/typing-inspection-0.4.2-py313h06a4308_0.conda",
+  "version": "0.4.2"
+}

@@ -1,0 +1,10 @@
+prefix=/croot/jansson_1705704561840/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: Jansson
+Description: Library for encoding, decoding and manipulating JSON data
+Version: 2.14
+Libs: -L${libdir} -ljansson
+Cflags: -I${includedir}

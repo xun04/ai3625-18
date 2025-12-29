@@ -1,0 +1,22 @@
+{
+  "arch": "x86_64",
+  "build": "h5eee18b_1",
+  "build_number": 1,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "libgcc-ng >=11.2.0"
+  ],
+  "fn": "jansson-2.14-h5eee18b_1.conda",
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "852537d568f5ed410a100d65424039dc",
+  "name": "jansson",
+  "platform": "linux",
+  "sha256": "e76928987010e8d60fe7e2edbbf733643ed16f17eb9cbcd96bc4dcb2d823dec2",
+  "size": 38170,
+  "subdir": "linux-64",
+  "timestamp": 1705704612000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/jansson-2.14-h5eee18b_1.conda",
+  "version": "2.14"
+}

@@ -1,0 +1,23 @@
+{
+  "arch": "x86_64",
+  "build": "py313h06a4308_1",
+  "build_number": 1,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313"
+  ],
+  "fn": "pysocks-1.7.1-py313h06a4308_1.conda",
+  "license": "BSD 3-Clause",
+  "license_family": "BSD",
+  "md5": "e1ab9ffa1588856f0bdbb204322568c4",
+  "name": "pysocks",
+  "platform": "linux",
+  "sha256": "b13f6e99c9e451e2f4aa7216da208ea0c68a9cecafa945d59c9b7c8d554a7005",
+  "size": 35801,
+  "subdir": "linux-64",
+  "timestamp": 1761753024000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/pysocks-1.7.1-py313h06a4308_1.conda",
+  "version": "1.7.1"
+}

@@ -1,0 +1,124 @@
+# This file created by conda-build 25.1.2
+# meta.yaml template originally from:
+# /home/task_176539908095521/urllib3-feedstock/recipe, last modified Wed Dec 10 20:39:37 2025
+# ------------------------------------------------
+
+package:
+  name: urllib3
+  version: 2.6.1
+source:
+  patches:
+    - patches/0001-remove-dummyserver-usage-in-tests.patch
+  sha256: 5379eb6e1aba4088bae84f8242960017ec8d8e3decf30480b3a1abdaa9671a3f
+  url: https://pypi.org/packages/source/u/urllib3/urllib3-2.6.1.tar.gz
+build:
+  number: '0'
+  script: /home/task_176539908095521/conda-bld/urllib3_1765399198587/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold/bin/python
+    -m pip install . -vv --no-deps --no-build-isolation
+  string: py313h06a4308_0
+requirements:
+  host:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - bzip2 1.0.8 h5eee18b_6
+    - ca-certificates 2025.12.2 h06a4308_0
+    - expat 2.7.3 h7354ed3_4
+    - hatch-vcs 0.5.0 py313h06a4308_0
+    - hatchling 1.27.0 py313h06a4308_1
+    - ld_impl_linux-64 2.44 h153f514_2
+    - libexpat 2.7.3 h7354ed3_4
+    - libffi 3.4.4 h6a678d5_1
+    - libgcc 15.2.0 h69a1729_7
+    - libgcc-ng 15.2.0 h166f726_7
+    - libgomp 15.2.0 h4751f2c_7
+    - libmpdec 4.0.0 h5eee18b_0
+    - libstdcxx 15.2.0 h39759b7_7
+    - libstdcxx-ng 15.2.0 hc03a8fd_7
+    - libuuid 1.41.5 h5eee18b_0
+    - libxcb 1.17.0 h9b100fa_0
+    - libzlib 1.3.1 hb25bd0a_0
+    - ncurses 6.5 h7934f7d_0
+    - openssl 3.0.18 hd6dcaed_0
+    - packaging 25.0 py313h06a4308_1
+    - pathspec 0.12.1 py313h06a4308_1
+    - pip 25.3 pyhc872135_0
+    - pluggy 1.5.0 py313h06a4308_0
+    - pthread-stubs 0.3 h0ce48e5_1
+    - python 3.13.10 hcf712cf_100_cp313
+    - python_abi 3.13 3_cp313
+    - readline 8.3 hc2a1206_0
+    - setuptools 80.9.0 py313h06a4308_0
+    - setuptools-scm 9.2.2 py313h06a4308_0
+    - sqlite 3.51.0 h2a70700_0
+    - tk 8.6.15 h54e0aa7_0
+    - trove-classifiers 2025.5.9.12 py313h06a4308_0
+    - tzdata 2025b h04d1e81_0
+    - wheel 0.45.1 py313h06a4308_0
+    - xorg-libx11 1.8.12 h9b100fa_1
+    - xorg-libxau 1.0.12 h9b100fa_0
+    - xorg-libxdmcp 1.1.5 h9b100fa_0
+    - xorg-xorgproto 2024.1 h5eee18b_1
+    - xz 5.6.4 h5eee18b_1
+    - zlib 1.3.1 hb25bd0a_0
+  run:
+    - brotlicffi >=1.2.0
+    - pysocks >=1.5.6,<2.0,!=1.5.7
+    - python >=3.13,<3.14.0a0
+    - python_abi 3.13.* *_cp313
+  run_constrained:
+    - backports.zstd >=1.0.0
+    - h2 >=4,<5
+test:
+  commands:
+    - pip check
+    - python -c "from importlib.metadata import version; assert(version('urllib3')=='2.6.1')"
+    - cd test && pytest -v test_collections.py test_compatibility.py test_connection.py
+      test_connectionpool.py test_exceptions.py test_fields.py test_filepost.py test_http2_connection.py
+      test_no_ssl.py test_poolmanager.py test_proxymanager.py test_queue_monkeypatch.py
+      test_response.py test_retry.py test_ssl.py test_util.py test_wait.py tz_stub.py
+  imports:
+    - urllib.parse
+    - urllib3
+    - urllib3.connection
+    - urllib3.contrib
+    - urllib3.http2
+    - urllib3.util
+  requires:
+    - h2 >=4,<5
+    - pip
+    - pytest >=8.3.4
+    - trio >=0.27.0
+    - trustme >=1.2.1
+  source_files:
+    - dummyserver
+    - test
+about:
+  description: 'urllib3 is a powerful, sanity-friendly HTTP client for Python. Much
+    of the
+
+    Python ecosystem already uses urllib3. urllib3 brings many critical features
+
+    that are missing from the Python standard libraries, such as thread safety,
+
+    connection pooling, client side ssl/tls verification, support for gzip and
+
+    deflate encodings, HTTP and SOCKS proxy support, helpers for retrying requests
+
+    and dealing with HTTP redirects.
+
+    '
+  dev_url: https://github.com/urllib3/urllib3
+  doc_url: https://urllib3.readthedocs.io
+  home: https://urllib3.readthedocs.io
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.txt
+  summary: HTTP library with thread-safe connection pooling, file post, and more.
+extra:
+  copy_test_source_files: true
+  final: true
+  recipe-maintainers:
+    - ocefpaf
+    - pmlandwehr
+    - sethmlarson
+    - sigmavirus24

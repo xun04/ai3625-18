@@ -1,0 +1,23 @@
+{
+  "cxx_compiler_version": "11.2.0",
+  "c_compiler_version": "11.2.0",
+  "cxx_compiler": "gxx",
+  "c_stdlib_version": "2.28",
+  "reproc": "14.2",
+  "c_stdlib": "sysroot",
+  "openssl": "3",
+  "channel_targets": "defaults",
+  "libcurl": "8",
+  "reproc_cpp": "14.2",
+  "c_compiler": "gcc",
+  "fmt": "11",
+  "libmamba": "2.3",
+  "spdlog": "1",
+  "bzip2": "1",
+  "zstd": "1.5",
+  "target_platform": "linux-64",
+  "simdjson": "3.10",
+  "yaml_cpp": "0.8",
+  "libarchive": "3.8",
+  "__glibc": "__glibc >=2.28,<3.0.a0"
+}

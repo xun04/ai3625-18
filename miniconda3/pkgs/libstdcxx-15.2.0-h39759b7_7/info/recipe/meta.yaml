@@ -1,0 +1,51 @@
+# This file created by conda-build 25.1.2
+# ------------------------------------------------
+
+package:
+  name: libstdcxx
+  version: 15.2.0
+source:
+  - patches:
+      - patches/0001-allow-commands-in-main-specfile.patch
+      - patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch
+      - patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch
+      - patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch
+    sha256: 7294d65cc1a0558cb815af0ca8c7763d86f7a31199794ede3f630c0d1b0a5723
+    url:
+      - https://ftp.gnu.org/gnu/gcc/gcc-15.2.0/gcc-15.2.0.tar.gz
+      - https://mirrors.ocf.berkeley.edu/gnu/gcc/gcc-15.2.0/gcc-15.2.0.tar.gz
+build:
+  detect_binary_files_with_prefix: false
+  missing_dso_whitelist:
+    - '*'
+  number: 7
+  overlinking_ignore_patterns:
+    - lib/libstdc++.so.*
+  string: h39759b7_7
+requirements:
+  host:
+    - kernel-headers_linux-64 4.18.0 h528b178_0
+    - libgcc 15.2.0 h69a1729_7
+    - sysroot_linux-64 2.28 h528b178_0
+    - tzdata 2025b h04d1e81_0
+  run:
+    - __glibc >=2.28,<3.0.a0
+    - libgcc 15.2.0 h69a1729_7
+  run_constrained:
+    - libstdcxx-ng ==15.2.0=*_7
+test:
+  commands:
+    - test -f ${PREFIX}/lib/libstdc++.so
+about:
+  home: https://gcc.gnu.org/
+  license: GPL-3.0-only WITH GCC-exception-3.1
+  summary: The GNU C++ Runtime Library
+extra:
+  copy_test_source_files: true
+  feedstock-name: ctng-compilers-feedstock
+  final: true
+  recipe-maintainers:
+    - beckermr
+    - isuruf
+    - timsnyder
+    - xhochy

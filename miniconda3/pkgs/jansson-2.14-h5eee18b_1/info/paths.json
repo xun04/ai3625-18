@@ -1,0 +1,43 @@
+{
+  "paths": [
+    {
+      "_path": "include/jansson.h",
+      "path_type": "hardlink",
+      "sha256": "8945f933b82707edea06a9e006bd7b65b160a6301f7bf90da569e263deed11f2",
+      "size_in_bytes": 16330
+    },
+    {
+      "_path": "include/jansson_config.h",
+      "path_type": "hardlink",
+      "sha256": "3fbee9af15d0707d4aba19e14397f8657b02b91898a8d3f03da41539798e5d1b",
+      "size_in_bytes": 1627
+    },
+    {
+      "_path": "lib/libjansson.so",
+      "path_type": "softlink",
+      "sha256": "c8edb0bc1ab06418221a3efde1890af126afa94d6211bb12ade1353a762f4558",
+      "size_in_bytes": 73032
+    },
+    {
+      "_path": "lib/libjansson.so.4",
+      "path_type": "softlink",
+      "sha256": "c8edb0bc1ab06418221a3efde1890af126afa94d6211bb12ade1353a762f4558",
+      "size_in_bytes": 73032
+    },
+    {
+      "_path": "lib/libjansson.so.4.14.0",
+      "path_type": "hardlink",
+      "sha256": "c8edb0bc1ab06418221a3efde1890af126afa94d6211bb12ade1353a762f4558",
+      "size_in_bytes": 73032
+    },
+    {
+      "_path": "lib/pkgconfig/jansson.pc",
+      "file_mode": "text",
+      "path_type": "hardlink",
+      "prefix_placeholder": "/croot/jansson_1705704561840/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold",
+      "sha256": "4eadc4f6807429995daf474d03b861517077471809629af86b087071b70d2a61",
+      "size_in_bytes": 492
+    }
+  ],
+  "paths_version": 1
+}

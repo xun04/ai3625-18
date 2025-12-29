@@ -1,0 +1,99 @@
+# This file created by conda-build 25.1.2
+# ------------------------------------------------
+
+package:
+  name: libnghttp2
+  version: 1.67.1
+source:
+  sha256: da8d640f55036b1f5c9cd950083248ec956256959dc74584e12c43550d6ec0ef
+  url: https://github.com/nghttp2/nghttp2/releases/download/v1.67.1/nghttp2-1.67.1.tar.gz
+build:
+  number: 0
+  run_exports:
+    - libnghttp2 >=1.67.1,<1.68.0a0
+  string: h697f920_0
+requirements:
+  build:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - binutils_impl_linux-64 2.44 h4b9a079_2
+    - binutils_linux-64 2.44 hc03a8fd_2
+    - gcc_impl_linux-64 15.2.0 h36674fd_7
+    - gcc_linux-64 15.2.0 h1ca4c6b_11
+    - gxx_impl_linux-64 15.2.0 h6e002af_7
+    - gxx_linux-64 15.2.0 h94d4220_11
+    - kernel-headers_linux-64 4.18.0 h528b178_0
+    - ld_impl_linux-64 2.44 h153f514_2
+    - libgcc 15.2.0 h69a1729_7
+    - libgcc-devel_linux-64 15.2.0 hcb64138_107
+    - libgcc-ng 15.2.0 h166f726_7
+    - libgomp 15.2.0 h4751f2c_7
+    - libsanitizer 15.2.0 h56912e6_7
+    - libstdcxx 15.2.0 h39759b7_7
+    - libstdcxx-devel_linux-64 15.2.0 hcb64138_107
+    - make 4.2.1 h1bed415_1
+    - sysroot_linux-64 2.28 h528b178_0
+    - tzdata 2025b h04d1e81_0
+  host:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - c-ares 1.34.5 hef5626c_0
+    - ca-certificates 2025.11.4 h06a4308_0
+    - icu 73.1 h6a678d5_0
+    - jansson 2.14 h5eee18b_1
+    - libev 4.33 h7f8727e_1
+    - libgcc 15.2.0 h69a1729_7
+    - libgcc-ng 15.2.0 h166f726_7
+    - libgomp 15.2.0 h4751f2c_7
+    - libstdcxx 15.2.0 h39759b7_7
+    - libstdcxx-ng 15.2.0 hc03a8fd_7
+    - libxml2 2.13.9 h2c43086_0
+    - openssl 3.0.18 hd6dcaed_0
+    - xz 5.6.4 h5eee18b_1
+    - zlib 1.2.13 hd233ad5_2
+  run:
+    - __glibc >=2.28,<3.0.a0
+    - c-ares >=1.34.5,<2.0a0
+    - c-ares >=1.7.5
+    - jansson >=2.14,<3.0a0
+    - jansson >=2.5
+    - libev >=4.11
+    - libev >=4.33,<4.34.0a0
+    - libgcc >=15
+    - libstdcxx >=15
+    - libstdcxx-ng
+    - libxml2 >=2.13.9,<2.14.0a0
+    - libxml2 >=2.6.26
+    - openssl >=1.1.1
+    - openssl >=3.0.18,<4.0a0
+    - zlib >=1.2.13,<2.0a0
+    - zlib >=1.2.3
+test:
+  commands:
+    - test -f ${PREFIX}/lib/libnghttp2.so
+about:
+  description: 'This is an implementation of the Hypertext Transfer Protocol version
+    2 in C.
+
+
+    The framing layer of HTTP/2 is implemented as a reusable C library. On top
+
+    of that, we have implemented an HTTP/2 client, server and proxy. We have
+
+    also developed load test and benchmarking tools for HTTP/2.
+
+    '
+  dev_url: https://github.com/nghttp2/nghttp2
+  doc_url: https://nghttp2.org/documentation
+  home: https://github.com/nghttp2/nghttp2
+  license: MIT
+  license_family: MIT
+  license_file: COPYING
+  summary: This is an implementation of Hypertext Transfer Protocol version 2.
+extra:
+  copy_test_source_files: true
+  final: true
+  recipe-maintainers:
+    - cpaulik
+    - mariusvniekerk
+    - wolfv

@@ -1,0 +1,23 @@
+{
+  "arch": "x86_64",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313"
+  ],
+  "fn": "pycparser-2.23-py313h06a4308_0.conda",
+  "license": "BSD-3-Clause",
+  "license_family": "BSD",
+  "md5": "83153b618937780dfcf0eea5cf2536d8",
+  "name": "pycparser",
+  "platform": "linux",
+  "sha256": "732e3ef6126f3d033e8cc8cd22ba2382118258e81c4be8f34e9dad25bd59f1a5",
+  "size": 281676,
+  "subdir": "linux-64",
+  "timestamp": 1757496057000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/pycparser-2.23-py313h06a4308_0.conda",
+  "version": "2.23"
+}

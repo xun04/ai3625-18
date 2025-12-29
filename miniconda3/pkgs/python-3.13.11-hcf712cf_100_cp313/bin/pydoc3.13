@@ -1,0 +1,5 @@
+#!/home/task_176540149194472/conda-bld/python-split_1765401560329/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_plac/bin/python3.13
+
+import pydoc
+if __name__ == '__main__':
+    pydoc.cli()

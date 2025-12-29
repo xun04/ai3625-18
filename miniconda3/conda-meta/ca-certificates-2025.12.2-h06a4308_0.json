@@ -1,0 +1,35 @@
+{
+  "name": "ca-certificates",
+  "version": "2025.12.2",
+  "build": "h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "ca-certificates-2025.12.2-h06a4308_0.conda",
+  "md5": "4a93c43656592eb990b914fead171268",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/ca-certificates-2025.12.2-h06a4308_0.conda",
+  "sha256": "0c11f114b16e3b392f9e23f62ed6e48df81e1faec9bd036459edf7009bd819ac",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [],
+  "constrains": [],
+  "license": "MPL-2.0",
+  "license_family": "Other",
+  "timestamp": 1764713819000,
+  "size": 128414,
+  "requested_spec": "pkgs/main/linux-64::ca-certificates==2025.12.2=h06a4308_0",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/ca-certificates-2025.12.2-h06a4308_0.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/ca-certificates-2025.12.2-h06a4308_0",
+  "files": [
+    "ssl/cacert.pem",
+    "ssl/cert.pem"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": []
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/ca-certificates-2025.12.2-h06a4308_0",
+    "type": 1
+  }
+}

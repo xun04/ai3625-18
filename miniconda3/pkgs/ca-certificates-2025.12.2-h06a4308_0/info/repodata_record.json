@@ -1,0 +1,20 @@
+{
+  "arch": "x86_64",
+  "build": "h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [],
+  "fn": "ca-certificates-2025.12.2-h06a4308_0.conda",
+  "license": "MPL-2.0",
+  "license_family": "Other",
+  "md5": "4a93c43656592eb990b914fead171268",
+  "name": "ca-certificates",
+  "platform": "linux",
+  "sha256": "0c11f114b16e3b392f9e23f62ed6e48df81e1faec9bd036459edf7009bd819ac",
+  "size": 128414,
+  "subdir": "linux-64",
+  "timestamp": 1764713819000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/ca-certificates-2025.12.2-h06a4308_0.conda",
+  "version": "2025.12.2"
+}

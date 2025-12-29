@@ -1,0 +1,69 @@
+{
+  "name": "fmt",
+  "version": "11.2.0",
+  "build": "hca5f364_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "fmt-11.2.0-hca5f364_0.conda",
+  "md5": "0615a40b477dd3a4488d67cd422a1365",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/fmt-11.2.0-hca5f364_0.conda",
+  "sha256": "851afd6890164c6894572c275a7d3fb87dac4ce8b3760925febb2c3779306275",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [
+    "__glibc >=2.17,<3.0.a0",
+    "libgcc-ng >=11.2.0",
+    "libstdcxx-ng >=11.2.0"
+  ],
+  "constrains": [],
+  "license": "MIT",
+  "license_family": "MIT",
+  "timestamp": 1754990938000,
+  "size": 206513,
+  "requested_spec": "pkgs/main/linux-64::fmt==11.2.0=hca5f364_0",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/fmt-11.2.0-hca5f364_0.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/fmt-11.2.0-hca5f364_0",
+  "files": [
+    "include/fmt/args.h",
+    "include/fmt/base.h",
+    "include/fmt/chrono.h",
+    "include/fmt/color.h",
+    "include/fmt/compile.h",
+    "include/fmt/core.h",
+    "include/fmt/format-inl.h",
+    "include/fmt/format.h",
+    "include/fmt/os.h",
+    "include/fmt/ostream.h",
+    "include/fmt/printf.h",
+    "include/fmt/ranges.h",
+    "include/fmt/std.h",
+    "include/fmt/xchar.h",
+    "lib/cmake/fmt/fmt-config-version.cmake",
+    "lib/cmake/fmt/fmt-config.cmake",
+    "lib/cmake/fmt/fmt-targets-release.cmake",
+    "lib/cmake/fmt/fmt-targets.cmake",
+    "lib/libfmt.so",
+    "lib/libfmt.so.11",
+    "lib/libfmt.so.11.2.0",
+    "lib/pkgconfig/fmt.pc"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "lib/pkgconfig/fmt.pc",
+        "prefix_placeholder": "/croot/fmt_1754990818093/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "sha256": "5880c1d2a6141abde102618ff3ee5e7275b2f4b742ca0d4646c910437ece16c8",
+        "size_in_bytes": 703,
+        "sha256_in_prefix": "8e76e910adad085a4ae02e0ff69489a2ac93b9ecc7dd7a3a9b4b2e15dde00d48"
+      }
+    ]
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/fmt-11.2.0-hca5f364_0",
+    "type": 1
+  }
+}

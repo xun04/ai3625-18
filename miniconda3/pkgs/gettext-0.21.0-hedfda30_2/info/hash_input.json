@@ -1,0 +1,10 @@
+{
+  "channel_targets": "defaults",
+  "libxml2": "2.13",
+  "target_platform": "linux-64",
+  "gnu": "2.12.2",
+  "cxx_compiler": "gxx",
+  "c_compiler_version": "11.2.0",
+  "c_compiler": "gcc",
+  "cxx_compiler_version": "11.2.0"
+}

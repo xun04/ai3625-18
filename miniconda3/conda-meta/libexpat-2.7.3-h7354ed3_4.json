@@ -1,0 +1,62 @@
+{
+  "name": "libexpat",
+  "version": "2.7.3",
+  "build": "h7354ed3_4",
+  "build_number": 4,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "libexpat-2.7.3-h7354ed3_4.conda",
+  "md5": "b5cca7a97838853de6117cfb71ed03fa",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/libexpat-2.7.3-h7354ed3_4.conda",
+  "sha256": "5183fd67bd468a6b2e095d1bd5fe7e57b8629b0a9ff5841500e9451c0831ea73",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [
+    "__glibc >=2.28,<3.0.a0",
+    "libgcc >=14",
+    "libstdcxx >=14"
+  ],
+  "constrains": [
+    "expat 2.7.3.*"
+  ],
+  "license": "MIT",
+  "license_family": "MIT",
+  "timestamp": 1765208103000,
+  "size": 123799,
+  "requested_spec": "pkgs/main/linux-64::libexpat==2.7.3=h7354ed3_4",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/libexpat-2.7.3-h7354ed3_4.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/libexpat-2.7.3-h7354ed3_4",
+  "files": [
+    "include/expat.h",
+    "include/expat_config.h",
+    "include/expat_external.h",
+    "lib/cmake/expat-2.7.3/expat-config-version.cmake",
+    "lib/cmake/expat-2.7.3/expat-config.cmake",
+    "lib/cmake/expat-2.7.3/expat-release.cmake",
+    "lib/cmake/expat-2.7.3/expat.cmake",
+    "lib/libexpat.so",
+    "lib/libexpat.so.1",
+    "lib/libexpat.so.1.11.1",
+    "lib/pkgconfig/expat.pc",
+    "share/doc/expat/AUTHORS",
+    "share/doc/expat/changelog"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "lib/pkgconfig/expat.pc",
+        "prefix_placeholder": "/home/task_176520797206124/conda-bld/expat-split_1765208067203/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_place",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "sha256": "57797dc85e4f770ad7f7d2a8b0677a6038d3ba50c6f93aa44edc2962209d8997",
+        "size_in_bytes": 528,
+        "sha256_in_prefix": "33aa87b60ebd5a87b0d3e44868ec6d7b81a1fe0de792558a54411413316f8fa9"
+      }
+    ]
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/libexpat-2.7.3-h7354ed3_4",
+    "type": 1
+  }
+}

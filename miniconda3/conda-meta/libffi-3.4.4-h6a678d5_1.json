@@ -1,0 +1,61 @@
+{
+  "name": "libffi",
+  "version": "3.4.4",
+  "build": "h6a678d5_1",
+  "build_number": 1,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "libffi-3.4.4-h6a678d5_1.conda",
+  "md5": "70646cc713f0c43926cfdcfe9b695fe0",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/libffi-3.4.4-h6a678d5_1.conda",
+  "sha256": "b0e7fe2e5d498bc5a2c57cf942701bba8f22ec55de55e092ffbffc40b816df88",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [
+    "libgcc-ng >=11.2.0",
+    "libstdcxx-ng >=11.2.0"
+  ],
+  "constrains": [],
+  "license": "MIT",
+  "license_family": "MIT",
+  "timestamp": 1714483282000,
+  "size": 144691,
+  "requested_spec": "pkgs/main/linux-64::libffi==3.4.4=h6a678d5_1",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/libffi-3.4.4-h6a678d5_1.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/libffi-3.4.4-h6a678d5_1",
+  "files": [
+    "include/ffi.h",
+    "include/ffitarget.h",
+    "lib/libffi.7.so",
+    "lib/libffi.8.so",
+    "lib/libffi.a",
+    "lib/libffi.so",
+    "lib/libffi.so.7",
+    "lib/libffi.so.8",
+    "lib/libffi.so.8.1.2",
+    "lib/pkgconfig/libffi.pc",
+    "share/info/libffi.info",
+    "share/man/man3/ffi.3",
+    "share/man/man3/ffi_call.3",
+    "share/man/man3/ffi_prep_cif.3",
+    "share/man/man3/ffi_prep_cif_var.3"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "lib/pkgconfig/libffi.pc",
+        "prefix_placeholder": "/croot/libffi_1714483243560/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "sha256": "d42c74b8e17b72244a609b67b6f23d18da75e961f35ae11a8be0f205daee22b4",
+        "size_in_bytes": 756,
+        "sha256_in_prefix": "928547ece2199dd648dbbecad262a973ac70953554fa6c5d74002fa509a41512"
+      }
+    ]
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/libffi-3.4.4-h6a678d5_1",
+    "type": 1
+  }
+}

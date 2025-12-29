@@ -1,0 +1,94 @@
+# This file created by conda-build 24.1.2
+# ------------------------------------------------
+
+package:
+  name: typing-extensions
+  version: 4.15.0
+source:
+  sha256: 0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466
+  url: https://pypi.io/packages/source/t/typing_extensions/typing_extensions-4.15.0.tar.gz
+build:
+  number: 0
+  string: py313h06a4308_0
+requirements:
+  host:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - bzip2 1.0.8 h5eee18b_6
+    - ca-certificates 2025.7.15 h06a4308_0
+    - expat 2.7.1 h6a678d5_0
+    - ld_impl_linux-64 2.40 h12ee557_0
+    - libffi 3.4.4 h6a678d5_1
+    - libgcc-ng 11.2.0 h1234567_1
+    - libgomp 11.2.0 h1234567_1
+    - libmpdec 4.0.0 h5eee18b_0
+    - libstdcxx-ng 11.2.0 h1234567_1
+    - libuuid 1.41.5 h5eee18b_0
+    - libxcb 1.17.0 h9b100fa_0
+    - ncurses 6.5 h7934f7d_0
+    - openssl 3.0.17 h5eee18b_0
+    - pthread-stubs 0.3 h0ce48e5_1
+    - python 3.13.5 h4612cfd_100_cp313
+    - python_abi 3.13 0_cp313
+    - readline 8.3 hc2a1206_0
+    - sqlite 3.50.2 hb25bd0a_1
+    - tk 8.6.15 h54e0aa7_0
+    - tzdata 2025b h04d1e81_0
+    - xorg-libx11 1.8.12 h9b100fa_1
+    - xorg-libxau 1.0.12 h9b100fa_0
+    - xorg-libxdmcp 1.1.5 h9b100fa_0
+    - xorg-xorgproto 2024.1 h5eee18b_1
+    - xz 5.6.4 h5eee18b_1
+    - zlib 1.2.13 h5eee18b_1
+  run:
+    - python >=3.13,<3.14.0a0
+    - python_abi 3.13.* *_cp313
+    - typing_extensions 4.15.0 py313h06a4308_0
+test:
+  commands:
+    - pip check
+  imports:
+    - typing_extensions
+  requires:
+    - pip
+about:
+  description: 'The typing module was added to the standard library in Python 3.5,
+    but
+
+    many new features have been added to the module since then.
+
+    This means users of older Python versions who are unable to upgrade will not be
+
+    able to take advantage of new types added to the typing module, such as
+
+    typing.Protocol or typing.TypedDict.
+
+
+    The typing_extensions module contains backports of these changes.
+
+    Experimental types that will eventually be added to the ``typing``
+
+    module are also included in typing_extensions.
+
+    '
+  dev_url: https://github.com/python/typing_extensions
+  doc_url: https://github.com/python/typing_extensions/blob/main/README.md
+  home: https://github.com/python/typing_extensions
+  license: PSF-2.0
+  license_family: PSF
+  license_file: LICENSE
+  summary: Backported and Experimental Type Hints for Python
+extra:
+  copy_test_source_files: true
+  final: true
+  flow_run_id: e5c6bbc4-57de-42d7-957c-9117803e814e
+  recipe-maintainers:
+    - cbouss
+  remote_url: git@github.com:AnacondaRecipes/typing_extensions-feedstock.git
+  sha: 75ebfe58b58fafacd87b2825b1343f206be2fbad
+  skip-lints:
+    - missing_pip_check
+    - missing_python_build_tool
+    - outputs_not_unique
+    - patch_unnecessary
+    - wrong_output_script_key

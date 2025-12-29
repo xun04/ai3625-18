@@ -1,0 +1,8 @@
+libdir=/data2/ai3625/workspace/ai3625-18/miniconda3/lib
+includedir=/data2/ai3625/workspace/ai3625-18/miniconda3/include
+
+Name: libsolv
+Description: Library for solving packages
+Version: 0.7.30
+Libs: -L${libdir} -lsolv
+Cflags: -I${includedir}

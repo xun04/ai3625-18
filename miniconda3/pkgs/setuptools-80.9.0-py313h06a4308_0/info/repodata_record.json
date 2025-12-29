@@ -1,0 +1,23 @@
+{
+  "arch": "x86_64",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313"
+  ],
+  "fn": "setuptools-80.9.0-py313h06a4308_0.conda",
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "42ffd8d5a0c04d5e55431e3d4f6e8408",
+  "name": "setuptools",
+  "platform": "linux",
+  "sha256": "4f8d696a8781cd15584ae6a71259ec40d569af68087d5fcf22aa778a2da7b065",
+  "size": 1973119,
+  "subdir": "linux-64",
+  "timestamp": 1759863222000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/setuptools-80.9.0-py313h06a4308_0.conda",
+  "version": "80.9.0"
+}

@@ -1,0 +1,7 @@
+#!/home/task_176556791054345/conda-bld/conda_1765567979493/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_p/bin/python
+# -*- coding: utf-8 -*-
+import sys
+
+if __name__ == '__main__':
+    from conda_env.cli.main import main
+    sys.exit(main())

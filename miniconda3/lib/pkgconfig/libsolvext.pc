@@ -1,0 +1,9 @@
+libdir=/data2/ai3625/workspace/ai3625-18/miniconda3/lib
+includedir=/data2/ai3625/workspace/ai3625-18/miniconda3/include
+
+Name: libsolvext
+Description: Library for reading repositories
+Version: 0.7.30
+Requires: libsolv
+Libs: -L${libdir} -lsolvext
+Cflags: -I${includedir}

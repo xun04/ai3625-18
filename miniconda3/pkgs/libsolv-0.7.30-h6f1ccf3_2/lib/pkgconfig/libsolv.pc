@@ -1,0 +1,8 @@
+libdir=/home/task_176035639968744/conda-bld/libsolv-suite_1760357031527/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/lib
+includedir=/home/task_176035639968744/conda-bld/libsolv-suite_1760357031527/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/include
+
+Name: libsolv
+Description: Library for solving packages
+Version: 0.7.30
+Libs: -L${libdir} -lsolv
+Cflags: -I${includedir}

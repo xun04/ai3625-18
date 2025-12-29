@@ -1,0 +1,11 @@
+#!/home/task_176583888028164/conda-bld/anaconda-cloud-auth-split_1765839818582/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_p/bin/python
+
+# -*- coding: utf-8 -*-
+import re
+import sys
+
+from anaconda_auth._conda.conda_token import cli
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(cli())

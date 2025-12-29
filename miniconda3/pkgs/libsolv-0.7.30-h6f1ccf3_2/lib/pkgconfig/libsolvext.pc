@@ -1,0 +1,9 @@
+libdir=/home/task_176035639968744/conda-bld/libsolv-suite_1760357031527/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/lib
+includedir=/home/task_176035639968744/conda-bld/libsolv-suite_1760357031527/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pla/include
+
+Name: libsolvext
+Description: Library for reading repositories
+Version: 0.7.30
+Requires: libsolv
+Libs: -L${libdir} -lsolvext
+Cflags: -I${includedir}

@@ -1,0 +1,25 @@
+{
+  "arch": "x86_64",
+  "build": "hb25bd0a_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [
+    "zlib 1.3.1"
+  ],
+  "depends": [
+    "__glibc >=2.17,<3.0.a0",
+    "libgcc-ng >=11.2.0"
+  ],
+  "fn": "libzlib-1.3.1-hb25bd0a_0.conda",
+  "license": "Zlib",
+  "license_family": "OTHER",
+  "md5": "338ee51e19ee211b7fc994d4ba88c631",
+  "name": "libzlib",
+  "platform": "linux",
+  "sha256": "2e0a3ea3aba7ffaa9c2ce9b267b34b12859f93bde8e62cedcbbab6144776568f",
+  "size": 60697,
+  "subdir": "linux-64",
+  "timestamp": 1756475934000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/libzlib-1.3.1-hb25bd0a_0.conda",
+  "version": "1.3.1"
+}

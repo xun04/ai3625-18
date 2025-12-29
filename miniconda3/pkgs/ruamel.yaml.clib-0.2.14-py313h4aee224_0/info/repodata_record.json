@@ -1,0 +1,25 @@
+{
+  "arch": "x86_64",
+  "build": "py313h4aee224_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "__glibc >=2.28,<3.0.a0",
+    "libgcc-ng >=11.2.0",
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313"
+  ],
+  "fn": "ruamel.yaml.clib-0.2.14-py313h4aee224_0.conda",
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "dad8d758af9c2b4369776c601407d9bd",
+  "name": "ruamel.yaml.clib",
+  "platform": "linux",
+  "sha256": "df7d182c5909cf1ae37d0ac9878f22ad91e76fdb87f045c0240d4486a7451789",
+  "size": 136835,
+  "subdir": "linux-64",
+  "timestamp": 1762530306000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/ruamel.yaml.clib-0.2.14-py313h4aee224_0.conda",
+  "version": "0.2.14"
+}

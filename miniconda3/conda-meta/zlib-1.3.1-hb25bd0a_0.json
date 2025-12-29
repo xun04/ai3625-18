@@ -1,0 +1,52 @@
+{
+  "name": "zlib",
+  "version": "1.3.1",
+  "build": "hb25bd0a_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "zlib-1.3.1-hb25bd0a_0.conda",
+  "md5": "9f3a877e5e0fa0fb39253a59ff824861",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/zlib-1.3.1-hb25bd0a_0.conda",
+  "sha256": "cf30f83189a30b12a9239f132ea0ce676fa822a52045adb0f9ff9b3b4d79ead6",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [
+    "__glibc >=2.17,<3.0.a0",
+    "libgcc-ng >=11.2.0",
+    "libzlib 1.3.1 hb25bd0a_0"
+  ],
+  "constrains": [],
+  "license": "Zlib",
+  "license_family": "OTHER",
+  "timestamp": 1756475939000,
+  "size": 98150,
+  "requested_spec": "pkgs/main/linux-64::zlib==1.3.1=hb25bd0a_0",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/zlib-1.3.1-hb25bd0a_0.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/zlib-1.3.1-hb25bd0a_0",
+  "files": [
+    "include/zconf.h",
+    "include/zlib.h",
+    "lib/libz.a",
+    "lib/libz.so",
+    "lib/pkgconfig/zlib.pc"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "lib/pkgconfig/zlib.pc",
+        "prefix_placeholder": "/croot/zlib-split_1756475892340/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placeh",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "sha256": "2267a78c914dab8b4750fb9eb843ed566d5853c3d66c2f0765405b26b7282225",
+        "size_in_bytes": 503,
+        "sha256_in_prefix": "d3c4ca1634449963cc0765cff69088f9a2cd88291ede7ee3716d795a8efb3237"
+      }
+    ]
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/zlib-1.3.1-hb25bd0a_0",
+    "type": 1
+  }
+}

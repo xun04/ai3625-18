@@ -1,0 +1,7 @@
+prefix=/data2/ai3625/workspace/ai3625-18/miniconda3
+includedir=${prefix}/include
+ 
+Name: DRI2Proto
+Description: DRI2 extension headers
+Version: 2.8
+Cflags: -I${includedir}

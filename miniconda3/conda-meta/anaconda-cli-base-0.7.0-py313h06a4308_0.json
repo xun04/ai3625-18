@@ -1,0 +1,83 @@
+{
+  "name": "anaconda-cli-base",
+  "version": "0.7.0",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "anaconda-cli-base-0.7.0-py313h06a4308_0.conda",
+  "md5": "bd51dcf852c80a792284b75f002b9f72",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/anaconda-cli-base-0.7.0-py313h06a4308_0.conda",
+  "sha256": "dfd8f2dacb047b21fce2d11d87869be2bb34c9050f92c4c1830e579c633da488",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [
+    "click",
+    "packaging >=23.0",
+    "pydantic-settings >=2.3",
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313",
+    "readchar",
+    "rich",
+    "tomli",
+    "typer >=0.17"
+  ],
+  "constrains": [
+    "anaconda-auth >=0.12.0",
+    "anaconda-cloud-cli >=0.3.0",
+    "anaconda-client >=1.13.0"
+  ],
+  "license": "BSD-3-Clause",
+  "license_family": "BSD",
+  "timestamp": 1764888759000,
+  "size": 52855,
+  "requested_spec": "pkgs/main/linux-64::anaconda-cli-base==0.7.0=py313h06a4308_0",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/anaconda-cli-base-0.7.0-py313h06a4308_0.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/anaconda-cli-base-0.7.0-py313h06a4308_0",
+  "files": [
+    "bin/anaconda",
+    "lib/python3.13/site-packages/anaconda_cli_base-0.7.0.dist-info/INSTALLER",
+    "lib/python3.13/site-packages/anaconda_cli_base-0.7.0.dist-info/METADATA",
+    "lib/python3.13/site-packages/anaconda_cli_base-0.7.0.dist-info/RECORD",
+    "lib/python3.13/site-packages/anaconda_cli_base-0.7.0.dist-info/REQUESTED",
+    "lib/python3.13/site-packages/anaconda_cli_base-0.7.0.dist-info/WHEEL",
+    "lib/python3.13/site-packages/anaconda_cli_base-0.7.0.dist-info/direct_url.json",
+    "lib/python3.13/site-packages/anaconda_cli_base-0.7.0.dist-info/entry_points.txt",
+    "lib/python3.13/site-packages/anaconda_cli_base-0.7.0.dist-info/licenses/LICENSE",
+    "lib/python3.13/site-packages/anaconda_cli_base/__init__.py",
+    "lib/python3.13/site-packages/anaconda_cli_base/__pycache__/__init__.cpython-313.pyc",
+    "lib/python3.13/site-packages/anaconda_cli_base/__pycache__/_version.cpython-313.pyc",
+    "lib/python3.13/site-packages/anaconda_cli_base/__pycache__/cli.cpython-313.pyc",
+    "lib/python3.13/site-packages/anaconda_cli_base/__pycache__/config.cpython-313.pyc",
+    "lib/python3.13/site-packages/anaconda_cli_base/__pycache__/console.cpython-313.pyc",
+    "lib/python3.13/site-packages/anaconda_cli_base/__pycache__/deprecations.cpython-313.pyc",
+    "lib/python3.13/site-packages/anaconda_cli_base/__pycache__/exceptions.cpython-313.pyc",
+    "lib/python3.13/site-packages/anaconda_cli_base/__pycache__/plugins.cpython-313.pyc",
+    "lib/python3.13/site-packages/anaconda_cli_base/_version.py",
+    "lib/python3.13/site-packages/anaconda_cli_base/cli.py",
+    "lib/python3.13/site-packages/anaconda_cli_base/config.py",
+    "lib/python3.13/site-packages/anaconda_cli_base/console.py",
+    "lib/python3.13/site-packages/anaconda_cli_base/deprecations.py",
+    "lib/python3.13/site-packages/anaconda_cli_base/exceptions.py",
+    "lib/python3.13/site-packages/anaconda_cli_base/plugins.py",
+    "lib/python3.13/site-packages/anaconda_cli_base/py.typed"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "bin/anaconda",
+        "prefix_placeholder": "/home/task_176488869080098/conda-bld/anaconda-cli-base_1764888740587/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "sha256": "95ab164ed00736333a80550382f6f56ac3fd7a644a0fd544673f898b96390563",
+        "size_in_bytes": 472,
+        "sha256_in_prefix": "daea4faa65823f0a5fde5af77f44e1ca75124713d6261a5a780d12bcce478491"
+      }
+    ]
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/anaconda-cli-base-0.7.0-py313h06a4308_0",
+    "type": 1
+  }
+}

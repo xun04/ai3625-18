@@ -1,0 +1,52 @@
+{
+  "name": "tomli",
+  "version": "2.2.1",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "tomli-2.2.1-py313h06a4308_0.conda",
+  "md5": "4ae62c3391e11617a9f6d9556d8062c7",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/tomli-2.2.1-py313h06a4308_0.conda",
+  "sha256": "46f23d8ae5c7186975393417efe8ff084f645e6556342b1b3c8ef3e371e7ebfe",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313"
+  ],
+  "constrains": [],
+  "license": "MIT",
+  "license_family": "MIT",
+  "timestamp": 1753774637000,
+  "size": 35275,
+  "requested_spec": "pkgs/main/linux-64::tomli==2.2.1=py313h06a4308_0",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/tomli-2.2.1-py313h06a4308_0.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/tomli-2.2.1-py313h06a4308_0",
+  "files": [
+    "lib/python3.13/site-packages/tomli-2.2.1.dist-info/INSTALLER",
+    "lib/python3.13/site-packages/tomli-2.2.1.dist-info/LICENSE",
+    "lib/python3.13/site-packages/tomli-2.2.1.dist-info/METADATA",
+    "lib/python3.13/site-packages/tomli-2.2.1.dist-info/RECORD",
+    "lib/python3.13/site-packages/tomli-2.2.1.dist-info/REQUESTED",
+    "lib/python3.13/site-packages/tomli-2.2.1.dist-info/WHEEL",
+    "lib/python3.13/site-packages/tomli-2.2.1.dist-info/direct_url.json",
+    "lib/python3.13/site-packages/tomli/__init__.py",
+    "lib/python3.13/site-packages/tomli/__pycache__/__init__.cpython-313.pyc",
+    "lib/python3.13/site-packages/tomli/__pycache__/_parser.cpython-313.pyc",
+    "lib/python3.13/site-packages/tomli/__pycache__/_re.cpython-313.pyc",
+    "lib/python3.13/site-packages/tomli/__pycache__/_types.cpython-313.pyc",
+    "lib/python3.13/site-packages/tomli/_parser.py",
+    "lib/python3.13/site-packages/tomli/_re.py",
+    "lib/python3.13/site-packages/tomli/_types.py",
+    "lib/python3.13/site-packages/tomli/py.typed"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": []
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/tomli-2.2.1-py313h06a4308_0",
+    "type": 1
+  }
+}

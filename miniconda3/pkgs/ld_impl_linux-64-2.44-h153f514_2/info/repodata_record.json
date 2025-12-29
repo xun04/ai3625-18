@@ -1,0 +1,24 @@
+{
+  "arch": "x86_64",
+  "build": "h153f514_2",
+  "build_number": 2,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [
+    "binutils_impl_linux-64 2.44"
+  ],
+  "depends": [
+    "__glibc >=2.28,<3.0.a0"
+  ],
+  "fn": "ld_impl_linux-64-2.44-h153f514_2.conda",
+  "license": "GPL-3.0-only",
+  "license_family": "GPL",
+  "md5": "dffdc9a0e09d04051d4bd758e104f4b3",
+  "name": "ld_impl_linux-64",
+  "platform": "linux",
+  "sha256": "89bc181d3d5976e5d7a763329c8877031e36ae5a3e9eabe7475e3cb1f55f5822",
+  "size": 688236,
+  "subdir": "linux-64",
+  "timestamp": 1759940114000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/ld_impl_linux-64-2.44-h153f514_2.conda",
+  "version": "2.44"
+}

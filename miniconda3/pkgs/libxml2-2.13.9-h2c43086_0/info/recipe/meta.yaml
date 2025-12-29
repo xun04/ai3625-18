@@ -1,0 +1,85 @@
+# This file created by conda-build 25.1.2
+# meta.yaml template originally from:
+# /home/task_176176819578609/libxml2-feedstock/recipe, last modified Wed Oct 29 20:15:01 2025
+# ------------------------------------------------
+
+package:
+  name: libxml2
+  version: 2.13.9
+source:
+  patches: null
+  sha256: 8d5fa142a3ea8727db1f7988b01f75b9fad8d311b8e0505e38e9d6a42a720085
+  url: https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.13.9/libxml2-v2.13.9.tar.gz
+build:
+  number: '0'
+  run_exports:
+    - libxml2 >=2.13.9,<2.14.0a0
+  string: h2c43086_0
+requirements:
+  build:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - autoconf 2.71 pl5340h5eee18b_0
+    - automake 1.16.5 pl5340h06a4308_1
+    - binutils_impl_linux-64 2.40 h5293946_0
+    - binutils_linux-64 2.40.0 hc2dff05_2
+    - gcc_impl_linux-64 11.2.0 h1234567_1
+    - gcc_linux-64 11.2.0 h5c386dc_2
+    - kernel-headers_linux-64 4.18.0 h528b178_0
+    - ld_impl_linux-64 2.40 h12ee557_0
+    - libgcc-devel_linux-64 11.2.0 h1234567_1
+    - libgcc-ng 11.2.0 h1234567_1
+    - libgomp 11.2.0 h1234567_1
+    - libstdcxx-ng 11.2.0 h1234567_1
+    - libtool 2.4.7 h6a678d5_0
+    - m4 1.4.18 h4e445db_0
+    - make 4.2.1 h1bed415_1
+    - perl 5.40.2 0_h5eee18b_perl5
+    - pkg-config 0.29.2 h1bed415_8
+    - sysroot_linux-64 2.28 h528b178_0
+    - tzdata 2025b h04d1e81_0
+  host:
+    - _libgcc_mutex 0.1 main
+    - _openmp_mutex 5.1 1_gnu
+    - icu 73.1 h6a678d5_0
+    - libgcc-ng 11.2.0 h1234567_1
+    - libgomp 11.2.0 h1234567_1
+    - libstdcxx-ng 11.2.0 h1234567_1
+    - xz 5.6.4 h5eee18b_1
+    - zlib 1.2.13 hd233ad5_2
+  run:
+    - __glibc >=2.28,<3.0.a0
+    - icu >=73.1,<74.0a0
+    - libgcc-ng >=11.2.0
+    - xz >=5.6.4,<6.0a0
+    - zlib >=1.2.13,<2.0a0
+test:
+  commands:
+    - xmllint test.xml
+  files:
+    - test.xml
+about:
+  description: 'Though libxml2 is written in C a variety of language
+
+    bindings make it available in other environments.
+
+    '
+  dev_url: https://gitlab.gnome.org/GNOME/libxml2/
+  doc_url: https://gitlab.gnome.org/GNOME/libxml2/-/wikis/home
+  home: https://gitlab.gnome.org/GNOME/libxml2/
+  license: MIT
+  license_family: MIT
+  license_file: Copyright
+  summary: The XML C parser and toolkit of Gnome
+extra:
+  copy_test_source_files: true
+  final: true
+  recipe-maintainers:
+    - chenghlee
+    - gillins
+    - jakirkham
+    - jschueller
+    - mingwandroid
+    - msarahan
+    - ocefpaf
+    - scopatz

@@ -1,0 +1,23 @@
+{
+  "arch": "x86_64",
+  "build": "py313h06a4308_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64/",
+  "constrains": [],
+  "depends": [
+    "python >=3.13,<3.14.0a0",
+    "python_abi 3.13.* *_cp313"
+  ],
+  "fn": "readchar-4.2.1-py313h06a4308_0.conda",
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "33b7455bfa1462c42bbc9a0535070313",
+  "name": "readchar",
+  "platform": "linux",
+  "sha256": "e1c9e9a33eb6d5a47bdc4ada2379e51419633e237674ca69a0a0676c17b15e0c",
+  "size": 19959,
+  "subdir": "linux-64",
+  "timestamp": 1760613452000,
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/readchar-4.2.1-py313h06a4308_0.conda",
+  "version": "4.2.1"
+}

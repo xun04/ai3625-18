@@ -1,0 +1,15 @@
+{
+  "c_stdlib_version": "2.28",
+  "c_compiler": "gcc",
+  "libxml2": "2.13",
+  "target_platform": "linux-64",
+  "VERBOSE_AT": "V=1",
+  "BUILD": "x86_64-conda_el8-linux-gnu",
+  "xz": "5",
+  "c_stdlib": "sysroot",
+  "icu": "73",
+  "c_compiler_version": "11.2.0",
+  "channel_targets": "defaults",
+  "zlib": "1.2",
+  "__glibc": "__glibc >=2.28,<3.0.a0"
+}

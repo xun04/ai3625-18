@@ -1,0 +1,1 @@
+["pip", "pytest-mock", "mock", "pytest", "bottle", "pytest-cov"]

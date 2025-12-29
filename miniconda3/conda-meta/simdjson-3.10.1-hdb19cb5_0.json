@@ -1,0 +1,55 @@
+{
+  "name": "simdjson",
+  "version": "3.10.1",
+  "build": "hdb19cb5_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "subdir": "linux-64",
+  "fn": "simdjson-3.10.1-hdb19cb5_0.conda",
+  "md5": "7b2a4b5be590071e1b4dce77b413d26a",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/simdjson-3.10.1-hdb19cb5_0.conda",
+  "sha256": "452430e6b5df349770e48ef41b2a1ecb8e92ec2b3fc31ddea89478f32ea14c16",
+  "arch": "x86_64",
+  "platform": "linux",
+  "depends": [
+    "libgcc-ng >=11.2.0",
+    "libstdcxx-ng >=11.2.0"
+  ],
+  "constrains": [],
+  "license": "Apache-2.0",
+  "license_family": "Apache",
+  "timestamp": 1734048099000,
+  "size": 264262,
+  "requested_spec": "pkgs/main/linux-64::simdjson==3.10.1=hdb19cb5_0",
+  "package_tarball_full_path": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/simdjson-3.10.1-hdb19cb5_0.conda",
+  "extracted_package_dir": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/simdjson-3.10.1-hdb19cb5_0",
+  "files": [
+    "include/simdjson.h",
+    "lib/cmake/simdjson/simdjson-config-version.cmake",
+    "lib/cmake/simdjson/simdjson-config.cmake",
+    "lib/cmake/simdjson/simdjsonTargets-release.cmake",
+    "lib/cmake/simdjson/simdjsonTargets.cmake",
+    "lib/libsimdjson.so",
+    "lib/libsimdjson.so.23",
+    "lib/libsimdjson.so.23.0.0",
+    "lib/pkgconfig/simdjson.pc"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "lib/pkgconfig/simdjson.pc",
+        "prefix_placeholder": "/croot/simdjson-split_1734048054873/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_pl",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "sha256": "64921e0fffa695131592eefdf49790a0b5cecb8de9a710fbe7d3b6acb8abff49",
+        "size_in_bytes": 527,
+        "sha256_in_prefix": "dfd572e3f46f1fe9d09d2622340d16551fd454d23c734c25183a8b9d4338c5d4"
+      }
+    ]
+  },
+  "link": {
+    "source": "/data2/ai3625/workspace/ai3625-18/miniconda3/pkgs/simdjson-3.10.1-hdb19cb5_0",
+    "type": 1
+  }
+}
